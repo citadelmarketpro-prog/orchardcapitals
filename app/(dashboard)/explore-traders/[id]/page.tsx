@@ -404,7 +404,7 @@ export default function TraderProfilePage() {
         <div className="flex gap-4">
           <button
             onClick={fetchTraderDetails}
-            className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+            className="px-6 py-2 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg transition-colors"
           >
             Retry
           </button>
@@ -441,7 +441,7 @@ export default function TraderProfilePage() {
         </Link>
 
         {/* Profile Header */}
-        <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6 sm:p-8 mb-6">
+        <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6 sm:p-8 mb-6">
           <div className="flex flex-col sm:flex-row gap-6">
             {/* Avatar + Flag */}
             <div className="shrink-0 flex items-start justify-between gap-6 min-w-[140px] sm:min-w-[160px]">
@@ -456,7 +456,7 @@ export default function TraderProfilePage() {
                   unoptimized
                 />
                 {trader.badge === "gold" && (
-                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-[#1a2744]">
+                  <div className="absolute -bottom-1 -right-1 w-7 h-7 bg-yellow-400 rounded-full flex items-center justify-center shadow-md border-2 border-white dark:border-[#1c0f06]">
                     <span className="text-xs">&#x1F451;</span>
                   </div>
                 )}
@@ -544,7 +544,7 @@ export default function TraderProfilePage() {
               {/* Stats Row */}
               <div className="flex flex-wrap gap-4 sm:gap-6 mt-5">
                 <div className="flex items-center gap-2">
-                  <DollarSign className="w-4 h-4 text-blue-500" />
+                  <DollarSign className="w-4 h-4 text-[#c14e2a]" />
                   <div>
                     <div className="text-sm font-bold text-gray-900 dark:text-white">
                       ${parseFloat(trader.min_account_threshold).toLocaleString()}
@@ -595,7 +595,7 @@ export default function TraderProfilePage() {
                   {trader.tags.map((tag, i) => (
                     <span
                       key={i}
-                      className="px-3 py-1 text-xs font-medium bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 rounded-full border border-blue-100 dark:border-blue-500/20"
+                      className="px-3 py-1 text-xs font-medium bg-orange-50 dark:bg-[#c14e2a]/10 text-[#c14e2a] dark:text-orange-400 rounded-full border border-orange-100 dark:border-[#c14e2a]/20"
                     >
                       {tag}
                     </span>
@@ -651,7 +651,7 @@ export default function TraderProfilePage() {
           <>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Earnings Chart */}
-              <div className="lg:col-span-2 bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
+              <div className="lg:col-span-2 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
                 <div className="mb-1">
                   <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     Earnings
@@ -770,7 +770,7 @@ export default function TraderProfilePage() {
               </div>
 
               {/* Profile Data Sidebar */}
-              <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
+              <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-6">
                   Profile data
                 </h2>
@@ -847,7 +847,7 @@ export default function TraderProfilePage() {
               </div>
 
               {/* Top Traded */}
-              <div className="lg:col-span-2 bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
+              <div className="lg:col-span-2 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
                 <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">
                   Top traded
                 </h2>
@@ -931,7 +931,7 @@ export default function TraderProfilePage() {
               </div>
 
               {/* Portfolio Breakdown */}
-              <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
+              <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
                 <h2 className="text-base font-bold text-gray-900 dark:text-white mb-5">
                   Profile breakdown
                 </h2>
@@ -1003,7 +1003,7 @@ export default function TraderProfilePage() {
                     <Link
                       key={st.id}
                       href={`/explore-traders/${st.id}`}
-                      className="group bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-xl p-4 hover:shadow-lg transition-all"
+                      className="group bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-xl p-4 hover:shadow-lg transition-all"
                     >
                       <div className="flex items-center gap-3 mb-3">
                         <div className="w-10 h-10 rounded-full overflow-hidden bg-lime-400 shrink-0">
@@ -1061,7 +1061,7 @@ export default function TraderProfilePage() {
         {activeTab === "portfolio" && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Win Rate */}
-            <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
+            <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
               <h2 className="text-base font-bold text-gray-900 dark:text-white mb-6">
                 Win Rate
               </h2>
@@ -1118,7 +1118,7 @@ export default function TraderProfilePage() {
             </div>
 
             {/* Performance Stats */}
-            <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
+            <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
               <h2 className="text-base font-bold text-gray-900 dark:text-white mb-6">
                 Performance
               </h2>
@@ -1182,7 +1182,7 @@ export default function TraderProfilePage() {
             </div>
 
             {/* About */}
-            <div className="lg:col-span-2 bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
+            <div className="lg:col-span-2 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
               <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">
                 About {trader.name}
               </h2>
@@ -1233,7 +1233,7 @@ export default function TraderProfilePage() {
 
         {/* ========== TRADE HISTORY TAB ========== */}
         {activeTab === "history" && (
-          <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
+          <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
             <h2 className="text-base font-bold text-gray-900 dark:text-white mb-4">
               Trading Statistics
             </h2>
@@ -1276,7 +1276,7 @@ export default function TraderProfilePage() {
                     {trader.frequently_traded.map((asset, index) => (
                       <span
                         key={index}
-                        className="px-4 py-2 bg-blue-50 dark:bg-blue-500/10 text-blue-700 dark:text-blue-400 text-sm rounded-xl font-medium border border-blue-100 dark:border-blue-500/20"
+                        className="px-4 py-2 bg-orange-50 dark:bg-[#c14e2a]/10 text-[#c14e2a] dark:text-orange-400 text-sm rounded-xl font-medium border border-orange-100 dark:border-[#c14e2a]/20"
                       >
                         {asset}
                       </span>
@@ -1290,13 +1290,13 @@ export default function TraderProfilePage() {
 
         {/* ========== COPIERS TAB ========== */}
         {activeTab === "copiers" && (
-          <div className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
+          <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-6">
             <h2 className="text-base font-bold text-gray-900 dark:text-white mb-6">
               Copier Statistics
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-              <div className="text-center p-6 bg-blue-50 dark:bg-blue-500/10 rounded-2xl">
-                <Users className="w-8 h-8 text-blue-500 mx-auto mb-3" />
+              <div className="text-center p-6 bg-orange-50 dark:bg-[#c14e2a]/10 rounded-2xl">
+                <Users className="w-8 h-8 text-[#c14e2a] mx-auto mb-3" />
                 <div className="text-2xl font-bold text-gray-900 dark:text-white">
                   {trader.copiers.toLocaleString()}
                 </div>

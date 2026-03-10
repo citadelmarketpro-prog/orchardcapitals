@@ -178,7 +178,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0f1a2e] border border-gray-200 dark:border-white/10 shadow-2xl"
+          className="relative w-full max-w-lg max-h-[90vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0e0804] border border-gray-200 dark:border-white/10 shadow-2xl"
         >
           {/* ==================== FORM STEP ==================== */}
           {step === "form" && (
@@ -192,7 +192,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
 
               {loading ? (
                 <div className="flex items-center justify-center py-12">
-                  <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                  <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
                 </div>
               ) : (
                 <div className="space-y-5">
@@ -214,8 +214,8 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                     <div className="relative">
                       <button
                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                        className={`w-full px-4 py-3 rounded-lg text-left flex items-center justify-between transition-all bg-gray-100 dark:bg-[#1a2744] border ${
-                          isDropdownOpen ? "border-blue-500" : "border-gray-300 dark:border-white/10"
+                        className={`w-full px-4 py-3 rounded-lg text-left flex items-center justify-between transition-all bg-gray-100 dark:bg-[#1c0f06] border ${
+                          isDropdownOpen ? "border-[#c14e2a]" : "border-gray-300 dark:border-white/10"
                         } ${selectedMethod ? "text-gray-900 dark:text-white" : "text-gray-500"}`}
                       >
                         <span>{selectedMethod ? getDisplayName(selectedMethod) : "Select method"}</span>
@@ -223,8 +223,8 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                       </button>
 
                       {isDropdownOpen && (
-                        <div className="absolute z-10 w-full mt-1.5 bg-white dark:bg-[#1a2744] border border-gray-200 dark:border-white/10 rounded-lg shadow-lg overflow-hidden">
-                          <div className="px-3 py-2 bg-blue-500 text-white text-xs font-semibold">Select method</div>
+                        <div className="absolute z-10 w-full mt-1.5 bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-lg shadow-lg overflow-hidden">
+                          <div className="px-3 py-2 bg-[#c14e2a] text-white text-xs font-semibold">Select method</div>
                           <div className="max-h-48 overflow-y-auto">
                             {methods.length === 0 ? (
                               <div className="px-3 py-3 text-xs text-gray-500 dark:text-gray-400">
@@ -270,7 +270,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                       placeholder="0.00"
                       min="0"
                       step="0.01"
-                      className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1a2744] border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-blue-500 transition-all"
+                      className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1c0f06] border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#c14e2a] transition-all"
                     />
                     {profile && amount && parseFloat(amount) > parseFloat(profile.balance) && (
                       <p className="mt-1.5 text-xs text-red-400">
@@ -289,7 +289,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                         type="text"
                         value={withdrawalAddress}
                         readOnly
-                        className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1a2744] border border-gray-300 dark:border-white/10 rounded-lg text-gray-500 dark:text-gray-400 focus:outline-none cursor-not-allowed opacity-75"
+                        className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1c0f06] border border-gray-300 dark:border-white/10 rounded-lg text-gray-500 dark:text-gray-400 focus:outline-none cursor-not-allowed opacity-75"
                       />
                       <p className="mt-1 text-[10px] text-gray-500">
                         Saved address for {getDisplayName(selectedMethod)}. Update in settings.
@@ -319,7 +319,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                     <button
                       onClick={handleConfirmWithdrawal}
                       disabled={submitting || !selectedMethod || !amount || !withdrawalAddress}
-                      className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
+                      className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
                     >
                       {submitting ? (
                         <><Loader2 className="w-4 h-4 animate-spin" />Processing...</>
@@ -330,8 +330,8 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                   </div>
 
                   {/* Note */}
-                  <div className="p-3 bg-blue-500/10 border border-blue-500/20 rounded-lg">
-                    <p className="text-[10px] text-blue-600 dark:text-blue-300">
+                  <div className="p-3 bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-lg">
+                    <p className="text-[10px] text-[#c14e2a] dark:text-orange-300">
                       <strong>Note:</strong> Withdrawals are processed within 24-48 hours. You will be notified once approved.
                     </p>
                   </div>
@@ -344,7 +344,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                       </h4>
                       <div className="space-y-2">
                         {transactions.map((tx) => (
-                          <div key={tx.id} className="bg-gray-50 dark:bg-[#1a2744]/80 border border-gray-200 dark:border-white/5 rounded-lg p-3">
+                          <div key={tx.id} className="bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/5 rounded-lg p-3">
                             <div className="flex justify-between items-start mb-1">
                               <p className="text-xs font-medium text-gray-700 dark:text-gray-300">{tx.reference}</p>
                               <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${getStatusColor(tx.status)}`}>
@@ -369,14 +369,14 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
           {step === "success" && (
             <div className="p-6">
               <div className="text-center mb-6">
-                <CheckCircle className="w-14 h-14 text-blue-500 dark:text-blue-400 mx-auto mb-3" />
+                <CheckCircle className="w-14 h-14 text-[#c14e2a] dark:text-orange-400 mx-auto mb-3" />
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                   Withdrawal Submitted!
                 </h3>
                 <p className="text-sm text-gray-500 dark:text-gray-400">Your withdrawal is being processed</p>
               </div>
 
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-4 space-y-2 text-sm">
+              <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-xl p-4 mb-4 space-y-2 text-sm">
                 <div className="flex justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Amount:</span>
                   <span className="text-gray-900 dark:text-white font-semibold">${parseFloat(withdrawAmount).toFixed(2)}</span>
@@ -385,15 +385,15 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                   <span className="text-gray-500 dark:text-gray-400">Method:</span>
                   <span className="text-gray-900 dark:text-white font-semibold">{getDisplayName(selectedMethod)}</span>
                 </div>
-                <div className="flex justify-between pt-2 border-t border-blue-500/20">
+                <div className="flex justify-between pt-2 border-t border-[#c14e2a]/20">
                   <span className="text-gray-500 dark:text-gray-400">Reference:</span>
-                  <span className="text-blue-600 dark:text-blue-400 font-semibold font-mono text-xs">{withdrawRef}</span>
+                  <span className="text-[#c14e2a] dark:text-orange-400 font-semibold font-mono text-xs">{withdrawRef}</span>
                 </div>
               </div>
 
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-4 mb-4">
+              <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-xl p-4 mb-4">
                 <div className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-blue-400 flex-shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">Processing Time</p>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
@@ -405,7 +405,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
 
               <button
                 onClick={handleClose}
-                className="w-full py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-colors text-sm"
+                className="w-full py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg font-semibold transition-colors text-sm"
               >
                 Got It!
               </button>

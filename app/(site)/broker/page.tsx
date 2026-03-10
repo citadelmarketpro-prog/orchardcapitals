@@ -14,19 +14,19 @@ export default function BrokerPartnership() {
           <div className="relative mx-auto max-w-3xl px-6 text-center">
             <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl italic">
               Rewrite the Rules of{" "}
-              <span className="bg-linear-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#c14e2a] to-[#e07040] dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
                 Brokerage
               </span>
             </h1>
             <p className="mt-6 text-gray-600 dark:text-gray-400 leading-relaxed max-w-xl mx-auto">
               You can be the first brokerage industry innovation. With
-              ScopsTrade, alongside your Traders and restart your profits
+              Orchard Capitals, alongside your Traders and restart your profits
               manifold.
             </p>
             <div className="mt-10">
               <Link
                 href="/register"
-                className="inline-block rounded-md bg-primary px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                className="inline-block rounded-md bg-primary px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 Book a meeting with us &rarr;
               </Link>
@@ -40,7 +40,7 @@ export default function BrokerPartnership() {
             <div className="text-center mb-12">
               <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
                 Why Partner With{" "}
-                <span className="bg-linear-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-[#c14e2a] to-[#e07040] dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
                   Signalsync
                 </span>
                 ?
@@ -53,7 +53,7 @@ export default function BrokerPartnership() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-200 dark:bg-white/10 rounded-2xl overflow-hidden border border-gray-200 dark:border-white/10">
               {/* Card 1 - Boost Trading Volume */}
               <div className="bg-white dark:bg-gray-900/80 p-10">
-                <div className="mb-5 text-blue-500 dark:text-blue-400">
+                <div className="mb-5 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="32"
                     height="32"
@@ -88,7 +88,7 @@ export default function BrokerPartnership() {
 
               {/* Card 2 - Enhance Client Retention */}
               <div className="bg-white dark:bg-gray-900/80 p-10">
-                <div className="mb-5 text-blue-500 dark:text-blue-400">
+                <div className="mb-5 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="32"
                     height="32"
@@ -116,7 +116,7 @@ export default function BrokerPartnership() {
 
               {/* Card 3 - Expand Your Offerings */}
               <div className="bg-white dark:bg-gray-900/80 p-10">
-                <div className="mb-5 text-blue-500 dark:text-blue-400">
+                <div className="mb-5 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="32"
                     height="32"
@@ -149,7 +149,7 @@ export default function BrokerPartnership() {
 
               {/* Card 4 - Lower Acquisition Cost */}
               <div className="bg-white dark:bg-gray-900/80 p-10">
-                <div className="mb-5 text-blue-500 dark:text-blue-400">
+                <div className="mb-5 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="32"
                     height="32"
@@ -186,7 +186,7 @@ export default function BrokerPartnership() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-12 text-center">
               <div>
-                <span className="text-blue-500 dark:text-blue-400 font-semibold text-sm">
+                <span className="text-[#c14e2a] dark:text-orange-400 font-semibold text-sm">
                   1
                 </span>
                 <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
@@ -197,7 +197,7 @@ export default function BrokerPartnership() {
                 </p>
               </div>
               <div>
-                <span className="text-blue-500 dark:text-blue-400 font-semibold text-sm">
+                <span className="text-[#c14e2a] dark:text-orange-400 font-semibold text-sm">
                   2
                 </span>
                 <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
@@ -205,13 +205,13 @@ export default function BrokerPartnership() {
                 </h3>
                 <Link
                   href="/register"
-                  className="mt-2 inline-block text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm font-medium transition"
+                  className="mt-2 inline-block text-[#c14e2a] dark:text-orange-400 hover:text-[#a8401f] dark:hover:text-orange-300 text-sm font-medium transition"
                 >
                   Become an affiliate &rarr;
                 </Link>
               </div>
               <div>
-                <span className="text-blue-500 dark:text-blue-400 font-semibold text-sm">
+                <span className="text-[#c14e2a] dark:text-orange-400 font-semibold text-sm">
                   3
                 </span>
                 <h3 className="mt-2 text-xl font-bold text-gray-900 dark:text-white">
@@ -231,13 +231,13 @@ export default function BrokerPartnership() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {/* API Integration */}
               <div className="flex flex-col items-center rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200/80 dark:border-white/8 px-8 py-12 text-center shadow-sm">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 dark:bg-orange-500/10">
                   <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className="text-blue-600 dark:text-blue-400"
+                    className="text-[#c14e2a] dark:text-orange-400"
                   >
                     <path
                       d="M12 5v14M5 12h14"
@@ -259,13 +259,13 @@ export default function BrokerPartnership() {
 
               {/* Custom Development */}
               <div className="flex flex-col items-center rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200/80 dark:border-white/8 px-8 py-12 text-center shadow-sm">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 dark:bg-orange-500/10">
                   <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className="text-blue-600 dark:text-blue-400"
+                    className="text-[#c14e2a] dark:text-orange-400"
                   >
                     <rect
                       x="4"
@@ -298,13 +298,13 @@ export default function BrokerPartnership() {
 
               {/* Marketing and Sales Support */}
               <div className="flex flex-col items-center rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200/80 dark:border-white/8 px-8 py-12 text-center shadow-sm">
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-blue-50 dark:bg-blue-500/10">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-lg bg-orange-50 dark:bg-orange-500/10">
                   <svg
                     width="24"
                     height="24"
                     viewBox="0 0 24 24"
                     fill="none"
-                    className="text-blue-600 dark:text-blue-400"
+                    className="text-[#c14e2a] dark:text-orange-400"
                   >
                     <circle
                       cx="12"
@@ -333,19 +333,19 @@ export default function BrokerPartnership() {
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-5xl italic">
               Ready to transform your{" "}
-              <span className="bg-linear-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#c14e2a] to-[#e07040] dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
                 Brokerage
               </span>
               ?
             </h2>
             <p className="mt-5 text-gray-600 dark:text-gray-400 leading-relaxed">
               Join the leading brokers who have already partnered with
-              ScopsTrade. Let&apos;s grow together.
+              Orchard Capitals. Let&apos;s grow together.
             </p>
             <div className="mt-8">
               <Link
                 href="/register"
-                className="inline-block rounded-md bg-primary px-10 py-4 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                className="inline-block rounded-md bg-primary px-10 py-4 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 Get started now &rarr;
               </Link>
@@ -365,10 +365,10 @@ export default function BrokerPartnership() {
               hours.
             </p>
             <Link
-              href="mailto:partnerships@scopstrade.com"
-              className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium transition"
+              href="mailto:support@orchardcapitals.com"
+              className="text-[#c14e2a] dark:text-orange-400 hover:text-[#a8401f] dark:hover:text-orange-300 font-medium transition"
             >
-              support@scopstrade.com
+              support@orchardcapitals.com
             </Link>
           </div>
         </section>

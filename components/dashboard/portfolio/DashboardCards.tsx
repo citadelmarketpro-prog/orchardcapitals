@@ -9,7 +9,7 @@ export function LiveTradingCard() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}
-      className="rounded-lg bg-white/80 dark:bg-[#1e3a5f]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm p-4"
+      className="rounded-lg bg-white/80 dark:bg-[#1c0f06]/60 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm p-4"
     >
       <motion.a
       href="/live-trading"
@@ -47,8 +47,8 @@ export function AssetAllocationCard({
   const assets = (() => {
     if (totalPortfolio <= 0) {
       return [
-        { name: "Balance", value: 0, color: "bg-blue-400" },
-        { name: "Deposits", value: 0, color: "bg-blue-500" },
+        { name: "Balance", value: 0, color: "bg-orange-400" },
+        { name: "Deposits", value: 0, color: "bg-orange-600" },
         { name: "Profits", value: 0, color: "bg-emerald-500" },
       ];
     }
@@ -58,8 +58,8 @@ export function AssetAllocationCard({
     const depositPct = 100 - balancePct - profitPct;
 
     return [
-      { name: "Available", value: Math.max(balancePct, 0), color: "bg-blue-400" },
-      { name: "Deposits", value: Math.max(depositPct, 0), color: "bg-blue-500" },
+      { name: "Available", value: Math.max(balancePct, 0), color: "bg-orange-400" },
+      { name: "Deposits", value: Math.max(depositPct, 0), color: "bg-orange-600" },
       { name: "Profits", value: Math.max(profitPct, 0), color: totalProfits >= 0 ? "bg-emerald-500" : "bg-red-400" },
     ];
   })();
@@ -74,12 +74,12 @@ export function AssetAllocationCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="rounded-lg bg-white/80 dark:bg-[#1e3a5f]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm p-5"
+      className="rounded-lg bg-white/80 dark:bg-[#1c0f06]/60 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm p-5"
     >
       {/* Header */}
       <div className="flex items-center space-x-2.5 mb-4">
-        <div className="w-7 h-7 rounded-full bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center">
-          <TrendingUp className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
+        <div className="w-7 h-7 rounded-full bg-orange-100 dark:bg-orange-500/20 flex items-center justify-center">
+          <TrendingUp className="w-3.5 h-3.5 text-orange-700 dark:text-orange-400" />
         </div>
         <h3 className="text-xs font-semibold text-gray-900 dark:text-white">
           Asset allocation

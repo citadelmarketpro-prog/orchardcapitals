@@ -131,7 +131,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
       case "trade":
         return { bg: "bg-emerald-100 dark:bg-emerald-500/20", text: "text-emerald-600" };
       case "deposit":
-        return { bg: "bg-blue-100 dark:bg-blue-500/20", text: "text-blue-600" };
+        return { bg: "bg-orange-100 dark:bg-orange-500/20", text: "text-orange-700" };
       case "withdrawal":
         return { bg: "bg-green-100 dark:bg-green-500/20", text: "text-green-600" };
       case "alert":
@@ -164,7 +164,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -10, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="fixed sm:absolute left-2 right-2 sm:left-auto sm:right-0 top-16 sm:top-auto sm:mt-2 sm:w-96 bg-white/95 dark:bg-[#1e3a5f]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden z-50"
+        className="fixed sm:absolute left-2 right-2 sm:left-auto sm:right-0 top-16 sm:top-auto sm:mt-2 sm:w-96 bg-white/95 dark:bg-[#1c0f06]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden z-50"
       >
         {/* Header */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-white/5">
@@ -173,7 +173,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
               Notifications
             </h3>
             {unreadCount > 0 && (
-              <span className="px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded-full">
+              <span className="px-1.5 py-0.5 bg-[#c14e2a] text-white text-[10px] font-bold rounded-full">
                 {unreadCount}
               </span>
             )}
@@ -181,7 +181,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
-              className="text-[10px] sm:text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+              className="text-[10px] sm:text-xs text-[#c14e2a] hover:text-[#a8401f] dark:text-orange-400 dark:hover:text-orange-300 font-medium transition-colors"
             >
               Mark all read
             </button>
@@ -192,7 +192,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
         <div className="max-h-72 sm:max-h-80 overflow-y-auto">
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-[#c14e2a] border-t-transparent rounded-full animate-spin" />
             </div>
           ) : notifications.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-8 px-4">
@@ -238,7 +238,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
                           {notification.title}
                         </p>
                         {!notification.read && (
-                          <div className="w-1.5 h-1.5 bg-blue-600 rounded-full ml-2 mt-1 flex-shrink-0" />
+                          <div className="w-1.5 h-1.5 bg-[#c14e2a] rounded-full ml-2 mt-1 flex-shrink-0" />
                         )}
                       </div>
                       {notification.message && (
@@ -261,7 +261,7 @@ export default function NotificationDropdown({ onClose, onNotificationUpdate }: 
         <div className="px-4 py-2.5 border-t border-gray-100 dark:border-white/5">
           <button
             onClick={handleViewAll}
-            className="w-full text-center text-[10px] sm:text-xs text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+            className="w-full text-center text-[10px] sm:text-xs text-[#c14e2a] hover:text-[#a8401f] dark:text-orange-400 dark:hover:text-orange-300 font-medium transition-colors"
           >
             View all notifications
           </button>

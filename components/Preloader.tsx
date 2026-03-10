@@ -18,7 +18,7 @@ export default function Preloader() {
     : "/logo_dark.png";
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309]">
       {/* Logo */}
       <div className="mb-12">
         <Image
@@ -34,7 +34,7 @@ export default function Preloader() {
       {/* Circular Loading Spinner */}
       <div className="relative w-16 h-16 mb-8">
         <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-700"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-blue-600 dark:border-t-blue-500 animate-spin"></div>
+        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#c14e2a] dark:border-t-orange-500 animate-spin"></div>
       </div>
 
       {/* Loading Text */}

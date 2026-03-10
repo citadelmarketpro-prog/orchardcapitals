@@ -26,7 +26,7 @@ const Navbar = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300 ${
         scrolled
-          ? "bg-white/80 dark:bg-[#0f1f3a]/80 backdrop-blur-xl shadow-lg shadow-black/[0.03] dark:shadow-black/20 border-b border-gray-200/50 dark:border-white/[0.06]"
+          ? "bg-white/80 dark:bg-[#1c0f06]/90 backdrop-blur-xl shadow-lg shadow-black/[0.03] dark:shadow-black/20 border-b border-gray-200/50 dark:border-white/[0.06]"
           : "bg-transparent border-b border-transparent"
       }`}
     >
@@ -82,7 +82,7 @@ const Navbar = () => {
             </Link>
             <Link
               href="/register"
-              className="rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[var(--primary-hover)] hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
+              className="rounded-full bg-[var(--primary)] px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[var(--primary-hover)] hover:shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5"
             >
               Get Started
             </Link>
@@ -163,25 +163,25 @@ const Navbar = () => {
           mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
-        <div className="bg-white/95 dark:bg-[#0f1f3a]/95 backdrop-blur-xl px-4 py-5 shadow-xl border-b border-gray-200/50 dark:border-white/[0.06]">
+        <div className="bg-white/95 dark:bg-[#1c0f06]/95 backdrop-blur-xl px-4 py-5 shadow-xl border-b border-gray-200/50 dark:border-white/[0.06]">
           <div className="flex flex-col gap-1">
             <Link
               href="#features"
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-blue-50 dark:hover:bg-white/5"
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-orange-50 dark:hover:bg-white/5"
               onClick={() => setMobileMenuOpen(false)}
             >
               Features
             </Link>
             <Link
               href="#how-it-works"
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-blue-50 dark:hover:bg-white/5"
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-orange-50 dark:hover:bg-white/5"
               onClick={() => setMobileMenuOpen(false)}
             >
               How it works
             </Link>
             <Link
               href="#pricing"
-              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-blue-50 dark:hover:bg-white/5"
+              className="rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-orange-50 dark:hover:bg-white/5"
               onClick={() => setMobileMenuOpen(false)}
             >
               Pricing
@@ -189,7 +189,7 @@ const Navbar = () => {
             <div className="mt-2 border-t border-gray-200 dark:border-white/10 pt-3">
               <Link
                 href="/login"
-                className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-blue-50 dark:hover:bg-white/5"
+                className="block rounded-lg px-3 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-200 transition-colors hover:bg-orange-50 dark:hover:bg-white/5"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Sign In

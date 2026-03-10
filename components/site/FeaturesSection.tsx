@@ -9,9 +9,9 @@ const FeaturesSection = () => {
       title: "Transparent Options Copying",
       description:
         "See exactly what you're mirroring—ticker, strategy, side (call/put), strike, expiry, entry/exit premium, size, and timestamps—plus a clear history of each leader's performance and drawdowns.",
-      gradient: "from-blue-500 to-cyan-500",
-      bgColor: "bg-blue-50 dark:bg-blue-500/10",
-      iconColor: "text-blue-600 dark:text-blue-400",
+      gradient: "from-[#c14e2a] to-amber-500",
+      bgColor: "bg-orange-50 dark:bg-orange-500/10",
+      iconColor: "text-orange-700 dark:text-orange-400",
     },
     {
       icon: <DocumentIcon />,
@@ -45,7 +45,7 @@ const FeaturesSection = () => {
       title: "Learn While You Copy",
       description:
         "Leaders attach notes, rationale, and risk context to each trade. Use strategy tags and post-trade debriefs to sharpen your own playbook.",
-      gradient: "from-indigo-500 to-blue-500",
+      gradient: "from-indigo-500 to-violet-500",
       bgColor: "bg-indigo-50 dark:bg-indigo-500/10",
       iconColor: "text-indigo-600 dark:text-indigo-400",
     },
@@ -105,7 +105,7 @@ const FeatureCard = ({
   bgColor,
   iconColor,
 }: FeatureCardProps) => (
-  <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/5">
+  <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/5">
     {/* Gradient background on hover */}
     <div
       className={`absolute inset-0 bg-linear-to-br ${gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-[0.04] dark:group-hover:opacity-[0.08]`}

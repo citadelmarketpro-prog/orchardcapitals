@@ -84,19 +84,19 @@ const OnboardingLoading = () => {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0a1628] flex items-center justify-center p-6 transition-colors duration-500 overflow-hidden relative">
+    <div className="min-h-screen bg-white dark:bg-[#0e0804] flex items-center justify-center p-6 transition-colors duration-500 overflow-hidden relative">
       {/* Subtle grid background */}
       <div
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(59,130,246,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.5) 1px, transparent 1px)",
+            "linear-gradient(rgba(193,78,42,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(193,78,42,0.5) 1px, transparent 1px)",
           backgroundSize: "60px 60px",
         }}
       />
 
       {/* Gradient orbs */}
-      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-blue-500/10 dark:bg-blue-500/5 rounded-full blur-[128px]" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-orange-500/10 dark:bg-orange-500/5 rounded-full blur-[128px]" />
       <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-indigo-500/10 dark:bg-indigo-500/5 rounded-full blur-[128px]" />
 
       <div className="relative z-10 max-w-lg w-full">
@@ -119,7 +119,7 @@ const OnboardingLoading = () => {
               >
                 <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
                   SCOPS
-                  <span className="text-blue-500">TRADE</span>
+                  <span className="text-[#c14e2a]">TRADE</span>
                 </h1>
               </motion.div>
 
@@ -133,7 +133,7 @@ const OnboardingLoading = () => {
                 <div className="relative">
                   {/* Rotating ring */}
                   <motion.div
-                    className="absolute inset-0 border-2 border-blue-500/20 rounded-full"
+                    className="absolute inset-0 border-2 border-[#c14e2a]/20 rounded-full"
                     style={{ width: 100, height: 100, margin: "-10px" }}
                     animate={{ rotate: 360 }}
                     transition={{
@@ -142,10 +142,10 @@ const OnboardingLoading = () => {
                       ease: "linear",
                     }}
                   >
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-500 rounded-full" />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-[#c14e2a] rounded-full" />
                   </motion.div>
 
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/25">
+                  <div className="w-20 h-20 bg-gradient-to-br from-[#c14e2a] to-[#a8401f] rounded-2xl flex items-center justify-center shadow-lg shadow-orange-500/25">
                     <TrendingUp className="w-10 h-10 text-white" />
                   </div>
                 </div>
@@ -181,7 +181,7 @@ const OnboardingLoading = () => {
               <div className="max-w-xs mx-auto mb-10">
                 <div className="h-1 bg-gray-200 dark:bg-gray-800 rounded-full overflow-hidden">
                   <motion.div
-                    className="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full"
+                    className="h-full bg-gradient-to-r from-[#c14e2a] to-[#e07040] rounded-full"
                     style={{ width: `${progress}%` }}
                     transition={{ duration: 0.1 }}
                   />
@@ -211,19 +211,19 @@ const OnboardingLoading = () => {
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 ${
                           isDone
-                            ? "bg-blue-500/10 dark:bg-blue-500/10"
+                            ? "bg-[#c14e2a]/10 dark:bg-[#c14e2a]/10"
                             : isActive
-                              ? "bg-blue-500/15 dark:bg-blue-500/15 ring-2 ring-blue-500/30"
+                              ? "bg-[#c14e2a]/15 dark:bg-[#c14e2a]/15 ring-2 ring-[#c14e2a]/30"
                               : "bg-gray-100 dark:bg-gray-800/50"
                         }`}
                       >
                         {isDone ? (
-                          <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                          <CheckCircle2 className="w-5 h-5 text-[#c14e2a]" />
                         ) : (
                           <Icon
                             className={`w-5 h-5 ${
                               isActive
-                                ? "text-blue-500"
+                                ? "text-[#c14e2a]"
                                 : "text-gray-400 dark:text-gray-600"
                             }`}
                           />
@@ -255,7 +255,7 @@ const OnboardingLoading = () => {
               >
                 <div className="relative">
                   <motion.div
-                    className="absolute inset-0 bg-blue-500/20 rounded-full blur-2xl"
+                    className="absolute inset-0 bg-[#c14e2a]/20 rounded-full blur-2xl"
                     animate={{
                       scale: [1, 1.3, 1],
                       opacity: [0.3, 0.5, 0.3],
@@ -267,7 +267,7 @@ const OnboardingLoading = () => {
                     }}
                     style={{ width: 128, height: 128, margin: "-16px" }}
                   />
-                  <div className="w-24 h-24 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center shadow-xl shadow-blue-500/30">
+                  <div className="w-24 h-24 bg-gradient-to-br from-[#c14e2a] to-[#a8401f] rounded-full flex items-center justify-center shadow-xl shadow-orange-500/30">
                     <CheckCircle2 className="w-12 h-12 text-white" />
                   </div>
                 </div>
@@ -296,7 +296,7 @@ const OnboardingLoading = () => {
               {/* CTA */}
               <motion.button
                 onClick={handleComplete}
-                className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40"
+                className="inline-flex items-center gap-2.5 px-8 py-3.5 bg-[#c14e2a] hover:bg-[#a8401f] text-white font-semibold rounded-lg transition-all duration-200 shadow-lg shadow-orange-500/25 hover:shadow-orange-500/40"
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.6 }}

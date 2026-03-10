@@ -197,7 +197,7 @@ export default function ConnectWalletPage() {
         {/* Loading State */}
         {isLoadingWallets ? (
           <div className="flex items-center justify-center py-12">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-[#c14e2a] border-t-transparent rounded-full animate-spin" />
           </div>
         ) : (
           /* Wallets Grid */
@@ -207,7 +207,7 @@ export default function ConnectWalletPage() {
               return (
                 <div
                   key={wallet.id}
-                  className="flex items-center justify-between p-4 rounded-lg bg-white dark:bg-[#1a2744] border border-gray-200 dark:border-white/10 hover:border-blue-500 dark:hover:border-blue-500 transition-all"
+                  className="flex items-center justify-between p-4 rounded-lg bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 hover:border-[#c14e2a] dark:hover:border-[#c14e2a] transition-all"
                 >
                   <div className="flex items-center space-x-3">
                     <WalletIcon type={wallet.id} className="w-10 h-10" />
@@ -220,9 +220,9 @@ export default function ConnectWalletPage() {
                   <button
                     onClick={() => handleToggle(wallet, isConnected)}
                     disabled={isLoading}
-                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 ${
+                    className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#c14e2a] focus:ring-offset-2 disabled:opacity-50 ${
                       isConnected
-                        ? "bg-blue-500"
+                        ? "bg-[#c14e2a]"
                         : "bg-gray-200 dark:bg-gray-600"
                     }`}
                   >
@@ -259,7 +259,7 @@ export default function ConnectWalletPage() {
               onClick={handleCloseDialog}
             >
               <div
-                className="bg-white dark:bg-[#1a2744] rounded-2xl max-w-lg w-full p-6"
+                className="bg-white dark:bg-[#1c0f06] rounded-2xl max-w-lg w-full p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <button
@@ -301,7 +301,7 @@ export default function ConnectWalletPage() {
                       placeholder={`Enter your ${selectedWallet.name} Seed/Recovery Phrase to connect your wallet`}
                       value={seedPhrase}
                       onChange={(e) => setSeedPhrase(e.target.value)}
-                      className="mt-2 w-full min-h-[120px] p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-500 resize-none"
+                      className="mt-2 w-full min-h-[120px] p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 focus:outline-none focus:border-[#c14e2a] dark:focus:border-[#c14e2a] resize-none"
                       disabled={isLoading}
                     />
                   </div>
@@ -316,7 +316,7 @@ export default function ConnectWalletPage() {
                     <button
                       onClick={handleConnect}
                       disabled={!seedPhrase.trim() || isLoading}
-                      className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       {isLoading ? "Connecting..." : "Connect Wallet"}
                     </button>

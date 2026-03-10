@@ -14,7 +14,7 @@ export default function AffiliateGuide() {
               Affiliate Guide
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Everything you need to know to succeed as a ScopsTrade affiliate
+              Everything you need to know to succeed as a Orchard Capitals affiliate
             </p>
           </div>
           <div className="space-y-12">
@@ -24,7 +24,7 @@ export default function AffiliateGuide() {
                 Welcome to the Affiliate Program
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Thank you for joining the ScopsTrade Affiliate Program. As an affiliate, you play a
+                Thank you for joining the Orchard Capitals Affiliate Program. As an affiliate, you play a
                 crucial role in growing our community of traders. This guide will walk you through
                 everything you need to know — from setting up your account to maximizing your earnings.
               </p>
@@ -40,23 +40,23 @@ export default function AffiliateGuide() {
                 Getting Started
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Follow these steps to begin earning as a ScopsTrade affiliate:
+                Follow these steps to begin earning as a Orchard Capitals affiliate:
               </p>
               <ol className="space-y-4 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">1</span>
-                  <span><strong>Create your ScopsTrade account</strong> — Sign up at ScopsTrade and complete the verification process.</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                  <span><strong>Create your Orchard Capitals account</strong> — Sign up at Orchard Capitals and complete the verification process.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">2</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">2</span>
                   <span><strong>Apply for the Affiliate Program</strong> — Navigate to the Affiliate section in your dashboard and submit your application.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">3</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">3</span>
                   <span><strong>Get your unique referral link</strong> — Once approved, you will receive a personalized referral link and tracking code.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">4</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">4</span>
                   <span><strong>Start promoting</strong> — Share your link across your channels and start earning commissions on every qualified referral.</span>
                 </li>
               </ol>
@@ -72,56 +72,56 @@ export default function AffiliateGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>View your referral link and generate custom tracking URLs</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Monitor real-time clicks, sign-ups, and conversions</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Track your commission earnings and payment history</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Access promotional materials including banners, copy, and landing pages</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Request withdrawals of your earned commissions</span>
                 </li>
               </ul>
             </section>
 
           
-            {/* Promoting ScopsTrade */}
+            {/* Promoting Orchard Capitals */}
             <section>
               <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                Promoting ScopsTrade
+                Promoting Orchard Capitals
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 Here are some tips and best practices to maximize your referral earnings:
               </p>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
-                  <span><strong>Be authentic</strong> — Share your own experience with ScopsTrade. Genuine recommendations convert better than generic pitches.</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
+                  <span><strong>Be authentic</strong> — Share your own experience with Orchard Capitals. Genuine recommendations convert better than generic pitches.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
-                  <span><strong>Educate your audience</strong> — Create content that explains how copy trading works and how ScopsTrade makes it accessible.</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
+                  <span><strong>Educate your audience</strong> — Create content that explains how copy trading works and how Orchard Capitals makes it accessible.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Use multiple channels</strong> — Promote on social media, blogs, YouTube, email newsletters, and trading communities.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Leverage our materials</strong> — Use the banners, landing pages, and copy we provide in your dashboard.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Stay compliant</strong> — Always disclose your affiliate relationship and never make guarantees about trading profits.</span>
                 </li>
               </ul>
@@ -135,8 +135,8 @@ export default function AffiliateGuide() {
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 Our commission structure is straightforward and generous:
               </p>
-              <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl p-6 mb-4">
-                <p className="text-2xl font-bold text-blue-500 mb-2">10% of First Deposit</p>
+              <div className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-6 mb-4">
+                <p className="text-2xl font-bold text-[#c14e2a] mb-2">10% of First Deposit</p>
                 <p className="text-gray-700 dark:text-gray-300">
                   You earn 10% of every referred user&apos;s first deposit. There is no cap on the number
                   of referrals you can make, and commissions are credited instantly once the deposit is confirmed.
@@ -158,19 +158,19 @@ export default function AffiliateGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Click tracking</strong> — See exactly how many people click your referral links</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Conversion tracking</strong> — Monitor sign-ups, verifications, and first deposits</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Sub-ID tracking</strong> — Use custom sub-IDs to track different campaigns and channels</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Historical reports</strong> — Access detailed reports for any date range</span>
                 </li>
               </ul>
@@ -188,19 +188,19 @@ export default function AffiliateGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Commissions are available for withdrawal once confirmed (typically within 24-48 hours)</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
-                  <span>Withdraw via bank transfer, cryptocurrency, or to your ScopsTrade trading account</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
+                  <span>Withdraw via bank transfer, cryptocurrency, or to your Orchard Capitals trading account</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>No minimum withdrawal threshold — withdraw any amount at any time</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Withdrawal processing times vary by method (1-5 business days)</span>
                 </li>
               </ul>
@@ -237,11 +237,11 @@ export default function AffiliateGuide() {
                 Ready to Start Earning?
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Join the ScopsTrade Affiliate Program today and start earning commissions on every
+                Join the Orchard Capitals Affiliate Program today and start earning commissions on every
                 referral. It only takes a few minutes to get set up.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/register" className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50">
+                <Link href="/register" className="inline-block bg-[#c14e2a] hover:bg-[#a8401f] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50">
                   Get Started
                 </Link>
                 <Link href="/" className="inline-block bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300">

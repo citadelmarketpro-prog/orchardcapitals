@@ -72,7 +72,7 @@ export function TradeCopiedSection() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.3 }}
-      className="rounded-lg bg-white/80 dark:bg-[#1e3a5f]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm h-full"
+      className="rounded-lg bg-white/80 dark:bg-[#2c1a0c]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm h-full"
     >
       <div className="px-5 py-3.5 border-b border-gray-100 dark:border-white/5">
         <h3 className="text-xs font-semibold text-gray-900 dark:text-white">
@@ -82,7 +82,7 @@ export function TradeCopiedSection() {
 
       {loading ? (
         <div className="flex items-center justify-center py-10">
-          <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[#c14e2a] border-t-transparent rounded-full animate-spin" />
         </div>
       ) : isEmpty ? (
         <div className="flex flex-col items-center justify-center py-10 px-5">
@@ -101,7 +101,7 @@ export function TradeCopiedSection() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#c14e2a] hover:bg-[#a8401f] text-white text-xs font-semibold rounded-lg transition-colors"
             >
               Explore Traders
             </motion.button>
@@ -110,7 +110,7 @@ export function TradeCopiedSection() {
       ) : (
         <div className="overflow-x-auto max-h-100 overflow-y-auto">
           <table className="w-full text-xs min-w-140">
-            <thead className="sticky top-0 bg-white/95 dark:bg-[#1e3a5f]/95 backdrop-blur-sm">
+            <thead className="sticky top-0 bg-white/95 dark:bg-[#2c1a0c]/95 backdrop-blur-sm">
               <tr className="border-b border-gray-100 dark:border-white/5">
                 <th className="px-5 py-2.5 text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">Asset</th>
                 <th className="px-3 py-2.5 text-left text-[10px] text-gray-400 dark:text-gray-500 font-medium uppercase tracking-wider">Type</th>
@@ -177,7 +177,7 @@ export function TradeCopiedSection() {
                     <span
                       className={`text-[10px] font-medium ${
                         trade.status === "open"
-                          ? "text-blue-600 dark:text-blue-400"
+                          ? "text-[#c14e2a] dark:text-orange-400"
                           : "text-gray-500 dark:text-gray-400"
                       }`}
                     >
@@ -259,7 +259,7 @@ export function FollowingSection() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.4 }}
-      className="rounded-lg bg-white/80 dark:bg-[#1e3a5f]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm h-full"
+      className="rounded-lg bg-white/80 dark:bg-[#2c1a0c]/40 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-sm h-full"
     >
       <div className="px-5 py-3.5 border-b border-gray-100 dark:border-white/5">
         <h3 className="text-xs font-semibold text-gray-900 dark:text-white">
@@ -269,7 +269,7 @@ export function FollowingSection() {
 
       {loading ? (
         <div className="flex items-center justify-center py-10">
-          <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-[#c14e2a] border-t-transparent rounded-full animate-spin" />
         </div>
       ) : isEmpty ? (
         <div className="flex flex-col items-center justify-center py-6 px-5">
@@ -278,7 +278,7 @@ export function FollowingSection() {
             <input
               type="text"
               placeholder="Search for trader"
-              className="w-full px-3 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 transition-all"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#c14e2a]/50 transition-all"
               disabled
             />
           </div>
@@ -298,7 +298,7 @@ export function FollowingSection() {
             <motion.button
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="px-5 py-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold rounded-lg transition-colors"
+              className="px-5 py-2 bg-[#c14e2a] hover:bg-[#a8401f] text-white text-xs font-semibold rounded-lg transition-colors"
             >
               Explore Traders
             </motion.button>
@@ -313,7 +313,7 @@ export function FollowingSection() {
               placeholder="Search for trader"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-3 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 transition-all"
+              className="w-full px-3 py-2 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-xs text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-[#c14e2a]/50 transition-all"
             />
           </div>
 
@@ -326,7 +326,7 @@ export function FollowingSection() {
             ) : (
               filteredTraders.map((trader) => (
                 <Link className="inline-block w-full" key={trader.id} href={`/explore-traders/${trader.trader_id}`}>
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all cursor-pointer border border-transparent hover:border-blue-500/30">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10 transition-all cursor-pointer border border-transparent hover:border-[#c14e2a]/30">
                     <Image
                       src={getAvatarUrl(trader.trader_avatar_url, trader.trader_name)}
                       alt={trader.trader_name}
@@ -344,7 +344,7 @@ export function FollowingSection() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[10px] font-medium text-blue-600 dark:text-blue-400">
+                      <p className="text-[10px] font-medium text-[#c14e2a] dark:text-orange-400">
                         ${parseFloat(trader.initial_investment).toLocaleString()}
                       </p>
                       <p className="text-[9px] text-gray-400 dark:text-gray-500">

@@ -217,7 +217,7 @@ const LiquidityProvidersSection = () => {
       className="py-8 md:py-14 relative"
       style={{
         background:
-          "linear-gradient(135deg, #0a1a2f 0%, #1a3a4f 50%, #2a4a3f 100%)",
+          "linear-gradient(135deg, #1c0f06 0%, #251309 50%, #2c1a0c 100%)",
       }}
     >
       <div className="container mx-auto px-4">
@@ -281,7 +281,7 @@ const LiquidityProvidersSection = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="/register"
-              className="px-8 py-3 bg-linear-to-r from-blue-500 to-blue-600 text-white rounded-full font-semibold hover:shadow-xl hover:shadow-blue-500/25 transition-all duration-300 hover:-translate-y-0.5 text-sm"
+              className="px-8 py-3 bg-gradient-to-r from-[#c14e2a] to-[#a8401f] text-white rounded-full font-semibold hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300 hover:-translate-y-0.5 text-sm"
             >
               Get Started
             </a>

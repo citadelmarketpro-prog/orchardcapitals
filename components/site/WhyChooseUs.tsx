@@ -20,7 +20,7 @@ const WhyChooseUs = () => {
         {/* Two Column Grid */}
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
           {/* Left Column - The Problem */}
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-8 lg:p-10 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5">
+          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-8 lg:p-10 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/5">
             <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-red-500/[0.06] dark:bg-red-500/[0.08] blur-3xl" />
             <div className="relative">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-red-50 dark:bg-red-500/10 px-3 py-1">
@@ -41,7 +41,7 @@ const WhyChooseUs = () => {
           </div>
 
           {/* Right Column - The Solution */}
-          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-8 lg:p-10 transition-all duration-300 hover:shadow-xl hover:shadow-blue-500/5">
+          <div className="group relative overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm p-8 lg:p-10 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/5">
             <div className="absolute -right-20 -top-20 h-40 w-40 rounded-full bg-green-500/[0.06] dark:bg-green-500/[0.08] blur-3xl" />
             <div className="relative">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-green-50 dark:bg-green-500/10 px-3 py-1">
@@ -57,7 +57,7 @@ const WhyChooseUs = () => {
               </p>
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5"
               >
                 Start copy trading
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>

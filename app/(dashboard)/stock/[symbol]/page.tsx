@@ -209,7 +209,7 @@ export default function StockDetailPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+        <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
       </div>
     );
   }
@@ -234,14 +234,14 @@ export default function StockDetailPage() {
         {/* Back Button */}
         <button
           onClick={() => router.back()}
-          className="mb-6 px-4 py-2 flex items-center gap-2 bg-white dark:bg-[#1a2744] text-gray-900 dark:text-white rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-[#1e3a5f]/50 transition-colors border border-gray-200 dark:border-white/10"
+          className="mb-6 px-4 py-2 flex items-center gap-2 bg-white dark:bg-[#1c0f06] text-gray-900 dark:text-white rounded-lg font-medium hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/50 transition-colors border border-gray-200 dark:border-white/10"
         >
           <ArrowLeft className="w-5 h-5" />
           Go Back
         </button>
 
         {/* Stock Header */}
-        <div className="bg-white dark:bg-[#1a2744] rounded-2xl p-6 mb-6 border border-gray-200 dark:border-white/10">
+        <div className="bg-white dark:bg-[#1c0f06] rounded-2xl p-6 mb-6 border border-gray-200 dark:border-white/10">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
             <div className="flex items-center gap-4">
               <div className="w-16 h-16 relative rounded-full overflow-hidden bg-white">
@@ -300,7 +300,7 @@ export default function StockDetailPage() {
 
         {/* Market Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white dark:bg-[#1a2744] rounded-xl p-4 border border-gray-200 dark:border-white/10">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-xl p-4 border border-gray-200 dark:border-white/10">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               Market Cap
             </p>
@@ -308,13 +308,13 @@ export default function StockDetailPage() {
               {stock.formatted_market_cap}
             </p>
           </div>
-          <div className="bg-white dark:bg-[#1a2744] rounded-xl p-4 border border-gray-200 dark:border-white/10">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-xl p-4 border border-gray-200 dark:border-white/10">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Volume</p>
             <p className="text-xl font-bold text-gray-900 dark:text-white">
               {stock.volume.toLocaleString()}
             </p>
           </div>
-          <div className="bg-white dark:bg-[#1a2744] rounded-xl p-4 border border-gray-200 dark:border-white/10">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-xl p-4 border border-gray-200 dark:border-white/10">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               Your Balance
             </p>
@@ -326,7 +326,7 @@ export default function StockDetailPage() {
               })}
             </p>
           </div>
-          <div className="bg-white dark:bg-[#1a2744] rounded-xl p-4 border border-gray-200 dark:border-white/10">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-xl p-4 border border-gray-200 dark:border-white/10">
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
               Your Shares
             </p>
@@ -338,7 +338,7 @@ export default function StockDetailPage() {
 
         {/* Position Details */}
         {userPosition && (
-          <div className="bg-white dark:bg-[#1a2744] rounded-2xl p-6 mb-6 border border-gray-200 dark:border-white/10">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-2xl p-6 mb-6 border border-gray-200 dark:border-white/10">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               Your Position
             </h2>
@@ -409,7 +409,7 @@ export default function StockDetailPage() {
         <div className="flex gap-4">
           <button
             onClick={openBuyModal}
-            className="flex-1 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-4 rounded-lg transition-colors"
+            className="flex-1 bg-[#c14e2a] hover:bg-[#a8401f] text-white font-semibold py-4 rounded-lg transition-colors"
           >
             Buy {stock.symbol}
           </button>
@@ -443,7 +443,7 @@ export default function StockDetailPage() {
               onClick={closeBuyModal}
             >
               <div
-                className="bg-white dark:bg-[#1a2744] rounded-2xl max-w-md w-full p-6"
+                className="bg-white dark:bg-[#1c0f06] rounded-2xl max-w-md w-full p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-6">
@@ -468,7 +468,7 @@ export default function StockDetailPage() {
                       value={shares}
                       onChange={(e) => setShares(e.target.value)}
                       placeholder="Enter shares"
-                      className="w-full p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-blue-500"
+                      className="w-full p-3 bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder:text-gray-500 dark:placeholder:text-gray-500 focus:outline-none focus:border-[#c14e2a] dark:focus:border-[#c14e2a]"
                     />
                   </div>
 
@@ -517,7 +517,7 @@ export default function StockDetailPage() {
                     <button
                       onClick={handleBuyClick}
                       disabled={processing || !shares || parseFloat(shares) <= 0}
-                      className="flex-1 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                      className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white font-semibold rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     >
                       {processing ? (
                         <>
@@ -563,7 +563,7 @@ export default function StockDetailPage() {
               onClick={closeSellModal}
             >
               <div
-                className="bg-white dark:bg-[#1a2744] rounded-2xl max-w-md w-full p-6"
+                className="bg-white dark:bg-[#1c0f06] rounded-2xl max-w-md w-full p-6"
                 onClick={(e) => e.stopPropagation()}
               >
                 <div className="flex items-center justify-between mb-6">

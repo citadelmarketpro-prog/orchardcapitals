@@ -64,14 +64,14 @@ export default function ForgotPasswordPage() {
   if (emailSent) {
     return (
       <PagePreloader>
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md text-center space-y-6"
         >
-          <div className="w-20 h-20 bg-blue-100 dark:bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
-            <Mail className="w-10 h-10 text-blue-600" />
+          <div className="w-20 h-20 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto">
+            <Mail className="w-10 h-10 text-[#c14e2a]" />
           </div>
 
           <h1 className="text-2xl font-bold text-black dark:text-white">
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
 
           <div className="pt-4">
             <Link href="/login">
-              <Button className="w-full p-5 bg-blue-700 hover:bg-blue-600">
+              <Button className="w-full p-5 bg-[#c14e2a] hover:bg-[#a8401f]">
                 Back to Login
               </Button>
             </Link>
@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
             Didn&apos;t receive the email?{" "}
             <button
               onClick={() => setEmailSent(false)}
-              className="text-blue-500 hover:underline"
+              className="text-[#c14e2a] hover:underline"
             >
               Try again
             </button>
@@ -109,7 +109,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <PagePreloader>
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -145,7 +145,7 @@ export default function ForgotPasswordPage() {
         <div className="space-y-2">
           <Link
             href="/login"
-            className="inline-flex items-center text-sm text-blue-500 hover:underline"
+            className="inline-flex items-center text-sm text-[#c14e2a] hover:underline"
           >
             <ArrowLeft className="w-4 h-4 mr-1" />
             Back to Login
@@ -168,7 +168,7 @@ export default function ForgotPasswordPage() {
               id="email"
               type="email"
               {...register("email")}
-              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#1e2d3d]/50 text-black dark:text-white focus:outline-none transition-all ${
+              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 text-black dark:text-white focus:outline-none transition-all ${
                 errors.email
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-600/50"
@@ -195,7 +195,7 @@ export default function ForgotPasswordPage() {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full py-6 bg-blue-700 hover:bg-blue-600 text-white rounded-md"
+            className="w-full py-6 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-md"
           >
             {!loading ? (
               <span>Send Reset Link</span>
@@ -206,7 +206,7 @@ export default function ForgotPasswordPage() {
 
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
             Remember your password?{" "}
-            <Link href="/login" className="text-blue-500 hover:underline">
+            <Link href="/login" className="text-[#c14e2a] hover:underline">
               Sign in
             </Link>
           </p>

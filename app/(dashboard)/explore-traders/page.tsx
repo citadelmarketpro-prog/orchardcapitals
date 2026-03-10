@@ -318,7 +318,7 @@ export default function ExploreTraders() {
             placeholder="Type to search..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full bg-white dark:bg-[#1a2744] border border-gray-200 dark:border-white/10 rounded-xl pl-12 pr-10 py-3.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all"
+            className="w-full bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-xl pl-12 pr-10 py-3.5 text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 dark:focus:border-emerald-400 transition-all"
           />
           {searchQuery && (
             <button
@@ -453,10 +453,10 @@ export default function ExploreTraders() {
                         >
                           <Link
                             href={`/explore-traders/${trader.id}`}
-                            className="group block bg-white dark:bg-[#1a2744] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all h-full"
+                            className="group block bg-white dark:bg-[#1c0f06] rounded-xl overflow-hidden border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all h-full"
                           >
                             {/* Card Header - Dark top section */}
-                            <div className="bg-gray-800 dark:bg-[#0d1829] px-4 py-4">
+                            <div className="bg-gray-800 dark:bg-[#0e0804] px-4 py-4">
                               <div className="flex items-center gap-3">
                                 <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gray-600 dark:border-gray-500 bg-gray-700 shrink-0">
                                   {trader.avatar_url ? (
@@ -563,7 +563,7 @@ export default function ExploreTraders() {
                       <Link
                         key={trader.id}
                         href={`/explore-traders/${trader.id}`}
-                        className="group bg-white dark:bg-[#1a2744] rounded-xl border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all overflow-hidden"
+                        className="group bg-white dark:bg-[#1c0f06] rounded-xl border border-gray-100 dark:border-white/5 hover:shadow-lg transition-all overflow-hidden"
                       >
                         {/* Top section - Avatar and name */}
                         <div className="px-4 pt-4 pb-3">
@@ -599,7 +599,7 @@ export default function ExploreTraders() {
                         </div>
 
                         {/* Stats row - gray background */}
-                        <div className="mx-4 mb-3 bg-gray-50 dark:bg-[#0d1829] rounded-lg px-4 py-3">
+                        <div className="mx-4 mb-3 bg-gray-50 dark:bg-[#0e0804] rounded-lg px-4 py-3">
                           <div className="flex items-start justify-between">
                             <div>
                               <p className="text-base font-bold text-gray-900 dark:text-white">
@@ -659,7 +659,7 @@ export default function ExploreTraders() {
 
                         {/* Copy Trader button */}
                         <div className="px-4 pb-4 pt-3">
-                          <div className="w-full py-2.5 border border-gray-200 dark:border-white/10 rounded-lg text-center text-sm font-semibold text-gray-900 dark:text-white group-hover:bg-gray-50 dark:group-hover:bg-[#1e3a5f] transition-colors">
+                          <div className="w-full py-2.5 border border-gray-200 dark:border-white/10 rounded-lg text-center text-sm font-semibold text-gray-900 dark:text-white group-hover:bg-gray-50 dark:group-hover:bg-[#2c1a0c] transition-colors">
                             Copy trader
                           </div>
                         </div>
@@ -701,7 +701,7 @@ export default function ExploreTraders() {
                   {/* Progress bar under tabs */}
                   <div className="h-1 bg-gray-200 dark:bg-gray-700 rounded-full mb-6 overflow-hidden">
                     <div
-                      className="h-full bg-blue-500 rounded-full transition-all duration-300"
+                      className="h-full bg-[#c14e2a] rounded-full transition-all duration-300"
                       style={{
                         width: `${
                           ((categories.findIndex(
@@ -726,7 +726,7 @@ export default function ExploreTraders() {
                       </p>
                       <button
                         onClick={() => setActiveCategory("all")}
-                        className="mt-3 text-sm text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 font-medium transition-colors"
+                        className="mt-3 text-sm text-[#c14e2a] hover:text-[#c14e2a] dark:text-orange-400 dark:hover:text-orange-300 font-medium transition-colors"
                       >
                         View all categories
                       </button>
@@ -737,7 +737,7 @@ export default function ExploreTraders() {
                         <Link
                           key={trader.id}
                           href={`/explore-traders/${trader.id}`}
-                          className="group flex items-center gap-3 sm:gap-4 bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-xl p-4 sm:p-5 hover:shadow-lg transition-all"
+                          className="group flex items-center gap-3 sm:gap-4 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-xl p-4 sm:p-5 hover:shadow-lg transition-all"
                         >
                           {/* Rank Number */}
                           <div className="shrink-0 w-8 sm:w-12">
@@ -839,13 +839,13 @@ export default function ExploreTraders() {
             {faqs.map((faq, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-[#1a2744] border border-gray-100 dark:border-white/5 rounded-xl overflow-hidden"
+                className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-xl overflow-hidden"
               >
                 <button
                   onClick={() =>
                     setOpenFaqIndex(openFaqIndex === index ? null : index)
                   }
-                  className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-[#1e3a5f]/30 transition-all"
+                  className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/30 transition-all"
                 >
                   <span className="text-sm font-semibold text-gray-900 dark:text-white pr-4">
                     {faq.question}

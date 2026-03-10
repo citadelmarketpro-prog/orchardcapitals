@@ -43,12 +43,12 @@ export default function UserProfileMenu({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: -10, scale: 0.95 }}
         transition={{ duration: 0.2 }}
-        className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#1e3a5f]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden z-50"
+        className="absolute right-0 mt-2 w-64 bg-white/95 dark:bg-[#2c1a0c]/95 backdrop-blur-xl rounded-xl shadow-2xl border border-gray-200/50 dark:border-white/10 overflow-hidden z-50"
       >
         {/* User Info */}
         <div className="px-4 py-4 border-b border-gray-100 dark:border-white/5">
           <div className="flex items-center space-x-3 mb-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-xs">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c14e2a] to-[#a8401f] flex items-center justify-center text-white font-semibold text-xs">
               {user
                 ? `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`.toUpperCase()
                 : ""}
@@ -66,7 +66,7 @@ export default function UserProfileMenu({
             onClick={() => {
               router.push("/settings");
             }}
-            className="flex items-center space-x-1.5 text-[11px] text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors font-medium"
+            className="flex items-center space-x-1.5 text-[11px] text-[#c14e2a] dark:text-orange-400 hover:text-[#a8401f] dark:hover:text-orange-300 transition-colors font-medium"
           >
             <Edit className="w-3 h-3" />
             <span>Edit profile</span>

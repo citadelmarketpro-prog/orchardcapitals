@@ -13,7 +13,7 @@ export default function AboutPage() {
           {/* Header */}
           <div className="mb-12">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              About ScopsTrade
+              About Orchard Capitals
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-lg">
               Democratizing copy trading for everyone
@@ -28,7 +28,7 @@ export default function AboutPage() {
                 Our Story
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                ScopsTrade was founded with a clear mission: to make
+                Orchard Capitals was founded with a clear mission: to make
                 professional-grade copy trading accessible to everyone. We
                 believe that every investor, regardless of experience level,
                 should have the ability to mirror the strategies of
@@ -38,7 +38,7 @@ export default function AboutPage() {
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
                 From our early days, we set out to build a platform that bridges
                 the gap between experienced traders and those looking to learn
-                and grow their portfolios. Today, ScopsTrade serves a global
+                and grow their portfolios. Today, Orchard Capitals serves a global
                 community of traders across futures, options, and contracts.
               </p>
             </section>
@@ -48,7 +48,7 @@ export default function AboutPage() {
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <Image
                   src="/images/about_1.jpg"
-                  alt="ScopsTrade team in discussion"
+                  alt="Orchard Capitals team in discussion"
                   width={600}
                   height={340}
                   className="w-full h-full object-cover"
@@ -57,7 +57,7 @@ export default function AboutPage() {
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <Image
                   src="/images/about_2.jpg"
-                  alt="ScopsTrade annual report presentation"
+                  alt="Orchard Capitals annual report presentation"
                   width={600}
                   height={340}
                   className="w-full h-full object-cover"
@@ -134,7 +134,7 @@ export default function AboutPage() {
                 Our Team
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Behind ScopsTrade is a diverse team of financial professionals,
+                Behind Orchard Capitals is a diverse team of financial professionals,
                 technologists, and compliance experts united by a shared passion
                 for making copy trading better. Our team brings decades of
                 combined experience in financial services, fintech development,
@@ -147,7 +147,7 @@ export default function AboutPage() {
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <Image
                   src="/images/about_3.jpg"
-                  alt="ScopsTrade team collaborating"
+                  alt="Orchard Capitals team collaborating"
                   width={600}
                   height={340}
                   className="w-full h-full object-cover"
@@ -156,7 +156,7 @@ export default function AboutPage() {
               <div className="aspect-video rounded-2xl overflow-hidden">
                 <Image
                   src="/images/about_4.jpg"
-                  alt="ScopsTrade team meeting"
+                  alt="Orchard Capitals team meeting"
                   width={600}
                   height={340}
                   className="w-full h-full object-cover"
@@ -170,7 +170,7 @@ export default function AboutPage() {
                 Global Presence
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
-                ScopsTrade operates under strict regulatory oversight across
+                Orchard Capitals operates under strict regulatory oversight across
                 multiple jurisdictions, ensuring the highest standards of
                 compliance and client protection:
               </p>
@@ -179,7 +179,7 @@ export default function AboutPage() {
                   <span className="font-semibold text-gray-900 dark:text-white">
                     Europe
                   </span>{" "}
-                  &mdash; ScopsTrade (Europe) Ltd., authorised and regulated by
+                  &mdash; Orchard Capitals (Europe) Ltd., authorised and regulated by
                   the Cyprus Securities Exchange Commission (CySEC) under
                   license #109/10.
                 </li>
@@ -187,21 +187,21 @@ export default function AboutPage() {
                   <span className="font-semibold text-gray-900 dark:text-white">
                     United Kingdom
                   </span>{" "}
-                  &mdash; ScopsTrade (UK) Ltd., authorised and regulated by the
+                  &mdash; Orchard Capitals (UK) Ltd., authorised and regulated by the
                   Financial Conduct Authority (FCA) under FRN 583263.
                 </li>
                 <li className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   <span className="font-semibold text-gray-900 dark:text-white">
                     United States
                   </span>{" "}
-                  &mdash; ScopsTrade (USA) Ltd., authorised and regulated by
+                  &mdash; Orchard Capitals (USA) Ltd., authorised and regulated by
                   SEC; CRD 298461.
                 </li>
                 <li className="text-gray-700 dark:text-gray-300 leading-relaxed">
                   <span className="font-semibold text-gray-900 dark:text-white">
                     Middle East
                   </span>{" "}
-                  &mdash; ScopsTrade (ME) Limited, licensed by ADGM&apos;s
+                  &mdash; Orchard Capitals (ME) Limited, licensed by ADGM&apos;s
                   Financial Services Regulatory Authority (FSRA) under
                   Permission Number 220073.
                 </li>
@@ -214,20 +214,20 @@ export default function AboutPage() {
                 Get in Touch
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Have questions about ScopsTrade? We&apos;d love to hear from
+                Have questions about Orchard Capitals? We&apos;d love to hear from
                 you. Reach out to our team at{" "}
                 <a
-                  href="mailto:support@scopstrade.com"
-                  className="text-blue-500 hover:text-blue-600 underline"
+                  href="mailto:support@orchardcapitals.com"
+                  className="text-[#c14e2a] hover:text-[#a8401f] underline"
                 >
-                  support@scopstrade.com
+                  support@orchardcapitals.com
                 </a>{" "}
                 or start a conversation through our live chat.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link
                   href="/register"
-                  className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                  className="inline-block bg-[#c14e2a] hover:bg-[#a8401f] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
                 >
                   Get Started
                 </Link>

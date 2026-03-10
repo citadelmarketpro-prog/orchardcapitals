@@ -84,7 +84,7 @@ function SidebarGrid({
               transition-all duration-200 border
               ${
                 isActive
-                  ? "bg-blue-500/10 border-blue-500/30 text-blue-600 dark:text-blue-400"
+                  ? "bg-orange-500/10 border-orange-500/30 text-orange-700 dark:text-orange-400"
                   : "bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300 dark:bg-white/5 dark:border-white/10 dark:text-gray-300 dark:hover:bg-white/10 dark:hover:border-white/20"
               }
             `}
@@ -122,7 +122,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
         animate={{ x: 0 }}
         exit={{ x: -320 }}
         transition={{ type: "spring", damping: 25, stiffness: 200 }}
-        className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-gradient-to-b dark:from-[#1e3a5f] dark:to-[#0f1f3a] z-50 shadow-2xl overflow-y-auto"
+        className="fixed inset-y-0 left-0 w-72 bg-white dark:bg-gradient-to-b dark:from-[#2c1a0c] dark:to-[#0e0804] z-50 shadow-2xl overflow-y-auto"
       >
         <div className="flex flex-col h-full">
           {/* Header */}

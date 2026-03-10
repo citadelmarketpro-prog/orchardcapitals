@@ -93,12 +93,12 @@ export default function TradeHistoryPage() {
           {/* Filter Button */}
           <button
             onClick={() => setShowFilters(!showFilters)}
-            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1a2744] border border-gray-200 dark:border-white/10 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#1e3a5f]/50 transition-all"
+            className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/50 transition-all"
           >
             <Filter className="w-4 h-4" />
             Filters
             {statusFilter !== "all" && (
-              <span className="px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full">
+              <span className="px-2 py-0.5 bg-[#c14e2a] text-white text-xs rounded-full">
                 1
               </span>
             )}
@@ -111,7 +111,7 @@ export default function TradeHistoryPage() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="mb-6 p-4 bg-white dark:bg-[#1a2744] border border-gray-200 dark:border-white/10 rounded-xl"
+            className="mb-6 p-4 bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-xl"
           >
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -137,8 +137,8 @@ export default function TradeHistoryPage() {
                       onClick={() => setStatusFilter(status as typeof statusFilter)}
                       className={`px-4 py-2 text-xs font-medium rounded-lg transition-all ${
                         statusFilter === status
-                          ? "bg-blue-500 text-white"
-                          : "bg-gray-100 dark:bg-[#0f1c35] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#1e3a5f]/50"
+                          ? "bg-[#c14e2a] text-white"
+                          : "bg-gray-100 dark:bg-[#0f1c35] text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-[#2c1a0c]/50"
                       }`}
                     >
                       {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -153,7 +153,7 @@ export default function TradeHistoryPage() {
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-20">
-            <div className="w-5 h-5 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-[#c14e2a] border-t-transparent rounded-full animate-spin" />
           </div>
         )}
 
@@ -163,7 +163,7 @@ export default function TradeHistoryPage() {
             <p className="text-red-500 text-lg mb-4">{error}</p>
             <button
               onClick={fetchTradeHistory}
-              className="px-6 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors"
+              className="px-6 py-2 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg transition-colors"
             >
               Retry
             </button>
@@ -185,7 +185,7 @@ export default function TradeHistoryPage() {
                 : "Start copying expert traders to see your trade history here"}
             </p>
             <Link href="/explore-traders">
-              <button className="px-6 py-2.5 bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold rounded-lg transition-colors">
+              <button className="px-6 py-2.5 bg-[#c14e2a] hover:bg-[#a8401f] text-white text-sm font-semibold rounded-lg transition-colors">
                 Explore Traders
               </button>
             </Link>
@@ -194,7 +194,7 @@ export default function TradeHistoryPage() {
 
         {/* Trades List */}
         {!loading && !error && trades.length > 0 && (
-          <div className="bg-white dark:bg-[#1a2744] rounded-2xl border border-gray-200 dark:border-white/10 overflow-hidden">
+          <div className="bg-white dark:bg-[#1c0f06] rounded-2xl border border-gray-200 dark:border-white/10 overflow-hidden">
             {/* Table Header */}
             <div className="hidden md:grid grid-cols-6 gap-4 px-6 py-3 bg-gray-50 dark:bg-[#0f1c35] border-b border-gray-200 dark:border-white/10">
               <div className="text-[10px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
@@ -222,7 +222,7 @@ export default function TradeHistoryPage() {
               {trades.map((trade) => (
                 <div
                   key={trade.id}
-                  className="grid grid-cols-1 md:grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#1e3a5f]/30 transition-all"
+                  className="grid grid-cols-1 md:grid-cols-6 gap-4 px-6 py-4 hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/30 transition-all"
                 >
                   {/* Asset */}
                   <div className="flex items-center gap-3">
@@ -294,7 +294,7 @@ export default function TradeHistoryPage() {
                     <span
                       className={`text-xs font-medium ${
                         trade.status === "open"
-                          ? "text-blue-600 dark:text-blue-400"
+                          ? "text-[#c14e2a] dark:text-orange-400"
                           : "text-gray-500 dark:text-gray-400"
                       }`}
                     >

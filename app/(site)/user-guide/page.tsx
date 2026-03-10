@@ -14,7 +14,7 @@ export default function UserGuide() {
               User Guide
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Everything you need to know to get started with copy trading on ScopsTrade
+              Everything you need to know to get started with copy trading on Orchard Capitals
             </p>
           </div>
           <div className="space-y-12">
@@ -24,9 +24,9 @@ export default function UserGuide() {
                 Getting Started
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Welcome to ScopsTrade! This guide will walk you through everything you need to know
+                Welcome to Orchard Capitals! This guide will walk you through everything you need to know
                 to start copy trading. Whether you are a complete beginner or an experienced trader
-                looking to diversify, ScopsTrade makes it easy to follow top-performing traders and
+                looking to diversify, Orchard Capitals makes it easy to follow top-performing traders and
                 replicate their success.
               </p>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
@@ -42,23 +42,23 @@ export default function UserGuide() {
               </h2>
               <ol className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">1</span>
-                  <span>Visit the ScopsTrade registration page and enter your email address and a strong password</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">1</span>
+                  <span>Visit the Orchard Capitals registration page and enter your email address and a strong password</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">2</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">2</span>
                   <span>Verify your email address by clicking the link sent to your inbox</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">3</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">3</span>
                   <span>Complete the KYC verification process by uploading your identification documents</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">4</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">4</span>
                   <span>Fund your account with your preferred deposit method</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="bg-blue-500 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">5</span>
+                  <span className="bg-[#c14e2a] text-white rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shrink-0">5</span>
                   <span>You are ready to start copy trading!</span>
                 </li>
               </ol>
@@ -74,23 +74,23 @@ export default function UserGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Portfolio Overview</strong> — See your total balance, profit/loss, and active copy trades at a glance</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Leader Board</strong> — Browse and discover top-performing traders to copy</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Active Trades</strong> — Monitor all currently open positions across your copied leaders</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Trade History</strong> — Review past trades, including closed positions and their outcomes</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Settings</strong> — Manage your account, security, and notification preferences</span>
                 </li>
               </ul>
@@ -104,23 +104,23 @@ export default function UserGuide() {
                 Finding Traders to Copy
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                ScopsTrade provides powerful tools to help you find the right traders to copy:
+                Orchard Capitals provides powerful tools to help you find the right traders to copy:
               </p>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Filter by performance</strong> — Sort leaders by return, win rate, drawdown, and risk score</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Review trading history</strong> — Examine a leader&apos;s past trades and performance charts</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Check the risk score</strong> — AutoGuard&trade; assigns risk scores to help you choose appropriate leaders</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Read profiles</strong> — Understand each leader&apos;s strategy, preferred instruments, and trading style</span>
                 </li>
               </ul>
@@ -136,19 +136,19 @@ export default function UserGuide() {
               </p>
               <ol className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">1.</span>
+                  <span className="text-[#c14e2a] font-bold">1.</span>
                   <span>Click <strong>&quot;Copy&quot;</strong> on the leader&apos;s profile page</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">2.</span>
+                  <span className="text-[#c14e2a] font-bold">2.</span>
                   <span>Set the <strong>amount</strong> you want to allocate to copying this leader</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">3.</span>
+                  <span className="text-[#c14e2a] font-bold">3.</span>
                   <span>Configure your <strong>AutoGuard&trade; settings</strong> — stop-loss, max drawdown, and position sizing</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">4.</span>
+                  <span className="text-[#c14e2a] font-bold">4.</span>
                   <span>Confirm and <strong>start copying</strong> — all future trades by this leader will be replicated in your account</span>
                 </li>
               </ol>
@@ -166,23 +166,23 @@ export default function UserGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Monitor overall performance from your dashboard</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Adjust allocation amounts for individual leaders at any time</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Pause or stop copying a leader without affecting open positions</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Diversify by copying multiple leaders with different strategies</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Close individual copied trades manually if needed</span>
                 </li>
               </ul>
@@ -194,23 +194,23 @@ export default function UserGuide() {
                 Deposits and Withdrawals
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                ScopsTrade supports multiple funding methods for your convenience:
+                Orchard Capitals supports multiple funding methods for your convenience:
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Bank transfer</strong> — Direct deposits and withdrawals via wire transfer</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Credit/Debit card</strong> — Instant deposits using Visa or Mastercard</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Cryptocurrency</strong> — Deposit and withdraw using supported cryptocurrencies</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>E-wallets</strong> — Use popular e-wallet services for quick transactions</span>
                 </li>
               </ul>
@@ -230,19 +230,19 @@ export default function UserGuide() {
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Enable <strong>two-factor authentication (2FA)</strong> for an extra layer of security</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Use a strong, unique password that you do not reuse elsewhere</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Review your login history regularly for any suspicious activity</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Never share your login credentials or 2FA codes with anyone</span>
                 </li>
               </ul>
@@ -254,23 +254,23 @@ export default function UserGuide() {
                 Getting Help
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                If you need assistance at any point, ScopsTrade offers multiple support channels:
+                If you need assistance at any point, Orchard Capitals offers multiple support channels:
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Live chat</strong> — Available 24/7 from your dashboard</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
-                  <span><strong>Email support</strong> — Reach us at support@scopstrade.com</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
+                  <span><strong>Email support</strong> — Reach us at support@orchardcapitals.com</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Help center</strong> — Browse our comprehensive FAQ and knowledge base</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Community</strong> — Join our trading community for peer support and discussions</span>
                 </li>
               </ul>
@@ -282,11 +282,11 @@ export default function UserGuide() {
                 Ready to Start Copy Trading?
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Create your ScopsTrade account today and start copying top-performing traders.
+                Create your Orchard Capitals account today and start copying top-performing traders.
                 It only takes a few minutes to get started.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/register" className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50">
+                <Link href="/register" className="inline-block bg-[#c14e2a] hover:bg-[#a8401f] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50">
                   Get Started
                 </Link>
                 <Link href="/" className="inline-block bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300">

@@ -27,7 +27,7 @@ export default function PrivacyPolicy() {
                 1. Personal Information We Collect
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                ScopsTrade is committed to protecting your privacy. This Privacy Policy
+                Orchard Capitals is committed to protecting your privacy. This Privacy Policy
                 explains how we collect, use, disclose, and safeguard your information
                 when you use our platform and services. We collect the following types of
                 personal information:
@@ -37,7 +37,7 @@ export default function PrivacyPolicy() {
                 Application Information
               </h3>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                When you open an account with ScopsTrade, we collect personal information
+                When you open an account with Orchard Capitals, we collect personal information
                 such as your full name, date of birth, residential address, email address,
                 phone number, nationality, employment status, annual income, net worth,
                 and trading experience. This information is required to comply with
@@ -73,7 +73,7 @@ export default function PrivacyPolicy() {
                 2. Security Technology
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                ScopsTrade employs industry-standard security measures to protect your
+                Orchard Capitals employs industry-standard security measures to protect your
                 personal information from unauthorized access, alteration, disclosure, or
                 destruction. Our security measures include:
               </p>
@@ -109,7 +109,7 @@ export default function PrivacyPolicy() {
                 3. Sharing Information with Our Affiliates
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                ScopsTrade may share your personal information with our affiliated
+                Orchard Capitals may share your personal information with our affiliated
                 companies and subsidiaries for the purposes of providing and improving our
                 services, ensuring regulatory compliance across jurisdictions, conducting
                 internal analytics and research, and managing risk across our group of
@@ -158,7 +158,7 @@ export default function PrivacyPolicy() {
                 5. Regulatory Disclosure
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                ScopsTrade may be required to disclose your personal information to
+                Orchard Capitals may be required to disclose your personal information to
                 regulatory authorities, law enforcement agencies, or other governmental
                 bodies in response to lawful requests, subpoenas, court orders, or as
                 otherwise required by applicable law. We will only disclose the minimum
@@ -198,7 +198,7 @@ export default function PrivacyPolicy() {
                 Please note that opting out of certain data processing activities may
                 limit your ability to use some features of our platform. To exercise any
                 of these rights, please contact us at{" "}
-                <span className="text-blue-500">support@scopstrade.com</span>.
+                <span className="text-[#c14e2a]">support@orchardcapitals.com</span>.
               </p>
             </section>
 
@@ -215,7 +215,7 @@ export default function PrivacyPolicy() {
               </p>
               <Link
                 href="/"
-                className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                className="inline-block bg-[#c14e2a] hover:bg-[#a8401f] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 Go Back Home
               </Link>

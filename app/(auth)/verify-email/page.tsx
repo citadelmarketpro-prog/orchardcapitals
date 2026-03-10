@@ -94,7 +94,7 @@ function VerifyEmailContent() {
 
   return (
     <PagePreloader>
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -119,8 +119,8 @@ function VerifyEmailContent() {
           />
         </Link>
 
-        <div className="w-20 h-20 bg-blue-100 dark:bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
-          <Mail className="w-10 h-10 text-blue-600 dark:text-blue-400" />
+        <div className="w-20 h-20 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto">
+          <Mail className="w-10 h-10 text-[#c14e2a] dark:text-orange-400" />
         </div>
 
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -144,7 +144,7 @@ function VerifyEmailContent() {
               value={digit}
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(index, e)}
-              className="w-14 h-14 text-center text-2xl font-bold border-2 rounded-lg bg-white dark:bg-[#1e2d3d]/50 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 transition-all"
+              className="w-14 h-14 text-center text-2xl font-bold border-2 rounded-lg bg-white dark:bg-[#2c1a0c]/50 border-gray-300 dark:border-gray-600/50 text-gray-900 dark:text-white focus:outline-none focus:border-[#c14e2a] focus:ring-2 focus:ring-[#c14e2a]/30 transition-all"
             />
           ))}
         </div>
@@ -152,7 +152,7 @@ function VerifyEmailContent() {
         <Button
           onClick={handleVerify}
           disabled={loading}
-          className="w-full py-6 bg-blue-700 hover:bg-blue-600 text-white rounded-md"
+          className="w-full py-6 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-md"
         >
           {!loading ? (
             <span>Verify Email</span>
@@ -166,7 +166,7 @@ function VerifyEmailContent() {
           <button
             onClick={handleResend}
             disabled={resending}
-            className="text-blue-500 hover:underline disabled:opacity-50"
+            className="text-[#c14e2a] hover:underline disabled:opacity-50"
           >
             {resending ? "Sending..." : "Resend code"}
           </button>
@@ -174,7 +174,7 @@ function VerifyEmailContent() {
 
         <Link
           href="/login"
-          className="inline-flex items-center text-sm text-blue-500 hover:underline"
+          className="inline-flex items-center text-sm text-[#c14e2a] hover:underline"
         >
           <ArrowLeft className="w-4 h-4 mr-1" />
           Back to Login

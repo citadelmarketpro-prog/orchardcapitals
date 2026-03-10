@@ -4,38 +4,38 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* 
-  BLUE THEME - EXACT Sidebar Colors
-  Using from-[#1e3a5f] to-[#0f1f3a] gradient
+/*
+  EMBER THEME — Burnt Orange #c14e2a
+  Warm, sleek, premium
 */
 
 :root {
   /* Light mode colors */
-  --background-rgb: 240, 244, 248;
+  --background-rgb: 245, 240, 235;
   --foreground-muted: #6b7280;
 
-  /* Brand colors - PURE BLUE THEME */
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --primary-dark: #1e3a8a;
-  --secondary: #1e3a8a;
-  --secondary-hover: #1e40af;
+  /* Brand colors — BURNT ORANGE */
+  --primary: #c14e2a;
+  --primary-hover: #a8401f;
+  --primary-dark: #7a2d14;
+  --secondary: #c14e2a;
+  --secondary-hover: #a8401f;
 
   /* Surface colors */
   --surface: #ffffff;
   --surface-elevated: #ffffff;
   --border: #e5e7eb;
 
-  /* Dot pattern - BLUE */
-  --dot-color: rgba(59, 130, 246, 0.25);
+  /* Dot pattern — Warm Orange */
+  --dot-color: rgba(193, 78, 42, 0.22);
 
-  /* Accent - BLUE */
-  --accent: #3b82f6;
-  --accent-hover: #2563eb;
+  /* Accent — Burnt Orange */
+  --accent: #c14e2a;
+  --accent-hover: #a8401f;
 
-  /* Stats - BLUE */
-  --stats-text: #1e3a8a;
-  
+  /* Stats */
+  --stats-text: #7a2d14;
+
   /* shadcn/ui variables */
   --radius: 0.625rem;
   --background: oklch(1 0 0);
@@ -54,7 +54,7 @@
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0 0.07 227.392);
+  --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
@@ -68,34 +68,34 @@
 }
 
 .dark {
-  /* Dark mode colors - EXACT SIDEBAR GRADIENT */
-  --background: #1e3a5f;
-  --background-rgb: 30, 58, 95;
+  /* Dark mode — Ember Night */
+  --background: #1c0f06;
+  --background-rgb: 28, 15, 6;
   --foreground: #ffffff;
   --foreground-muted: #9ca3af;
 
-  /* Brand colors - PURE BLUE for dark */
-  --primary: #3b82f6;
-  --primary-hover: #60a5fa;
-  --primary-dark: #1e3a8a;
-  --secondary: #1e3a8a;
-  --secondary-hover: #1e40af;
+  /* Brand colors — glowing orange for dark mode */
+  --primary: #e8784e;
+  --primary-hover: #f0956a;
+  --primary-dark: #7a2d14;
+  --secondary: #c14e2a;
+  --secondary-hover: #a8401f;
 
-  /* Surface colors - EXACT sidebar colors */
-  --surface: #1e3a5f;
-  --surface-elevated: #2a4a7a;
+  /* Surface colors — deep warm */
+  --surface: #1c0f06;
+  --surface-elevated: #2c1a0c;
   --border: rgba(255, 255, 255, 0.1);
 
-  /* Dot pattern - BLUE */
-  --dot-color: rgba(96, 165, 250, 0.15);
+  /* Dot pattern — warm ember */
+  --dot-color: rgba(232, 120, 78, 0.15);
 
-  /* Accent - BLUE */
-  --accent: #3b82f6;
-  --accent-hover: #60a5fa;
+  /* Accent */
+  --accent: #e8784e;
+  --accent-hover: #f0956a;
 
-  /* Stats - BLUE */
-  --stats-text: #60a5fa;
-  
+  /* Stats */
+  --stats-text: #f0956a;
+
   /* shadcn/ui dark mode variables */
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -176,7 +176,7 @@
 }
 
 body {
-  background: linear-gradient(135deg, #e0f2fe 0%, #f0f4f8 50%, #dbeafe 100%);
+  background: linear-gradient(135deg, #fef3eb 0%, #f5f0ec 50%, #fde8d8 100%);
   background-attachment: fixed;
   color: var(--foreground);
   font-family: var(--font-sans), system-ui, sans-serif;
@@ -184,8 +184,8 @@ body {
 }
 
 .dark body {
-  /* EXACT SIDEBAR GRADIENT: from-[#1e3a5f] to-[#0f1f3a] */
-  background: linear-gradient(180deg, #1e3a5f 0%, #0f1f3a 100%);
+  /* Deep Ember Night */
+  background: linear-gradient(180deg, #1c0f06 0%, #0e0804 100%);
   background-attachment: fixed;
 }
 
@@ -228,11 +228,11 @@ body {
 }
 
 .dark .integration-badge {
-  background: rgba(30, 58, 95, 0.8);
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(28, 15, 6, 0.8);
+  border: 1px solid rgba(193, 78, 42, 0.2);
 }
 
-/* Buttons - ALL BLUE */
+/* Buttons — ALL ORANGE */
 .btn-primary {
   background-color: var(--primary);
   color: #ffffff;
@@ -258,7 +258,7 @@ body {
 
 .dark .btn-secondary {
   background-color: var(--secondary);
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(193, 78, 42, 0.3);
 }
 
 .dark .btn-secondary:hover {
@@ -302,7 +302,7 @@ body {
 }
 
 .dark .theme-toggle {
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(193, 78, 42, 0.3);
 }
 
 /* Network nodes */
@@ -320,7 +320,7 @@ body {
 
 .dark .network-node {
   background: var(--surface-elevated);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: rgba(193, 78, 42, 0.3);
 }
 
 /* Stats */
@@ -331,7 +331,7 @@ body {
 }
 
 .dark .stat-divider {
-  background: rgba(59, 130, 246, 0.2);
+  background: rgba(193, 78, 42, 0.2);
 }
 
 .stats-card {
@@ -342,16 +342,16 @@ body {
 
 .stats-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 10px 30px rgba(193, 78, 42, 0.15);
 }
 
 .dark .stats-card {
   background: var(--surface-elevated);
-  border-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(193, 78, 42, 0.2);
 }
 
 .dark .stats-card:hover {
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
+  box-shadow: 0 10px 30px rgba(193, 78, 42, 0.25);
 }
 
 /* How it works cards */
@@ -364,40 +364,40 @@ body {
 .step-card:hover {
   transform: translateY(-4px);
   border-color: var(--primary);
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.2);
+  box-shadow: 0 10px 30px rgba(193, 78, 42, 0.2);
 }
 
 .dark .step-card {
   background: var(--surface-elevated);
-  border-color: rgba(59, 130, 246, 0.2);
+  border-color: rgba(193, 78, 42, 0.2);
 }
 
 .dark .step-card:hover {
   border-color: var(--primary);
-  box-shadow: 0 10px 30px rgba(59, 130, 246, 0.3);
+  box-shadow: 0 10px 30px rgba(193, 78, 42, 0.3);
 }
 
-/* Chat widget - BLUE */
+/* Chat widget — ORANGE */
 .chat-widget {
   background: var(--primary);
   color: white;
   border-radius: 50px;
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 20px rgba(193, 78, 42, 0.4);
   transition: all 0.3s ease;
 }
 
 .chat-widget:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 6px 25px rgba(193, 78, 42, 0.5);
 }
 
 .dark .chat-widget {
-  box-shadow: 0 4px 20px rgba(59, 130, 246, 0.5);
+  box-shadow: 0 4px 20px rgba(193, 78, 42, 0.5);
 }
 
 .dark .chat-widget:hover {
-  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
+  box-shadow: 0 6px 25px rgba(193, 78, 42, 0.6);
 }
 
 /* Utilities */

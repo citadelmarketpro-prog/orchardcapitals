@@ -100,7 +100,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
   const isMoreActive = moreLinks.some((link) => pathname === link.href);
 
   return (
-    <header className="h-14 bg-white/80 dark:bg-[#0f1f3a]/80 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10 sticky top-0 z-30">
+    <header className="h-14 bg-white/80 dark:bg-[#1c0f06]/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-white/10 sticky top-0 z-30">
       <div className="h-full px-4 lg:px-6 flex items-center justify-between">
         {/* Left side - Logo + Nav Links */}
         <div className="flex items-center space-x-1 lg:space-x-6">
@@ -176,7 +176,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-[#1a2744] rounded-xl border border-gray-200 dark:border-white/10 shadow-xl overflow-hidden py-1"
+                    className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-[#2c1a0c] rounded-xl border border-gray-200 dark:border-white/10 shadow-xl overflow-hidden py-1"
                   >
                     {moreLinks.map((link) => {
                       const isActive = pathname === link.href;
@@ -187,7 +187,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
                           onClick={() => setShowMore(false)}
                           className={`flex items-center space-x-2.5 px-4 py-2.5 text-xs font-medium transition-colors ${
                             isActive
-                              ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-500/10"
+                              ? "text-orange-700 dark:text-orange-400 bg-orange-50 dark:bg-orange-500/10"
                               : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white"
                           }`}
                         >
@@ -231,7 +231,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
             >
               <Bell className="w-4 h-4 text-gray-600 dark:text-gray-400" />
               {notificationCount > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#c14e2a] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {notificationCount}
                 </span>
               )}
@@ -257,7 +257,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
               }}
               className="flex items-center space-x-2 px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
             >
-              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-semibold text-[10px]">
+              <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#c14e2a] to-[#8b3518] flex items-center justify-center text-white font-semibold text-[10px]">
                 {user
                   ? `${user.first_name?.[0] || ""}${user.last_name?.[0] || ""}`.toUpperCase()
                   : ""}

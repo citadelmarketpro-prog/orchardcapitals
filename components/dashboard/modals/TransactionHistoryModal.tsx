@@ -69,7 +69,7 @@ export default function TransactionHistoryModal({
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ duration: 0.2 }}
-          className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0f1a2e] border border-gray-200 dark:border-white/10 shadow-2xl"
+          className="relative w-full max-w-lg max-h-[85vh] overflow-y-auto rounded-2xl bg-white dark:bg-[#0e0804] border border-gray-200 dark:border-white/10 shadow-2xl"
         >
           <div className="p-6">
             <div className="flex items-center justify-between mb-5">
@@ -89,7 +89,7 @@ export default function TransactionHistoryModal({
                   onClick={() => setFilter(f)}
                   className={`px-4 py-2 rounded-lg text-xs font-semibold transition-colors ${
                     filter === f
-                      ? "bg-blue-500 text-white"
+                      ? "bg-[#c14e2a] text-white"
                       : "bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-white/10"
                   }`}
                 >
@@ -101,7 +101,7 @@ export default function TransactionHistoryModal({
             {/* Transactions List */}
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+                <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
               </div>
             ) : transactions.length === 0 ? (
               <div className="text-center py-12">
@@ -113,7 +113,7 @@ export default function TransactionHistoryModal({
                 {transactions.map((tx) => (
                   <div
                     key={tx.id}
-                    className="bg-gray-50 dark:bg-[#1a2744]/80 border border-gray-200 dark:border-white/5 rounded-xl p-4"
+                    className="bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/5 rounded-xl p-4"
                   >
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center gap-2.5">

@@ -72,8 +72,8 @@ export default function TransactionHistoryPage() {
             onClick={() => setFilter(f)}
             className={`px-5 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
               filter === f
-                ? "bg-blue-500 text-white shadow-sm"
-                : "bg-white/90 dark:bg-[#1a2744]/80 border border-gray-200/50 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
+                ? "bg-[#c14e2a] text-white shadow-sm"
+                : "bg-white/90 dark:bg-[#1c0f06]/80 border border-gray-200/50 dark:border-white/10 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/5"
             }`}
           >
             {f === "all" ? "All Transactions" : f === "deposit" ? "Deposits" : "Withdrawals"}
@@ -86,11 +86,11 @@ export default function TransactionHistoryPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.2 }}
-        className="bg-white/90 dark:bg-[#1a2744]/80 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden"
+        className="bg-white/90 dark:bg-[#1c0f06]/80 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 rounded-2xl shadow-sm overflow-hidden"
       >
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+            <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
           </div>
         ) : transactions.length === 0 ? (
           <div className="text-center py-16">

@@ -32,11 +32,11 @@ const ParticlesBackground = () => {
 
     const isDark = theme === "dark";
     const particleColor = isDark
-      ? "rgba(96, 165, 250, 0.6)"
-      : "rgba(59, 130, 246, 0.5)";
+      ? "rgba(232, 120, 78, 0.6)"
+      : "rgba(193, 78, 42, 0.5)";
     const connectionColor = isDark
-      ? "rgba(96, 165, 250,"
-      : "rgba(59, 130, 246,";
+      ? "rgba(232, 120, 78,"
+      : "rgba(193, 78, 42,";
 
     class Particle {
       x: number;
@@ -161,7 +161,7 @@ const HeroSection = () => {
       <ParticlesBackground />
 
       {/* Radial gradient glow behind hero */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-blue-500/[0.07] dark:bg-blue-500/[0.12] rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] bg-orange-500/7 dark:bg-orange-500/12 rounded-full blur-[120px] pointer-events-none" />
 
       <div
         className={`relative z-10 mx-auto max-w-7xl pt-8 px-4 transition-all duration-1000 ${
@@ -205,7 +205,7 @@ const HeroSection = () => {
           <h1 className="text-[1.5rem] sm:text-[2.25rem] lg:text-[3.1rem] font-bold leading-[1.1] tracking-tight text-gray-900 dark:text-white lg:leading-[1.08]">
             Copy Futures, Options & Contracts
             <br />
-            <span className="bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#c14e2a] via-[#e07040] to-[#f59e0b] bg-clip-text text-transparent">
               with Precision
             </span>
           </h1>
@@ -221,10 +221,10 @@ const HeroSection = () => {
         <div className="mt-6 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:mt-10">
           <Link
             href="/register"
-            className="group w-full sm:w-auto relative overflow-hidden rounded-full bg-[var(--primary)] px-8 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-[var(--primary-hover)] hover:shadow-xl hover:shadow-blue-500/25 hover:-translate-y-0.5 sm:px-10 sm:py-3.5"
+            className="group w-full sm:w-auto relative overflow-hidden rounded-full bg-[var(--primary)] px-8 py-3 text-center text-sm font-semibold text-white transition-all hover:bg-[var(--primary-hover)] hover:shadow-xl hover:shadow-orange-500/25 hover:-translate-y-0.5 sm:px-10 sm:py-3.5"
           >
             <span className="relative z-10">Start Copying Now</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-blue-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <span className="absolute inset-0 bg-gradient-to-r from-[#c14e2a] to-[#e07040] opacity-0 group-hover:opacity-100 transition-opacity" />
           </Link>
           <Link
             href="/login"
@@ -324,7 +324,7 @@ const AvatarNode = ({
       className={`flex items-center justify-center rounded-full bg-[var(--surface)] shadow-sm ${
         primary
           ? "ring-4 ring-[var(--primary)] ring-offset-2 ring-offset-[var(--background)]"
-          : "border-2 border-[var(--border)] dark:border-[rgba(96,165,250,0.3)]"
+          : "border-2 border-[var(--border)] dark:border-[rgba(193,78,42,0.3)]"
       }`}
       style={{ width: size, height: size }}
     >
@@ -383,7 +383,7 @@ const AvatarNode = ({
         )}
         <path
           d="M8 38 Q8 30, 20 28 Q32 30, 32 38"
-          fill={primary ? "#3b82f6" : "#1e3a5f"}
+          fill={primary ? "#c14e2a" : "#2d1508"}
         />
       </svg>
     </div>

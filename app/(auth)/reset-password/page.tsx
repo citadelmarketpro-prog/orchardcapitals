@@ -140,9 +140,9 @@ function ResetPasswordContent() {
   if (validating) {
     return (
       <PagePreloader>
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b]">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309]">
         <div className="text-center">
-          <PulseLoader color="#3b82f6" size={15} />
+          <PulseLoader color="#c14e2a" size={15} />
           <p className="text-gray-600 dark:text-gray-300 mt-4">
             Validating reset link...
           </p>
@@ -156,7 +156,7 @@ function ResetPasswordContent() {
   if (!tokenValid) {
     return (
       <PagePreloader>
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -177,7 +177,7 @@ function ResetPasswordContent() {
 
           <div className="space-y-3">
             <Link href="/forgot-password">
-              <Button className="w-full bg-blue-700 hover:bg-blue-600 mb-4">
+              <Button className="w-full bg-[#c14e2a] hover:bg-[#a8401f] mb-4">
                 Request New Reset Link
               </Button>
             </Link>
@@ -198,14 +198,14 @@ function ResetPasswordContent() {
   if (resetSuccess) {
     return (
       <PagePreloader>
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="w-full max-w-md text-center space-y-6"
         >
-          <div className="w-20 h-20 bg-blue-100 dark:bg-blue-500/20 rounded-full flex items-center justify-center mx-auto">
-            <CheckCircle className="w-10 h-10 text-blue-600" />
+          <div className="w-20 h-20 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto">
+            <CheckCircle className="w-10 h-10 text-[#c14e2a]" />
           </div>
 
           <h1 className="text-2xl font-bold text-black dark:text-white">
@@ -219,7 +219,7 @@ function ResetPasswordContent() {
 
           <div className="pt-4">
             <Link href="/login">
-              <Button className="w-full bg-blue-700 hover:bg-blue-600">
+              <Button className="w-full bg-[#c14e2a] hover:bg-[#a8401f]">
                 Continue to Login
               </Button>
             </Link>
@@ -233,7 +233,7 @@ function ResetPasswordContent() {
   // Reset password form
   return (
     <PagePreloader>
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] px-8">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -277,7 +277,7 @@ function ResetPasswordContent() {
               id="new_password"
               type={showPassword ? "text" : "password"}
               {...register("new_password")}
-              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#1e2d3d]/50 text-black dark:text-white focus:outline-none transition-all ${
+              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 text-black dark:text-white focus:outline-none transition-all ${
                 errors.new_password
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-600/50"
@@ -314,7 +314,7 @@ function ResetPasswordContent() {
               id="confirm_password"
               type={showConfirmPassword ? "text" : "password"}
               {...register("confirm_password")}
-              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#1e2d3d]/50 text-black dark:text-white focus:outline-none transition-all ${
+              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 text-black dark:text-white focus:outline-none transition-all ${
                 errors.confirm_password
                   ? "border-red-500"
                   : "border-gray-300 dark:border-gray-600/50"
@@ -348,7 +348,7 @@ function ResetPasswordContent() {
           <Button
             disabled={loading}
             type="submit"
-            className="w-full py-6 bg-blue-700 hover:bg-blue-600 text-white rounded-md"
+            className="w-full py-6 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-md"
           >
             {!loading ? (
               <span>Reset Password</span>
@@ -359,7 +359,7 @@ function ResetPasswordContent() {
 
           <p className="text-center text-sm text-gray-600 dark:text-gray-400">
             Remember your password?{" "}
-            <Link href="/login" className="text-blue-500 hover:underline">
+            <Link href="/login" className="text-[#c14e2a] hover:underline">
               Sign in
             </Link>
           </p>
@@ -374,8 +374,8 @@ export default function ResetPasswordPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b]">
-          <PulseLoader color="#3b82f6" size={15} />
+        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309]">
+          <PulseLoader color="#c14e2a" size={15} />
         </div>
       }
     >

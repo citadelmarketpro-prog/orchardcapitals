@@ -14,7 +14,7 @@ export default function LeaderGuide() {
               Leader Guide
             </h1>
             <p className="text-gray-600 dark:text-gray-400 text-sm">
-              Your complete guide to becoming a successful signal leader on ScopsTrade
+              Your complete guide to becoming a successful signal leader on Orchard Capitals
             </p>
           </div>
           <div className="space-y-12">
@@ -24,13 +24,13 @@ export default function LeaderGuide() {
                 What is a Leader?
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                A Leader on ScopsTrade is an experienced trader who shares their trading signals with
+                A Leader on Orchard Capitals is an experienced trader who shares their trading signals with
                 the community. When other users (followers) copy your trades, you earn commissions based
                 on their activity. As a Leader, your trading performance is publicly visible, and your
                 reputation grows as you demonstrate consistent results.
               </p>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                Leaders are the backbone of the ScopsTrade copy trading ecosystem. They provide the
+                Leaders are the backbone of the Orchard Capitals copy trading ecosystem. They provide the
                 strategies and expertise that make copy trading possible for traders of all experience levels.
               </p>
             </section>
@@ -41,27 +41,27 @@ export default function LeaderGuide() {
                 Requirements to Become a Leader
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                To qualify as a Leader on ScopsTrade, you must meet the following criteria:
+                To qualify as a Leader on Orchard Capitals, you must meet the following criteria:
               </p>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
-                  <span>A verified ScopsTrade account with completed KYC</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
+                  <span>A verified Orchard Capitals account with completed KYC</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Minimum account balance as specified in the current program terms</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Demonstrated trading history with a positive track record</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Agreement to the Leader Terms and Conditions</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Commitment to maintaining responsible trading practices</span>
                 </li>
               </ul>
@@ -73,28 +73,28 @@ export default function LeaderGuide() {
                 Setting Up Your Profile
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Your Leader profile is your public identity on ScopsTrade. A well-crafted profile
+                Your Leader profile is your public identity on Orchard Capitals. A well-crafted profile
                 attracts more followers and builds trust. Here is how to set it up:
               </p>
               <ol className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">1.</span>
+                  <span className="text-[#c14e2a] font-bold">1.</span>
                   <span><strong>Profile photo</strong> — Upload a professional photo or avatar that represents you</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">2.</span>
+                  <span className="text-[#c14e2a] font-bold">2.</span>
                   <span><strong>Display name</strong> — Choose a recognizable name or trading alias</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">3.</span>
+                  <span className="text-[#c14e2a] font-bold">3.</span>
                   <span><strong>Bio</strong> — Write a clear description of your trading style, experience, and strategy focus</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">4.</span>
+                  <span className="text-[#c14e2a] font-bold">4.</span>
                   <span><strong>Risk level</strong> — Set your risk classification so followers know what to expect</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">5.</span>
+                  <span className="text-[#c14e2a] font-bold">5.</span>
                   <span><strong>Trading instruments</strong> — Specify the markets and instruments you primarily trade</span>
                 </li>
               </ol>
@@ -143,20 +143,20 @@ export default function LeaderGuide() {
               </p>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Consistency</strong> — Trade regularly and maintain a steady performance. Followers value reliability.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Transparency</strong> — Be open about your strategy, risk tolerance, and expected drawdowns.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span><strong>Communication</strong> — Post updates about your market outlook and reasoning behind key trades.</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
-                  <span><strong>External promotion</strong> — Share your ScopsTrade profile on social media and trading communities.</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
+                  <span><strong>External promotion</strong> — Share your Orchard Capitals profile on social media and trading communities.</span>
                 </li>
               </ul>
             </section>
@@ -167,19 +167,19 @@ export default function LeaderGuide() {
                 Earning as a Leader
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-                Leaders earn money through multiple channels on ScopsTrade:
+                Leaders earn money through multiple channels on Orchard Capitals:
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Performance fees</strong> — Earn a percentage of profits generated for your followers</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Volume-based commissions</strong> — Earn based on the trading volume your followers generate</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span><strong>Your own trading</strong> — Continue to profit from your own successful trades</span>
                 </li>
               </ul>
@@ -192,19 +192,19 @@ export default function LeaderGuide() {
               </h2>
               <ul className="space-y-3 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Always use stop-losses on your trades to protect both your capital and your followers&apos; capital</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Avoid over-leveraging — high-risk strategies may yield short-term gains but damage long-term trust</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Diversify your portfolio across instruments and time frames</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#10003;</span>
+                  <span className="text-[#c14e2a] font-bold">&#10003;</span>
                   <span>Keep a trading journal and share insights with your followers</span>
                 </li>
               </ul>
@@ -217,24 +217,24 @@ export default function LeaderGuide() {
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 As a Leader, responsible risk management is not just good practice — it is your
-                responsibility. Your followers trust you with their capital, and ScopsTrade monitors
+                responsibility. Your followers trust you with their capital, and Orchard Capitals monitors
                 leader behavior to protect the community.
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Never risk more than 2-5% of your account on a single trade</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Always set stop-losses and take-profit levels</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Monitor your AutoGuard&trade; risk score and keep it within acceptable levels</span>
                 </li>
                 <li className="flex items-start gap-3">
-                  <span className="text-blue-500 font-bold">&#8226;</span>
+                  <span className="text-[#c14e2a] font-bold">&#8226;</span>
                   <span>Be mindful of correlated positions that increase overall portfolio risk</span>
                 </li>
               </ul>
@@ -247,10 +247,10 @@ export default function LeaderGuide() {
               </h2>
               <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
                 Ready to share your trading expertise and earn from your skills? Apply to become
-                a ScopsTrade Leader and start building your following today.
+                a Orchard Capitals Leader and start building your following today.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/register" className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50">
+                <Link href="/register" className="inline-block bg-[#c14e2a] hover:bg-[#a8401f] text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50">
                   Get Started
                 </Link>
                 <Link href="/" className="inline-block bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 text-gray-900 dark:text-white px-8 py-3 rounded-full font-semibold transition-all duration-300">

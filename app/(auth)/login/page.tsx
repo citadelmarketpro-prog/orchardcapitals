@@ -103,7 +103,7 @@ export default function LoginPage() {
 
   return (
     <PagePreloader>
-      <div className="min-h-screen flex flex-col lg:flex-row gap-10 bg-white dark:bg-gradient-to-br dark:from-[#0a1628] dark:via-[#0d1b2a] dark:to-[#1b263b] text-black dark:text-white transition-colors duration-300">
+      <div className="min-h-screen flex flex-col lg:flex-row gap-10 bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] text-black dark:text-white transition-colors duration-300">
       {/* Left side: Login Form */}
       <div className="flex-1 flex items-center justify-center px-8 py-6 bg-white dark:bg-transparent">
         <motion.div
@@ -114,7 +114,7 @@ export default function LoginPage() {
         >
           <Link
             href="/"
-            className="hidden dark:flex text-2xl md:text-4xl mb-10 font-extrabold self-center tracking-tight items-center gap-1 text-blue-600"
+            className="hidden dark:flex text-2xl md:text-4xl mb-10 font-extrabold self-center tracking-tight items-center gap-1"
           >
             <Image
               src={"/logo_light.png"}
@@ -149,12 +149,12 @@ export default function LoginPage() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-                className="p-2 rounded-md border border-gray-300 dark:border-gray-600/50 hover:bg-gray-100 dark:hover:bg-[#1e2d3d]/50 transition-all"
+                className="p-2 rounded-md border border-gray-300 dark:border-gray-600/50 hover:bg-gray-100 dark:hover:bg-[#2c1a0c]/50 transition-all"
               >
                 {theme === "light" ? (
-                  <Moon className="w-4 h-4 text-blue-500" />
+                  <Moon className="w-4 h-4 text-[#c14e2a]" />
                 ) : (
-                  <Sun className="w-4 h-4 text-blue-400" />
+                  <Sun className="w-4 h-4 text-orange-400" />
                 )}
               </button>
             )}
@@ -172,7 +172,7 @@ export default function LoginPage() {
                 id="email"
                 type="email"
                 {...register("email")}
-                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#1e2d3d]/50 focus:outline-none transition-all ${
+                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
                   errors.email
                     ? "border-red-500"
                     : "border-gray-300 dark:border-gray-600/50"
@@ -202,7 +202,7 @@ export default function LoginPage() {
                 id="password"
                 type={showPassword ? "text" : "password"}
                 {...register("password")}
-                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#1e2d3d]/50 focus:outline-none transition-all ${
+                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
                   errors.password
                     ? "border-red-500"
                     : "border-gray-300 dark:border-gray-600/50"
@@ -233,10 +233,10 @@ export default function LoginPage() {
               )}
             </div>
 
-            <div className="text-sm text-blue-500 hover:underline cursor-pointer">
+            <div className="text-sm text-[#c14e2a] hover:underline cursor-pointer">
               <Link
                 href="/forgot-password"
-                className="text-sm text-blue-500 hover:underline"
+                className="text-sm text-[#c14e2a] hover:underline"
               >
                 Forgot password?
               </Link>
@@ -245,7 +245,7 @@ export default function LoginPage() {
             <Button
               disabled={loading}
               type="submit"
-              className="w-full py-6 bg-blue-700 hover:bg-blue-600 text-white rounded-md"
+              className="w-full py-6 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-md"
             >
               {!loading ? (
                 <span>Login</span>
@@ -266,7 +266,7 @@ export default function LoginPage() {
             {/* Google Button */}
             <button
               type="button"
-              className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 dark:border-gray-600/50 rounded-md bg-white dark:bg-[#1e2d3d]/50 hover:bg-gray-50 dark:hover:bg-[#1e2d3d]/80 transition-all"
+              className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 dark:border-gray-600/50 rounded-md bg-white dark:bg-[#2c1a0c]/50 hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/80 transition-all"
             >
               <svg width="20" height="20" viewBox="0 0 24 24">
                 <path
@@ -293,7 +293,7 @@ export default function LoginPage() {
 
             <p className="text-center text-sm">
               New to this community?{" "}
-              <a href="/register" className="text-blue-500 underline">
+              <a href="/register" className="text-[#c14e2a] underline">
                 Sign up here
               </a>
             </p>
@@ -318,7 +318,7 @@ export default function LoginPage() {
       </div>
 
       {/* Right side: Visual section */}
-      <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-[#1e3a5f] via-[#2a5298] to-[#1e3a5f] dark:from-[#0f1f3a] dark:via-[#1a3a5a] dark:to-[#0f1f3a] p-8 rounded-l-3xl">
+      <div className="hidden flex-1 items-center justify-center bg-gradient-to-br from-[#3d1a0a] via-[#c14e2a] to-[#3d1a0a] dark:from-[#1c0f06] dark:via-[#2c1a0c] dark:to-[#0e0804] p-8 rounded-l-3xl">
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}

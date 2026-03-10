@@ -138,11 +138,11 @@ const TraderCard = ({
   totalCopiers,
   riskLevel,
 }: TraderCardProps) => (
-  <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-500/[0.06]">
+  <div className="group flex flex-col overflow-hidden rounded-2xl border border-gray-200/80 dark:border-white/8 bg-white/70 dark:bg-white/3 backdrop-blur-sm shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-orange-500/[0.06]">
     {/* Header with Avatar */}
     <div className="border-b border-gray-100 dark:border-white/[0.06] p-6">
       <div className="flex items-center gap-3">
-        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-blue-600 text-base font-bold text-white shadow-md shadow-blue-500/20">
+        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-[#c14e2a] to-[#a8401f] text-base font-bold text-white shadow-md shadow-orange-500/20">
           {name.charAt(0).toUpperCase()}
         </div>
         <div className="flex-1 min-w-0">
@@ -196,13 +196,13 @@ const TraderCard = ({
       {/* Risk Level */}
       <div className="mb-4 flex items-center justify-between rounded-xl bg-gray-50 dark:bg-white/[0.04] px-4 py-2.5">
         <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Risk level</span>
-        <span className="rounded-full bg-blue-100 dark:bg-blue-500/15 px-3 py-0.5 text-xs font-semibold text-blue-700 dark:text-blue-300">
+        <span className="rounded-full bg-orange-100 dark:bg-[#c14e2a]/15 px-3 py-0.5 text-xs font-semibold text-[#c14e2a] dark:text-orange-300">
           {riskLevel}
         </span>
       </div>
 
       {/* Copy Button */}
-      <Link href="/login" className="flex items-center justify-center w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-blue-500/25 hover:-translate-y-0.5">
+      <Link href="/login" className="flex items-center justify-center w-full rounded-xl bg-primary py-2.5 text-sm font-semibold text-white transition-all hover:bg-primary-hover hover:shadow-lg hover:shadow-orange-500/25 hover:-translate-y-0.5">
         Copy Trader
       </Link>
     </div>

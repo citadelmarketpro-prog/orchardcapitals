@@ -15,14 +15,14 @@ export default function AutoGuard() {
           <div className="relative mx-auto max-w-4xl px-6 text-center">
             <h1 className="text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white sm:text-6xl lg:text-7xl">
               Autoprotect your{" "}
-              <span className="bg-linear-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#c14e2a] to-[#e07040] dark:from-orange-400 dark:to-amber-400 bg-clip-text text-transparent">
                 account
               </span>
             </h1>
             <div className="mt-10">
               <Link
                 href="/register"
-                className="inline-block rounded-md bg-primary px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                className="inline-block rounded-md bg-primary px-8 py-3.5 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 Create account &rarr;
               </Link>
@@ -84,7 +84,7 @@ export default function AutoGuard() {
             {/* How does it work Card */}
             <div className="rounded-2xl bg-white/70 dark:bg-white/5 backdrop-blur-sm border border-gray-200/80 dark:border-white/8 p-10 lg:p-12">
               {/* Icon */}
-              <div className="mb-8 text-blue-500 dark:text-blue-400">
+              <div className="mb-8 text-[#c14e2a] dark:text-orange-400">
                 <svg
                   width="64"
                   height="64"
@@ -142,7 +142,7 @@ export default function AutoGuard() {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
               {/* Card 1 */}
               <div className="flex flex-col items-center rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200/50 dark:border-white/8 px-8 py-12 text-center">
-                <div className="mb-6 text-blue-600 dark:text-blue-400">
+                <div className="mb-6 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="48"
                     height="48"
@@ -173,7 +173,7 @@ export default function AutoGuard() {
 
               {/* Card 2 */}
               <div className="flex flex-col items-center rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200/50 dark:border-white/8 px-8 py-12 text-center">
-                <div className="mb-6 text-blue-600 dark:text-blue-400">
+                <div className="mb-6 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="48"
                     height="48"
@@ -216,7 +216,7 @@ export default function AutoGuard() {
 
               {/* Card 3 */}
               <div className="flex flex-col items-center rounded-2xl bg-gray-100 dark:bg-gray-800/50 border border-gray-200/50 dark:border-white/8 px-8 py-12 text-center">
-                <div className="mb-6 text-blue-600 dark:text-blue-400">
+                <div className="mb-6 text-[#c14e2a] dark:text-orange-400">
                   <svg
                     width="48"
                     height="48"
@@ -264,7 +264,7 @@ export default function AutoGuard() {
             <div className="mt-12 text-center">
               <Link
                 href="/register"
-                className="inline-block rounded-md bg-primary px-10 py-4 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50"
+                className="inline-block rounded-md bg-primary px-10 py-4 text-sm font-semibold text-white transition hover:bg-primary-hover shadow-lg shadow-orange-500/30 hover:shadow-orange-500/50"
               >
                 Get started now &rarr;
               </Link>

@@ -63,10 +63,10 @@ const CopyCard = ({ icon, title, description, accentColor }: CopyCardProps) => {
     switch (accentColor) {
       case "blue":
         return {
-          iconBg: "bg-blue-50 dark:bg-blue-500/10",
-          iconColor: "text-blue-600 dark:text-blue-400",
-          border: "group-hover:border-blue-500/30",
-          glow: "group-hover:shadow-blue-500/5",
+          iconBg: "bg-orange-50 dark:bg-[#c14e2a]/10",
+          iconColor: "text-[#c14e2a] dark:text-orange-400",
+          border: "group-hover:border-[#c14e2a]/30",
+          glow: "group-hover:shadow-orange-500/5",
         };
       case "cyan":
         return {
@@ -84,10 +84,10 @@ const CopyCard = ({ icon, title, description, accentColor }: CopyCardProps) => {
         };
       default:
         return {
-          iconBg: "bg-blue-50 dark:bg-blue-500/10",
-          iconColor: "text-blue-600 dark:text-blue-400",
-          border: "group-hover:border-blue-500/30",
-          glow: "group-hover:shadow-blue-500/5",
+          iconBg: "bg-orange-50 dark:bg-[#c14e2a]/10",
+          iconColor: "text-[#c14e2a] dark:text-orange-400",
+          border: "group-hover:border-[#c14e2a]/30",
+          glow: "group-hover:shadow-orange-500/5",
         };
     }
   };
