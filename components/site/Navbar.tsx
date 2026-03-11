@@ -37,14 +37,14 @@ const Navbar = () => {
             <Image
               src={"/logo_dark.png"}
               className="block dark:hidden w-32 sm:w-40 lg:w-44"
-              alt="ScopTrade"
+              alt="Orchard Capitals"
               width={1000}
               height={250}
             />
             <Image
               src={"/logo_light.png"}
               className="hidden dark:block w-32 sm:w-40 lg:w-44"
-              alt="ScopTrade"
+              alt="Orchard Capitals"
               width={1000}
               height={250}
             />

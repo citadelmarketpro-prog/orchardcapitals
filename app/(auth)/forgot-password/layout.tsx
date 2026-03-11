@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Forgot Password",
-  description: "Reset your ScopTrade account password.",
+  description: "Reset your Orchard Capitals account password.",
 };
 
 export default function ForgotPasswordLayout({ children }: { children: React.ReactNode }) {

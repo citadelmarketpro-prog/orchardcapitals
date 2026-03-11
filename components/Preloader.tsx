@@ -23,7 +23,7 @@ export default function Preloader() {
       <div className="mb-12">
         <Image
           src={logoSrc}
-          alt="ScopsTrade"
+          alt="Orchard Capitals"
           width={300}
           height={75}
           className="w-64 h-auto"

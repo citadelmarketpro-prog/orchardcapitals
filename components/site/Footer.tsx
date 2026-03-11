@@ -18,7 +18,7 @@ const Footer = () => {
           <div className="lg:col-span-3">
             <div className="mb-4">
               <span className="text-2xl font-bold">
-                Scops<span className="text-[var(--primary)]">Trade</span>
+                Ochard<span className="text-[var(--primary)]">Capitals</span>
               </span>
             </div>
             <p className="mb-4 text-sm text-[var(--foreground-muted)]">
