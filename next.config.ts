@@ -1,16 +1,8 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const backendOrigin = process.env.BACKEND_ORIGIN || "http://localhost:8001";
 
 const nextConfig: NextConfig = {
-  experimental: {
-    turbo: {
-      resolveAlias: {
-        tailwindcss: path.resolve(__dirname, "node_modules/tailwindcss"),
-      },
-    },
-  },
   skipTrailingSlashRedirect: true,
   async rewrites() {
     return [
