@@ -1,9 +1,7 @@
 "use client";
 
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import OCPageShell from "@/components/site/OCPageShell";
 import Link from "next/link";
-import PagePreloader from "@/components/PagePreloader";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -76,9 +74,7 @@ export default function BecomeALeader() {
   };
 
   return (
-    <PagePreloader>
-      <Navbar />
-      <main className="pt-16 lg:pt-20">
+    <OCPageShell>
         {/* Hero Section - img1 */}
         <section className="py-16 lg:py-24 px-6">
           <div className="max-w-3xl mx-auto text-center">
@@ -522,8 +518,6 @@ export default function BecomeALeader() {
           </div>
         </section>
 
-        <Footer />
-      </main>
-    </PagePreloader>
+    </OCPageShell>
   );
 }

@@ -1,13 +1,9 @@
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import OCPageShell from "@/components/site/OCPageShell";
 import Link from "next/link";
-import PagePreloader from "@/components/PagePreloader";
 
 export default function AffiliateGuide() {
   return (
-    <PagePreloader>
-      <Navbar />
-      <main className="pt-16 lg:pt-20">
+    <OCPageShell>
         <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20">
           <div className="mb-12">
             <h1 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4">
@@ -251,8 +247,6 @@ export default function AffiliateGuide() {
             </section>
           </div>
         </div>
-        <Footer />
-      </main>
-    </PagePreloader>
+    </OCPageShell>
   );
 }

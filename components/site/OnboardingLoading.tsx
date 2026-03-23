@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import OCLogo from "@/components/site/OCLogo";
 import { useRouter } from "next/navigation";
 import {
   TrendingUp,
@@ -13,6 +14,15 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
+import {
+  Cormorant_Garamond,
+  IBM_Plex_Mono,
+  Darker_Grotesque,
+} from "next/font/google";
+
+const cormorant = Cormorant_Garamond({ subsets: ["latin"], weight: ["300","400","600"], style: ["normal","italic"], variable: "--oc-serif", display: "swap" });
+const ibmMono   = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400","500","600"], variable: "--oc-mono", display: "swap" });
+const grotesque = Darker_Grotesque({ subsets: ["latin"], weight: ["400","500","600","700","800","900"], variable: "--oc-sans", display: "swap" });
 
 const OnboardingLoading = () => {
   const [progress, setProgress] = useState(0);
@@ -84,7 +94,8 @@ const OnboardingLoading = () => {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#0e0804] flex items-center justify-center p-6 transition-colors duration-500 overflow-hidden relative">
+    <div className={`${cormorant.variable} ${ibmMono.variable} ${grotesque.variable} min-h-screen bg-[#f5f0e8] dark:bg-[#0e0804] flex items-center justify-center p-6 transition-colors duration-500 overflow-hidden relative`}
+      style={{ fontFamily: "var(--oc-sans,'Darker Grotesque',sans-serif)" }}>
       {/* Subtle grid background */}
       <div
         className="absolute inset-0 opacity-[0.03] dark:opacity-[0.05]"
@@ -112,15 +123,12 @@ const OnboardingLoading = () => {
             >
               {/* Brand */}
               <motion.div
-                className="mb-12"
+                className="mb-12 flex justify-center"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2 }}
               >
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
-                  OCHARD
-                  <span className="text-[#c14e2a]">CAPITALS</span>
-                </h1>
+                <OCLogo size="lg" />
               </motion.div>
 
               {/* Animated icon */}
@@ -158,7 +166,7 @@ const OnboardingLoading = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <span className="text-4xl font-bold text-gray-900 dark:text-white tabular-nums">
+                <span className="text-4xl font-bold text-[#1c1510] dark:text-[#f5f0e8] tabular-nums" style={{ fontFamily: "var(--oc-serif,'Cormorant Garamond',serif)", fontWeight: 300, fontSize: "4rem" }}>
                   {Math.round(progress)}%
                 </span>
               </motion.div>
@@ -171,7 +179,8 @@ const OnboardingLoading = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -10 }}
                   transition={{ duration: 0.3 }}
-                  className="text-sm text-gray-500 dark:text-gray-400 mb-8"
+                  className="text-sm text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] mb-8"
+                  style={{ fontFamily: "var(--oc-mono,'IBM Plex Mono',monospace)", fontSize: ".7rem", letterSpacing: ".12em", textTransform: "uppercase" }}
                 >
                   {phases[currentPhase].label}
                 </motion.p>
@@ -275,7 +284,8 @@ const OnboardingLoading = () => {
 
               {/* Success text */}
               <motion.h2
-                className="text-2xl font-bold text-gray-900 dark:text-white mb-3"
+                className="text-[#1c1510] dark:text-[#f5f0e8] mb-3"
+                style={{ fontFamily: "var(--oc-serif,'Cormorant Garamond',serif)", fontSize: "2.4rem", fontWeight: 300, letterSpacing: "-.02em", lineHeight: 1.1 }}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 }}
@@ -284,7 +294,8 @@ const OnboardingLoading = () => {
               </motion.h2>
 
               <motion.p
-                className="text-gray-500 dark:text-gray-400 mb-10 max-w-sm mx-auto leading-relaxed"
+                className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] mb-10 max-w-sm mx-auto leading-relaxed"
+                style={{ fontSize: ".92rem", fontWeight: 500 }}
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 }}
@@ -308,7 +319,8 @@ const OnboardingLoading = () => {
               </motion.button>
 
               <motion.p
-                className="mt-6 text-xs text-gray-400 dark:text-gray-500"
+                className="mt-6 text-[#8c7b6a]/60 dark:text-[rgba(245,240,232,0.25)]"
+                style={{ fontFamily: "var(--oc-mono,'IBM Plex Mono',monospace)", fontSize: ".6rem", letterSpacing: ".1em", textTransform: "uppercase" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.8 }}

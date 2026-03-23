@@ -4,750 +4,371 @@ import React, { useState, useEffect, useMemo, Suspense } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import Select, {
-  FormatOptionLabelMeta,
-  GroupBase,
-  PropsValue,
-} from "react-select";
+import Select, { GroupBase, PropsValue } from "react-select";
 import countryList from "react-select-country-list";
-import { Eye, EyeOff, Sun, Moon, Gift } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Eye, EyeOff, Gift } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { PulseLoader } from "react-spinners";
-import { BACKEND_URL } from "@/lib/constants";
 import { apiFetch } from "@/lib/api";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
-import PagePreloader from "@/components/PagePreloader";
+import OCAuthShell, { OCBrand } from "@/components/site/OCAuthShell";
 
-// ----------------------
-// Types
-// ----------------------
-interface CountryOption {
-  value: string;
-  label: string;
-  flag: string;
-}
+interface CountryOption { value: string; label: string; flag: string; }
 
-// ----------------------
-// Validation Schema
-// ----------------------
 const registerSchema = z.object({
-  firstName: z.string().min(1, "First name is required"),
-  lastName: z.string().min(1, "Last name is required"),
-  email: z.email("Enter a valid email address"),
-  password: z
-    .string()
+  firstName:    z.string().min(1, "First name is required"),
+  lastName:     z.string().min(1, "Last name is required"),
+  email:        z.email("Enter a valid email address"),
+  password:     z.string()
     .min(8, "Use 8 or more characters")
     .regex(/[A-Z]/, "One uppercase character required")
     .regex(/[a-z]/, "One lowercase character required")
     .regex(/[0-9]/, "One number required")
     .regex(/[^A-Za-z0-9]/, "One special character required"),
-  country: z
-    .object({
-      value: z.string(),
-      label: z.string(),
-      flag: z.string(),
-    })
-    .refine((val) => Boolean(val?.value && val?.label), {
-      message: "Country is required",
-    }),
+  country:      z.object({ value: z.string(), label: z.string(), flag: z.string() })
+    .refine(val => Boolean(val?.value && val?.label), { message: "Country is required" }),
   referralCode: z.string().optional(),
 });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
-// ----------------------
-// Main Component wrapped in Suspense
-// ----------------------
-function RegisterPageContent() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<string | null>(null);
-  const [referralCode, setReferralCode] = useState<string>("");
-  const [referralValid, setReferralValid] = useState<boolean | null>(null);
-  const [referrerName, setReferrerName] = useState<string>("");
-  const { theme, setTheme } = useTheme();
+const PROOF = [
+  { i: "JR", name: "Jake Reynolds",  spec: "Options Specialist", ret: "+182%", col: "linear-gradient(135deg,#9b2c2c,#c0392b)" },
+  { i: "SM", name: "Sofia Martinez", spec: "Futures Trader",     ret: "+241%", col: "linear-gradient(135deg,#6d28d9,#a855f7)" },
+  { i: "MC", name: "Marcus Chen",    spec: "Swing Trader",       ret: "+319%", col: "linear-gradient(135deg,#0369a1,#0ea5e9)" },
+];
 
-  const router = useRouter();
+function RegisterLeft() {
+  return (
+    <div className="flex flex-col flex-1 relative overflow-hidden" style={{ padding: "2.8rem 3rem" }}>
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 600, height: 600, top: -160, left: -160, background: "radial-gradient(circle,rgba(155,44,44,.2) 0%,transparent 65%)", animation: "aGlowA 15s ease-in-out infinite alternate" }} />
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 450, height: 450, bottom: -80, right: -80, background: "radial-gradient(circle,rgba(183,134,12,.12) 0%,transparent 65%)", animation: "aGlowB 20s ease-in-out infinite alternate" }} />
+      <div className="oc-serif absolute pointer-events-none select-none" style={{ bottom: "-2.5rem", left: "-1rem", fontSize: "20vw", fontWeight: 300, lineHeight: 1, color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,.035)", fontStyle: "italic", whiteSpace: "nowrap" }}>
+        Grow
+      </div>
+      {/* nav row */}
+      <div className="relative z-10 flex items-center justify-between">
+        <OCBrand light />
+        <Link href="/login" className="oc-mono transition-colors" style={{ fontSize: ".62rem", letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(245,240,232,.3)", textDecoration: "none" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#f5f0e8")}
+          onMouseLeave={e => (e.currentTarget.style.color = "rgba(245,240,232,.3)")}
+        >
+          Already a member? Sign in →
+        </Link>
+      </div>
+      {/* body */}
+      <div className="relative z-10 flex flex-col flex-1 justify-center py-12">
+        <div className="flex items-center gap-3 mb-8">
+          <div style={{ width: 36, height: 1, background: "#c0392b" }} />
+          <span className="oc-mono" style={{ fontSize: ".62rem", letterSpacing: ".2em", textTransform: "uppercase", color: "rgba(245,240,232,.35)" }}>Join the community</span>
+        </div>
+        <h2 className="oc-serif" style={{ fontSize: "clamp(2.8rem,4.5vw,5.5rem)", fontWeight: 300, lineHeight: .96, letterSpacing: "-.025em", color: "#f5f0e8", marginBottom: "2rem" }}>
+          Start copying<br /><em style={{ fontStyle: "italic", color: "#c0392b", display: "block" }}>experts.</em>
+        </h2>
+        <p style={{ fontSize: "1rem", color: "rgba(245,240,232,.4)", lineHeight: 1.75, maxWidth: 360, fontWeight: 500, marginBottom: "2.5rem" }}>
+          Follow proven traders and mirror their strategies automatically — no experience needed.
+        </p>
+        {/* proof cards */}
+        <div className="flex flex-col gap-3" style={{ maxWidth: 380 }}>
+          {PROOF.map(p => (
+            <div key={p.i} className="flex items-center gap-3" style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 10, padding: ".9rem 1.1rem" }}>
+              <div className="shrink-0 flex items-center justify-center rounded-full font-extrabold text-white" style={{ width: 40, height: 40, background: p.col, fontSize: ".8rem" }}>{p.i}</div>
+              <div className="flex-1">
+                <div style={{ fontWeight: 700, fontSize: ".85rem", color: "#f5f0e8" }}>{p.name}</div>
+                <div style={{ fontSize: ".7rem", color: "rgba(245,240,232,.35)", marginTop: ".1rem" }}>{p.spec}</div>
+              </div>
+              <div className="oc-serif shrink-0" style={{ fontSize: "1.45rem", fontWeight: 400, color: "#4ade80" }}>{p.ret}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* stats */}
+      <div className="relative z-10 flex pt-8" style={{ borderTop: "1px solid rgba(255,255,255,.07)" }}>
+        {[["12K+","Active Copiers"],["$2.1B","Volume Copied"],["97%","Fill Accuracy"]].map(([n,l],i,a) => (
+          <div key={l} style={{ paddingRight: i<a.length-1?"2rem":0, marginRight: i<a.length-1?"2rem":0, borderRight: i<a.length-1?"1px solid rgba(255,255,255,.07)":"none" }}>
+            <span className="oc-serif" style={{ fontSize: "1.8rem", fontWeight: 400, color: "#f5f0e8", display: "block", lineHeight: 1 }}>{n}</span>
+            <span className="oc-mono" style={{ fontSize: ".58rem", color: "rgba(245,240,232,.25)", letterSpacing: ".1em", textTransform: "uppercase", marginTop: ".25rem", display: "block" }}>{l}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RegisterPageContent() {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted]             = useState(false);
+  const [showPassword, setShowPassword]   = useState(false);
+  const [loading, setLoading]             = useState(false);
+  const [message, setMessage]             = useState<string | null>(null);
+  const [referralCode, setReferralCode]   = useState("");
+  const [referralValid, setReferralValid] = useState<boolean | null>(null);
+  const [referrerName, setReferrerName]   = useState("");
+  const router       = useRouter();
   const searchParams = useSearchParams();
 
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-    watch,
-    setValue,
-  } = useForm<RegisterFormData>({
-    resolver: zodResolver(registerSchema),
-  });
+  const { register, handleSubmit, control, formState: { errors }, watch, setValue } =
+    useForm<RegisterFormData>({ resolver: zodResolver(registerSchema) });
+  const watched = watch();
 
-  const watchedValues = watch();
+  const countryOptions: CountryOption[] = useMemo(() =>
+    countryList().getData().map(c => ({ value: c.value, label: c.label, flag: c.value.toLowerCase() })),
+  []);
 
-  // Country options with flags
-  const countryOptions: CountryOption[] = useMemo(() => {
-    return countryList()
-      .getData()
-      .map((country) => ({
-        value: country.value,
-        label: country.label,
-        flag: country.value.toLowerCase(),
-      }));
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  // ✅ Handle referral code from URL and store in localStorage
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     const refParam = searchParams.get("ref");
-
     if (refParam) {
-      const upperRef = refParam.trim().toUpperCase();
-      setReferralCode(upperRef);
-      setValue("referralCode", upperRef);
-
-      // Store in localStorage for persistence
-      localStorage.setItem("referral_code", upperRef);
-
-      // Validate referral code
-      validateReferralCode(upperRef);
+      const upper = refParam.trim().toUpperCase();
+      setReferralCode(upper); setValue("referralCode", upper);
+      localStorage.setItem("referral_code", upper);
+      validateReferralCode(upper);
     } else {
-      // Check localStorage for existing referral code
-      const storedRef = localStorage.getItem("referral_code");
-      if (storedRef) {
-        setReferralCode(storedRef);
-        setValue("referralCode", storedRef);
-        validateReferralCode(storedRef);
-      }
+      const stored = localStorage.getItem("referral_code");
+      if (stored) { setReferralCode(stored); setValue("referralCode", stored); validateReferralCode(stored); }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, setValue]);
 
-  // Validate referral code
   const validateReferralCode = async (code: string) => {
-    if (!code) {
-      setReferralValid(null);
-      return;
-    }
-
+    if (!code) { setReferralValid(null); return; }
     try {
-      const response = await apiFetch(
-        `/referral/validate/?code=${code}`,
-      );
-      const data = await response.json();
-
-      if (data.success && data.valid) {
-        setReferralValid(true);
-        setReferrerName(data.referrer.name);
-      } else {
-        setReferralValid(false);
-        setReferrerName("");
-      }
-    } catch (error) {
-      console.error("Error validating referral code:", error);
-      setReferralValid(false);
-    }
+      const res  = await apiFetch(`/referral/validate/?code=${code}`);
+      const data = await res.json();
+      if (data.success && data.valid) { setReferralValid(true); setReferrerName(data.referrer.name); }
+      else { setReferralValid(false); setReferrerName(""); }
+    } catch { setReferralValid(false); }
   };
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     async function fetchCountry() {
       try {
-        const res = await fetch("https://ipapi.co/json/");
+        const res  = await fetch("https://ipapi.co/json/");
         const data = await res.json();
-
-        const countryName = data.country_name;
-        const countryCallingCode = data.country_calling_code; // e.g., "+234"
-
-        // Store calling code in localStorage for KYC page
-        if (countryCallingCode) {
-          localStorage.setItem("country_calling_code", countryCallingCode);
-        }
-
-        const found = countryOptions.find(
-          (c) => c.label.toLowerCase() === countryName?.toLowerCase(),
-        );
-        if (found) {
-          setValue("country", found);
-        }
-      } catch (err) {
-        console.warn("Could not auto-detect country:", err);
-      }
+        if (data.country_calling_code) localStorage.setItem("country_calling_code", data.country_calling_code);
+        const found = countryOptions.find(c => c.label.toLowerCase() === data.country_name?.toLowerCase());
+        if (found) setValue("country", found);
+      } catch { /* silent */ }
     }
     fetchCountry();
   }, [countryOptions, setValue]);
 
   const onSubmit = async (data: RegisterFormData) => {
-    setLoading(true);
-    setMessage(null);
-
+    setLoading(true); setMessage(null);
     try {
-      const countryCallingCode =
-        localStorage.getItem("country_calling_code") || "";
-
       const payload = {
-        first_name: data.firstName,
-        last_name: data.lastName,
-        email: data.email,
-        password: data.password,
-        country: data.country.label,
-        referral_code: referralCode || undefined,
-        country_calling_code: countryCallingCode,
+        first_name:           data.firstName,
+        last_name:            data.lastName,
+        email:                data.email,
+        password:             data.password,
+        country:              data.country.label,
+        referral_code:        referralCode || undefined,
+        country_calling_code: localStorage.getItem("country_calling_code") || "",
       };
-
-      const res = await apiFetch("/register/", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-
+      const res    = await apiFetch("/register/", { method: "POST", body: JSON.stringify(payload) });
       const result = await res.json();
-
       if (!res.ok) {
-        let errorMessage = "Registration failed. Please try again.";
-
-        if (result?.error) {
-          if (Array.isArray(result.error)) {
-            errorMessage = result.error.join(" ");
-          } else if (typeof result.error === "string") {
-            errorMessage = result.error;
-          }
-        }
-
-        throw new Error(errorMessage);
+        const err = result?.error
+          ? (Array.isArray(result.error) ? result.error.join(" ") : String(result.error))
+          : "Registration failed. Please try again.";
+        throw new Error(err);
       }
-
-      // Registration successful - cookie is set by backend
       setMessage("Registration successful! Redirecting...");
-
-      if (typeof window !== "undefined") {
-        if (result.user?.country_calling_code) {
-          localStorage.setItem(
-            "country_calling_code",
-            result.user.country_calling_code,
-          );
-        }
-        localStorage.removeItem("referral_code");
-      }
-
-      // Redirect directly to onboarding
+      if (result.user?.country_calling_code) localStorage.setItem("country_calling_code", result.user.country_calling_code);
+      localStorage.removeItem("referral_code");
       setTimeout(() => router.push("/onboarding"), 1500);
     } catch (error: unknown) {
-      let errorMessage = "Something went wrong. Please try again.";
-      if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-
-      setMessage(`Error: ${errorMessage}`);
-    } finally {
-      setLoading(false);
-    }
+      setMessage(`Error: ${error instanceof Error ? error.message : "Something went wrong."}`);
+    } finally { setLoading(false); }
   };
 
-  useEffect(() => setMounted(true), []);
-
-  const formatOptionLabel = (
-    option: CountryOption,
-    meta?: FormatOptionLabelMeta<CountryOption>,
-  ) => {
-    return (
-      <div className="flex items-center gap-2">
-        <span className={`fi fi-${option.flag}`}></span>
-        <span>{option.label}</span>
-      </div>
-    );
-  };
+  const isDark = mounted && resolvedTheme === "dark";
 
   return (
-    <PagePreloader>
-      <div className="min-h-screen flex flex-col lg:flex-row gap-10 bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] text-black dark:text-white transition-colors duration-300">
-      {/* Left side: Register Form */}
-      <div className="flex-1 flex items-center justify-center px-8 py-8 md:py-16 bg-white dark:bg-transparent">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="w-full max-w-sm space-y-6 flex flex-col"
-        >
-          {/* Logo */}
-          <Link
-            href="/"
-            className="hidden dark:flex text-2xl md:text-4xl mb-10 font-extrabold self-center tracking-tight items-center gap-1"
+    <OCAuthShell leftPanel={<RegisterLeft />}>
+      <div className="a-anim w-full" style={{ maxWidth: 420 }}>
+        {/* eyebrow */}
+        <div className="a-eyebrow">
+          <div className="shrink-0" style={{ width: 22, height: 1, background: "#c0392b" }} />
+          <span className="oc-mono text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".6rem", letterSpacing: ".2em", textTransform: "uppercase" }}>Create your account</span>
+        </div>
+
+        <h1 className="oc-serif text-[#1c1510] dark:text-[#f5f0e8]" style={{ fontSize: "2.8rem", fontWeight: 400, lineHeight: 1.04, letterSpacing: "-.02em", marginBottom: ".6rem" }}>
+          Join the smart<br /><em style={{ fontStyle: "italic", color: "#c0392b" }}>community.</em>
+        </h1>
+        <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".88rem", lineHeight: 1.6, fontWeight: 500, marginBottom: "2rem" }}>
+          Already a member?{" "}
+          <Link href="/login" style={{ color: "#c0392b", fontWeight: 700, textDecoration: "none" }}
+            onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+            onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
           >
-            <Image
-              src={"/logo_light.png"}
-              className="hidden dark:block w-50"
-              alt=""
-              width={1000}
-              height={250}
-            />
+            Sign in here
           </Link>
-          <Link
-            href="/"
-            className="flex dark:hidden text-2xl md:text-4xl mb-10 font-extrabold self-center tracking-tight items-center gap-1"
-          >
-            <Image
-              src={"/logo_dark.png"}
-              className="block dark:hidden w-50"
-              alt=""
-              width={1000}
-              height={250}
-            />
-          </Link>
+        </p>
 
-          {/* Theme toggle */}
-          {mounted && (
-            <button
-              onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-              className="p-2 ml-auto rounded-md border fixed top-5 right-1 border-gray-300 dark:border-gray-600/50 hover:bg-gray-100 dark:hover:bg-[#2c1a0c]/50 transition-all"
-            >
-              {theme === "light" ? (
-                <Moon className="w-4 h-4 text-[#c14e2a]" />
-              ) : (
-                <Sun className="w-4 h-4 text-orange-400" />
-              )}
-            </button>
-          )}
+        {/* referral banner */}
+        {referralCode && referralValid && (
+          <div className="flex items-center gap-3 rounded-xl mb-5 p-4" style={{ background: "rgba(192,57,43,.08)", border: "1px solid rgba(192,57,43,.25)" }}>
+            <div className="shrink-0 flex items-center justify-center rounded-full" style={{ width: 36, height: 36, background: "rgba(192,57,43,.15)" }}>
+              <Gift size={16} color="#c0392b"/>
+            </div>
+            <div>
+              <p className="text-[#1c1510] dark:text-[#f5f0e8] font-bold" style={{ fontSize: ".85rem" }}>Referred by {referrerName}!</p>
+              <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".75rem" }}>You&apos;ll get special bonuses when you join</p>
+            </div>
+          </div>
+        )}
+        {referralCode && referralValid === false && (
+          <div className="rounded-xl mb-5 p-4" style={{ background: "rgba(239,68,68,.08)", border: "1px solid rgba(239,68,68,.25)" }}>
+            <p className="text-red-500" style={{ fontSize: ".85rem" }}>Invalid referral code</p>
+          </div>
+        )}
 
-          {/* Referral Banner */}
-          {referralCode && referralValid && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/30 rounded-lg p-4"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-orange-100 dark:bg-orange-500/20 rounded-full">
-                  <Gift className="w-5 h-5 text-[#c14e2a]" />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-orange-900 dark:text-orange-300">
-                    🎉 Referred by {referrerName}!
-                  </p>
-                  <p className="text-xs text-orange-700 dark:text-orange-400">
-                    You&apos;ll get special bonuses when you join
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          )}
+        {/* Google */}
+        <button type="button" className="a-oauth w-full flex items-center justify-center gap-2 rounded-lg mb-5 font-bold cursor-pointer" style={{ padding: ".75rem 1rem", fontSize: ".82rem" }}>
+          <svg width="18" height="18" viewBox="0 0 24 24">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
 
-          {referralCode && referralValid === false && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/30 rounded-lg p-4"
-            >
-              <p className="text-sm text-red-700 dark:text-red-600">
-                ❌ Invalid referral code
-              </p>
-            </motion.div>
-          )}
+        {/* divider */}
+        <div className="flex items-center gap-3 mb-5">
+          <div className="flex-1 h-px a-line" />
+          <span className="oc-mono a-or" style={{ fontSize: ".58rem", letterSpacing: ".1em", textTransform: "uppercase" }}>or with email</span>
+          <div className="flex-1 h-px a-line" />
+        </div>
 
-          <div>
-            <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2 w-full">
-              Join the Smart Community
-            </h1>
-            <p className="text-left text-sm mt-4">
-              Already a member?{" "}
-              <Link
-                href="/login"
-                className=" text-[#c14e2a] underline"
-              >
-                Sign In here
-              </Link>
-            </p>
+        {/* form */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          {/* first + last */}
+          <div className="grid grid-cols-2 gap-3">
+            <div className="a-field">
+              <input id="firstName" type="text" {...register("firstName")} className="a-input" placeholder=" "
+                style={{ borderColor: errors.firstName ? "#ef4444" : undefined }} />
+              <label htmlFor="firstName" className={`a-label ${watched.firstName ? "up" : ""}`}>First Name</label>
+              {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName.message}</p>}
+            </div>
+            <div className="a-field">
+              <input id="lastName" type="text" {...register("lastName")} className="a-input" placeholder=" "
+                style={{ borderColor: errors.lastName ? "#ef4444" : undefined }} />
+              <label htmlFor="lastName" className={`a-label ${watched.lastName ? "up" : ""}`}>Last Name</label>
+              {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName.message}</p>}
+            </div>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            {/* First & Last Name */}
-            <div className="flex flex-col sm:flex-row gap-4">
-              <div className="relative flex-1">
-                <input
-                  id="firstName"
-                  type="text"
-                  {...register("firstName")}
-                  className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
-                    errors.firstName
-                      ? "border-red-500"
-                      : "border-gray-300 dark:border-gray-600/50"
-                  }`}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="firstName"
-                  className={`absolute left-3 text-gray-400 dark:text-gray-500 transition-all pointer-events-none ${
-                    watchedValues.firstName
-                      ? "text-xs top-1"
-                      : "peer-focus:text-xs peer-focus:top-1 top-3"
-                  }`}
-                >
-                  First Name
-                </label>
-                {errors.firstName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.firstName.message as string}
-                  </p>
+          {/* email */}
+          <div className="a-field">
+            <input id="email" type="email" {...register("email")} className="a-input" placeholder=" "
+              style={{ borderColor: errors.email ? "#ef4444" : undefined }} />
+            <label htmlFor="email" className={`a-label ${watched.email ? "up" : ""}`}>Email Address</label>
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+          </div>
+
+          {/* country */}
+          <div className="mb-4">
+            <span className="oc-mono text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] block mb-1.5" style={{ fontSize: ".58rem", letterSpacing: ".15em", textTransform: "uppercase" }}>Country</span>
+            {mounted && (
+              <Controller
+                name="country"
+                control={control}
+                render={({ field }) => (
+                  <Select<CountryOption, false, GroupBase<CountryOption>>
+                    instanceId="country-select"
+                    value={(field.value as CountryOption) ?? null}
+                    options={countryOptions}
+                    placeholder="Select your country"
+                    formatOptionLabel={(opt) => (
+                      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                        <span className={`fi fi-${opt.flag}`}/>
+                        <span>{opt.label}</span>
+                      </div>
+                    )}
+                    onChange={(sel: PropsValue<CountryOption>) =>
+                      field.onChange(Array.isArray(sel) ? sel[0] : sel)
+                    }
+                    styles={{
+                      control: (b) => ({ ...b, backgroundColor: "var(--a-input)", borderColor: errors.country ? "#ef4444" : "var(--a-border)", borderWidth: "1.5px", borderRadius: 8, boxShadow: "none", paddingTop: 6, paddingBottom: 6 }),
+                      singleValue: (b) => ({ ...b, color: "var(--a-fg)" }),
+                      menu: (b) => ({ ...b, zIndex: 50, backgroundColor: isDark ? "#1c1510" : "#fff", border: "1px solid var(--a-border)", borderRadius: 8 }),
+                      option: (b, { isFocused, isSelected }) => ({ ...b, backgroundColor: isSelected ? "#c0392b" : isFocused ? (isDark ? "rgba(255,255,255,.06)" : "#ede8de") : "transparent", color: isSelected ? "#fff" : "var(--a-fg)", cursor: "pointer" }),
+                      placeholder: (b) => ({ ...b, color: "var(--a-muted)", fontSize: ".9rem" }),
+                      input: (b) => ({ ...b, color: "var(--a-fg)" }),
+                    }}
+                  />
                 )}
-              </div>
-
-              <div className="relative flex-1">
-                <input
-                  id="lastName"
-                  type="text"
-                  {...register("lastName")}
-                  className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
-                    errors.lastName
-                      ? "border-red-500"
-                      : "border-gray-300 dark:border-gray-600/50"
-                  }`}
-                  placeholder=" "
-                />
-                <label
-                  htmlFor="lastName"
-                  className={`absolute left-3 text-gray-400 dark:text-gray-500 transition-all pointer-events-none ${
-                    watchedValues.lastName
-                      ? "text-xs top-1"
-                      : "peer-focus:text-xs peer-focus:top-1 top-3"
-                  }`}
-                >
-                  Last Name
-                </label>
-                {errors.lastName && (
-                  <p className="text-red-500 text-sm mt-1">
-                    {errors.lastName.message as string}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="relative">
-              <input
-                id="email"
-                type="email"
-                {...register("email")}
-                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
-                  errors.email
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600/50"
-                }`}
-                placeholder=" "
               />
-              <label
-                htmlFor="email"
-                className={`absolute left-3 text-gray-400 dark:text-gray-500 transition-all pointer-events-none ${
-                  watchedValues.email
-                    ? "text-xs top-1"
-                    : "peer-focus:text-xs peer-focus:top-1 top-3"
-                }`}
-              >
-                Email
-              </label>
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.email.message as string}
-                </p>
-              )}
-            </div>
-
-            {/* Country Dropdown */}
-            <div className="relative">
-              {mounted && (
-                <Controller
-                  name="country"
-                  control={control}
-                  render={({ field }) => {
-                    const value = field.value as CountryOption | undefined;
-
-                    return (
-                      <Select<CountryOption, false, GroupBase<CountryOption>>
-                        instanceId="country-select"
-                        value={value ?? null}
-                        options={countryOptions}
-                        placeholder="Select Country"
-                        formatOptionLabel={formatOptionLabel}
-                        onChange={(selected: PropsValue<CountryOption>) => {
-                          const sel = Array.isArray(selected)
-                            ? (selected[0] as CountryOption)
-                            : (selected as CountryOption);
-                          field.onChange(sel);
-                        }}
-                        styles={{
-                          control: (base) => ({
-                            ...base,
-                            backgroundColor: "transparent",
-                            borderColor: errors.country ? "red" : "#9ca3af",
-                            borderRadius: "0.375rem",
-                            boxShadow: "none",
-                            paddingTop: 8,
-                            paddingBottom: 8,
-                            color: theme === "dark" ? "#fff" : "#000",
-                          }),
-                          singleValue: (base) => ({
-                            ...base,
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            color: theme === "dark" ? "#fff" : "#000",
-                          }),
-                          menu: (base) => ({
-                            ...base,
-                            zIndex: 50,
-                            backgroundColor:
-                              theme === "dark" ? "#2c1a0c" : "#fff",
-                            color: theme === "dark" ? "#fff" : "#000",
-                          }),
-                          option: (base, { isFocused, isSelected }) => ({
-                            ...base,
-                            backgroundColor: isSelected
-                              ? theme === "dark"
-                                ? "#c14e2a"
-                                : "#fed7aa"
-                              : isFocused
-                                ? theme === "dark"
-                                  ? "#8b3518"
-                                  : "#f3f4f6"
-                                : "transparent",
-                            color:
-                              isSelected || isFocused
-                                ? theme === "dark"
-                                  ? "#fff"
-                                  : "#000"
-                                : theme === "dark"
-                                  ? "#d1d5db"
-                                  : "#000",
-                            cursor: "pointer",
-                          }),
-                          placeholder: (base) => ({
-                            ...base,
-                            color: theme === "dark" ? "#9ca3af" : "#6b7280",
-                          }),
-                          input: (base) => ({
-                            ...base,
-                            color: theme === "dark" ? "#fff" : "#000",
-                          }),
-                        }}
-                      />
-                    );
-                  }}
-                />
-              )}
-              {errors.country && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.country.message as string}
-                </p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div className="relative">
-              <input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                {...register("password")}
-                className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 focus:outline-none transition-all ${
-                  errors.password
-                    ? "border-red-500"
-                    : "border-gray-300 dark:border-gray-600/50"
-                }`}
-                placeholder=" "
-              />
-              <label
-                htmlFor="password"
-                className={`absolute left-3 text-gray-400 dark:text-gray-500 transition-all pointer-events-none ${
-                  watchedValues.password
-                    ? "text-xs top-1"
-                    : "peer-focus:text-xs peer-focus:top-1 top-3"
-                }`}
-              >
-                Password
-              </label>
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-4 text-gray-400 dark:text-gray-500"
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.password.message as string}
-                </p>
-              )}
-
-              {/* Password Requirements */}
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1.5 mt-3">
-                {[
-                  {
-                    label: "Use 8 or more characters",
-                    test: (v: string) => v.length >= 8,
-                  },
-                  {
-                    label: "One Uppercase character",
-                    test: (v: string) => /[A-Z]/.test(v),
-                  },
-                  {
-                    label: "One special character (e.g: #[])",
-                    test: (v: string) => /[^A-Za-z0-9]/.test(v),
-                  },
-                  {
-                    label: "One Lowercase character",
-                    test: (v: string) => /[a-z]/.test(v),
-                  },
-                  { label: "One Number", test: (v: string) => /[0-9]/.test(v) },
-                ].map((rule) => {
-                  const pass = watchedValues.password
-                    ? rule.test(watchedValues.password)
-                    : false;
-                  return (
-                    <div key={rule.label} className="flex items-center gap-1.5">
-                      <span
-                        className={`w-1.5 h-1.5 rounded-full ${pass ? "bg-green-500" : "bg-gray-300 dark:bg-gray-600"}`}
-                      />
-                      <span
-                        className={`text-xs ${pass ? "text-green-600 dark:text-green-400" : "text-gray-400 dark:text-gray-500"}`}
-                      >
-                        {rule.label}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Hidden referral code field */}
-            <input type="hidden" {...register("referralCode")} />
-
-            {/* Submit */}
-            <Button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#c14e2a] hover:bg-[#a8401f] text-white py-6 rounded-md"
-            >
-              {!loading ? (
-                <span>Create Account</span>
-              ) : (
-                <PulseLoader color="#fff" size={15} />
-              )}
-            </Button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3">
-              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600/50" />
-              <span className="text-sm text-gray-400 dark:text-gray-500">
-                or sign up with
-              </span>
-              <div className="flex-1 h-px bg-gray-200 dark:bg-gray-600/50" />
-            </div>
-
-            {/* Google Button */}
-            <button
-              type="button"
-              className="w-full flex items-center justify-center gap-3 py-3 border border-gray-300 dark:border-gray-600/50 rounded-md bg-white dark:bg-[#2c1a0c]/50 hover:bg-gray-50 dark:hover:bg-[#2c1a0c]/80 transition-all"
-            >
-              <svg width="20" height="20" viewBox="0 0 24 24">
-                <path
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"
-                  fill="#4285F4"
-                />
-                <path
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                  fill="#FBBC05"
-                />
-                <path
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                  fill="#EA4335"
-                />
-              </svg>
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                Google
-              </span>
-            </button>
-
-            {/* <div className="text-left text-sm">
-              <div className="">
-                <Checkbox id="terms" className="inline-block mr-2" />
-                By signing up you agree to{" "}
-                <Link
-                  href="/privacy-policy"
-                  className="text-blue-500 hover:underline"
-                >
-                  Terms and Condition
-                </Link>{" "}
-                &{" "}
-                <Link
-                  href="/privacy-policy"
-                  className="text-blue-500 hover:underline"
-                >
-                  Privacy Policy
-                </Link>
-              </div>
-            </div> */}
-
-            {message && (
-              <p
-                className={`text-center text-sm ${
-                  message.startsWith("Registration")
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
-              >
-                {message}
-              </p>
             )}
-          </form>
-        </motion.div>
-      </div>
-
-      {/* Right side visual */}
-      <div className="hidden flex-1 items-center justify-center bg-linear-to-br from-[#3d1a0a] via-[#c14e2a] to-[#3d1a0a] dark:from-[#1c0f06] dark:via-[#2c1a0c] dark:to-[#0e0804] p-8 rounded-l-3xl">
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative w-full max-w-md flex flex-col items-center text-center text-white space-y-6"
-        >
-          {/* <h2 className="text-2xl font-semibold">
-            Join millions of traders worldwide
-          </h2> */}
-          <div className="relative w-full aspect-square overflow-hidden">
-            {/* <Image
-              src="/images/trusted.webp"
-              alt="Trading Community"
-              width={825}
-              height={770}
-              className="object-cover"
-            /> */}
+            {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country.message}</p>}
           </div>
-        </motion.div>
+
+          {/* password */}
+          <div className="a-field mb-2">
+            <input id="password" type={showPassword ? "text" : "password"} {...register("password")} className="a-input pr-10" placeholder=" "
+              style={{ borderColor: errors.password ? "#ef4444" : undefined }} />
+            <label htmlFor="password" className={`a-label ${watched.password ? "up" : ""}`}>Password</label>
+            <button type="button" onClick={() => setShowPassword(s => !s)}
+              className="absolute right-3 top-3.5 text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] cursor-pointer bg-transparent border-none">
+              {showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}
+            </button>
+          </div>
+
+          {/* password rules */}
+          <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 mb-5">
+            {[
+              { l: "8+ characters",    t: (v: string) => v.length >= 8 },
+              { l: "Uppercase letter", t: (v: string) => /[A-Z]/.test(v) },
+              { l: "Special char",     t: (v: string) => /[^A-Za-z0-9]/.test(v) },
+              { l: "Lowercase letter", t: (v: string) => /[a-z]/.test(v) },
+              { l: "One number",       t: (v: string) => /[0-9]/.test(v) },
+            ].map(rule => {
+              const pass = watched.password ? rule.t(watched.password) : false;
+              return (
+                <div key={rule.l} className="flex items-center gap-1.5">
+                  <span className="rounded-full shrink-0" style={{ width: 6, height: 6, background: pass ? "#22c55e" : "var(--a-border)", display: "block" }} />
+                  <span style={{ fontSize: ".72rem", color: pass ? "#22c55e" : "var(--a-muted)", fontWeight: 600 }}>{rule.l}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          <input type="hidden" {...register("referralCode")} />
+
+          {/* submit */}
+          <button type="submit" disabled={loading} className="a-submit w-full rounded-lg text-[#f5f0e8] font-extrabold uppercase tracking-widest cursor-pointer transition-all disabled:opacity-60"
+            style={{ padding: "1rem", border: "none", background: "#1c1510", fontSize: ".88rem", letterSpacing: ".1em", boxShadow: "0 4px 18px rgba(28,21,16,.2)" }}>
+            {loading ? <PulseLoader color="#f5f0e8" size={10}/> : "Create Account →"}
+          </button>
+
+          {message && (
+            <p className={`text-center text-sm font-semibold mt-4 ${message.startsWith("Registration") ? "text-green-500" : "text-red-500"}`}>
+              {message}
+            </p>
+          )}
+        </form>
+
+        <p className="oc-mono text-center mt-8 text-[#8c7b6a]/40 dark:text-[rgba(245,240,232,0.15)]" style={{ fontSize: ".62rem", letterSpacing: ".06em" }}>
+          © {new Date().getFullYear()} Orchard Capitals
+        </p>
       </div>
-      </div>
-    </PagePreloader>
+    </OCAuthShell>
   );
 }
 
-// ----------------------
-// Export with Suspense Wrapper
-// ----------------------
 export default function RegisterPage() {
   return (
-    <Suspense
-      fallback={
-        <div className="min-h-screen flex items-center justify-center">
-          Loading...
-        </div>
-      }
-    >
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-[#120e0a] text-[#f5f0e8]" style={{ fontFamily: "serif", fontSize: "1.2rem" }}>
+        Loading...
+      </div>
+    }>
       <RegisterPageContent />
     </Suspense>
   );

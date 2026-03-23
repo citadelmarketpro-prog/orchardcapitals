@@ -1,13 +1,9 @@
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import OCPageShell from "@/components/site/OCPageShell";
 import Link from "next/link";
-import PagePreloader from "@/components/PagePreloader";
 
 export default function AutoGuard() {
   return (
-    <PagePreloader>
-      <Navbar />
-      <main className="pt-16 lg:pt-20">
+    <OCPageShell>
         {/* Hero Section */}
         <section className="relative overflow-hidden bg-white dark:bg-gray-900/50 py-24 lg:py-36">
           {/* Subtle dotted background pattern using theme variable */}
@@ -272,8 +268,6 @@ export default function AutoGuard() {
           </div>
         </section>
 
-        <Footer />
-      </main>
-    </PagePreloader>
+    </OCPageShell>
   );
 }

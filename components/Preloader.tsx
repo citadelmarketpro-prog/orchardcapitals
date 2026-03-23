@@ -1,45 +1,25 @@
 "use client";
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import Image from "next/image";
+import OCLogo from "@/components/site/OCLogo";
 
 export default function Preloader() {
-  const { resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Avoid hydration mismatch by showing a neutral state until mounted
-  const logoSrc = mounted && resolvedTheme === "dark"
-    ? "/logo_light.png"
-    : "/logo_dark.png";
-
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309]">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f5f0e8] dark:bg-[#120e0a]">
       {/* Logo */}
-      <div className="mb-12">
-        <Image
-          src={logoSrc}
-          alt="Orchard Capitals"
-          width={300}
-          height={75}
-          className="w-64 h-auto"
-          priority
-        />
+      <div className="mb-10">
+        <OCLogo size="lg" />
       </div>
 
-      {/* Circular Loading Spinner */}
-      <div className="relative w-16 h-16 mb-8">
-        <div className="absolute inset-0 rounded-full border-4 border-gray-200 dark:border-gray-700"></div>
-        <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#c14e2a] dark:border-t-orange-500 animate-spin"></div>
+      {/* Spinner — rust ring */}
+      <div className="relative w-12 h-12 mb-6">
+        <div className="absolute inset-0 rounded-full border-[3px] border-[#d6cfc2] dark:border-[rgba(255,255,255,0.08)]" />
+        <div className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-[#c0392b] animate-spin" />
       </div>
 
-      {/* Loading Text */}
-      <p className="text-lg font-medium text-gray-600 dark:text-gray-300 animate-pulse">
-        Loading...
+      {/* Text */}
+      <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.35)] text-xs font-medium tracking-[0.18em] uppercase animate-pulse"
+        style={{ fontFamily: "var(--oc-mono,'IBM Plex Mono',monospace)" }}>
+        Loading…
       </p>
     </div>
   );

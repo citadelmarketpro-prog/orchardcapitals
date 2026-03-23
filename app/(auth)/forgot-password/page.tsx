@@ -4,215 +4,187 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { ArrowLeft, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Mail, ShieldCheck, Lock, Eye } from "lucide-react";
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { toast } from "sonner";
 import { PulseLoader } from "react-spinners";
-import PagePreloader from "@/components/PagePreloader";
+import OCAuthShell, { OCBrand } from "@/components/site/OCAuthShell";
 
-const forgotPasswordSchema = z.object({
+const forgotSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
 });
+type ForgotFormData = z.infer<typeof forgotSchema>;
 
-type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
+const FEATURES = [
+  { icon: <ShieldCheck size={16}/>, label: "Bank-level encryption on all reset tokens" },
+  { icon: <Lock size={16}/>,        label: "Tokens expire after 15 minutes" },
+  { icon: <Eye size={16}/>,         label: "Reset activity logged for your security" },
+  { icon: <Mail size={16}/>,        label: "Sent only to your verified email address" },
+];
+
+function ForgotLeft() {
+  return (
+    <div className="flex flex-col flex-1 relative overflow-hidden" style={{ padding: "2.8rem 3rem" }}>
+      <div className="absolute rounded-full pointer-events-none" style={{ width: 700, height: 700, top: -200, right: -200, background: "radial-gradient(circle,rgba(155,44,44,.15) 0%,transparent 65%)", animation: "aGlowA 20s ease-in-out infinite alternate" }} />
+      <div className="oc-serif absolute pointer-events-none select-none" style={{ bottom: "-2rem", left: "-1rem", fontSize: "18vw", fontWeight: 300, lineHeight: 1, color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,.03)", fontStyle: "italic", whiteSpace: "nowrap" }}>
+        Secure
+      </div>
+
+      {/* nav row */}
+      <div className="relative z-10 flex items-center justify-between">
+        <OCBrand light />
+        <Link href="/login" className="oc-mono transition-colors" style={{ fontSize: ".62rem", letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(245,240,232,.3)", textDecoration: "none" }}
+          onMouseEnter={e => (e.currentTarget.style.color = "#f5f0e8")}
+          onMouseLeave={e => (e.currentTarget.style.color = "rgba(245,240,232,.3)")}
+        >
+          Back to sign in →
+        </Link>
+      </div>
+
+      {/* body */}
+      <div className="relative z-10 flex flex-col flex-1 justify-center py-12">
+        <div className="flex items-center gap-3 mb-8">
+          <div style={{ width: 36, height: 1, background: "#c0392b" }} />
+          <span className="oc-mono" style={{ fontSize: ".62rem", letterSpacing: ".2em", textTransform: "uppercase", color: "rgba(245,240,232,.35)" }}>Account recovery</span>
+        </div>
+
+        <h2 className="oc-serif" style={{ fontSize: "clamp(2.8rem,4.5vw,5.2rem)", fontWeight: 300, lineHeight: .96, letterSpacing: "-.025em", color: "#f5f0e8", marginBottom: "2rem" }}>
+          We&apos;ve got<br /><em style={{ fontStyle: "italic", color: "#c0392b", display: "block" }}>you covered.</em>
+        </h2>
+        <p style={{ fontSize: "1rem", color: "rgba(245,240,232,.4)", lineHeight: 1.75, maxWidth: 340, fontWeight: 500, marginBottom: "2.5rem" }}>
+          Forgot your password? No problem. We&apos;ll send a secure reset link directly to your inbox.
+        </p>
+
+        {/* security features */}
+        <div className="flex flex-col gap-3" style={{ maxWidth: 380 }}>
+          {FEATURES.map((f, i) => (
+            <div key={i} className="flex items-center gap-3" style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 8, padding: ".75rem 1rem" }}>
+              <div className="shrink-0 flex items-center justify-center rounded-full" style={{ width: 32, height: 32, background: "rgba(192,57,43,.15)", color: "#c0392b" }}>
+                {f.icon}
+              </div>
+              <span style={{ fontSize: ".82rem", color: "rgba(245,240,232,.6)", fontWeight: 500 }}>{f.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* bottom stat */}
+      <div className="relative z-10 pt-8" style={{ borderTop: "1px solid rgba(255,255,255,.07)" }}>
+        <span className="oc-serif" style={{ fontSize: "1.8rem", fontWeight: 400, color: "#f5f0e8", display: "block", lineHeight: 1 }}>100%</span>
+        <span className="oc-mono" style={{ fontSize: ".58rem", color: "rgba(245,240,232,.25)", letterSpacing: ".1em", textTransform: "uppercase", marginTop: ".25rem", display: "block" }}>Secure Recovery Rate</span>
+      </div>
+    </div>
+  );
+}
 
 export default function ForgotPasswordPage() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading]   = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm<ForgotPasswordFormData>({
-    resolver: zodResolver(forgotPasswordSchema),
-  });
+  const { register, handleSubmit, formState: { errors }, watch } =
+    useForm<ForgotFormData>({ resolver: zodResolver(forgotSchema) });
 
-  const emailValue = watch("email");
+  const emailVal = watch("email");
 
-  const onSubmit = async (data: ForgotPasswordFormData) => {
+  const onSubmit = async (data: ForgotFormData) => {
     setLoading(true);
-
     try {
       const response = await apiFetch("/password-reset/request/", {
         method: "POST",
         body: JSON.stringify({ email: data.email }),
       });
-
       const result = await response.json();
-
-      if (!response.ok) {
-        toast.error(result?.error || "Failed to send reset email");
-        return;
-      }
-
+      if (!response.ok) { toast.error(result?.error || "Failed to send reset email"); return; }
       setEmailSent(true);
       toast.success("Password reset link sent! Check your email.");
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast.error("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
+  /* ── Email sent state ── */
   if (emailSent) {
     return (
-      <PagePreloader>
-        <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="w-full max-w-md text-center space-y-6"
-        >
-          <div className="w-20 h-20 bg-orange-100 dark:bg-orange-500/20 rounded-full flex items-center justify-center mx-auto">
-            <Mail className="w-10 h-10 text-[#c14e2a]" />
+      <OCAuthShell leftPanel={<ForgotLeft />}>
+        <div className="a-anim w-full text-center" style={{ maxWidth: 390 }}>
+          <div className="flex items-center justify-center mx-auto mb-6 rounded-full" style={{ width: 72, height: 72, background: "rgba(192,57,43,.1)", border: "1px solid rgba(192,57,43,.25)" }}>
+            <Mail size={32} color="#c0392b"/>
           </div>
 
-          <h1 className="text-2xl font-bold text-black dark:text-white">
-            Check Your Email
+          <h1 className="oc-serif text-[#1c1510] dark:text-[#f5f0e8] mb-3" style={{ fontSize: "2.4rem", fontWeight: 400, lineHeight: 1.04, letterSpacing: "-.02em" }}>
+            Check your <em style={{ fontStyle: "italic", color: "#c0392b" }}>inbox.</em>
           </h1>
-
-          <p className="text-gray-600 dark:text-gray-300">
-            We&apos;ve sent a password reset link to{" "}
-            <strong>{emailValue}</strong>. Please check your inbox and spam
-            folder.
+          <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] mb-8" style={{ fontSize: ".92rem", lineHeight: 1.65, fontWeight: 500 }}>
+            We&apos;ve sent a password reset link to <strong className="text-[#1c1510] dark:text-[#f5f0e8]">{emailVal}</strong>. Check your inbox and spam folder.
           </p>
 
-          <div className="pt-4">
-            <Link href="/login">
-              <Button className="w-full p-5 bg-[#c14e2a] hover:bg-[#a8401f]">
-                Back to Login
-              </Button>
-            </Link>
-          </div>
+          <Link href="/login">
+            <button className="a-submit w-full rounded-lg text-[#f5f0e8] font-extrabold uppercase tracking-widest cursor-pointer mb-4"
+              style={{ padding: "1rem", border: "none", background: "#1c1510", fontSize: ".88rem", letterSpacing: ".1em", boxShadow: "0 4px 18px rgba(28,21,16,.2)" }}>
+              Back to Login
+            </button>
+          </Link>
 
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".85rem" }}>
             Didn&apos;t receive the email?{" "}
-            <button
-              onClick={() => setEmailSent(false)}
-              className="text-[#c14e2a] hover:underline"
-            >
+            <button onClick={() => setEmailSent(false)} className="cursor-pointer bg-transparent border-none" style={{ color: "#c0392b", fontWeight: 700, textDecoration: "underline", fontSize: ".85rem" }}>
               Try again
             </button>
           </p>
-        </motion.div>
         </div>
-      </PagePreloader>
+      </OCAuthShell>
     );
   }
 
+  /* ── Form state ── */
   return (
-    <PagePreloader>
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gradient-to-br dark:from-[#0e0804] dark:via-[#1c0f06] dark:to-[#251309] px-8">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md space-y-6"
-      >
-        {/* Logo */}
-        <Link
-          href="/"
-          className="hidden dark:flex text-2xl md:text-4xl font-extrabold justify-center"
-        >
-          <Image
-            alt="logo"
-            src={"/logo_light.png"}
-            className="w-50"
-            width={1000}
-            height={250}
-          />
-        </Link>
-        <Link
-          href="/"
-          className="flex dark:hidden text-2xl md:text-4xl font-extrabold justify-center"
-        >
-          <Image
-            alt="logo"
-            src={"/logo_dark.png"}
-            className="w-50"
-            width={1000}
-            height={250}
-          />
-        </Link>
-
-        <div className="space-y-2">
-          <Link
-            href="/login"
-            className="inline-flex items-center text-sm text-[#c14e2a] hover:underline"
-          >
-            <ArrowLeft className="w-4 h-4 mr-1" />
-            Back to Login
-          </Link>
-
-          <h1 className="text-3xl font-bold text-black dark:text-white">
-            Forgot Password?
-          </h1>
-
-          <p className="text-gray-600 dark:text-gray-300">
-            Enter your email address and we&apos;ll send you a link to reset
-            your password.
-          </p>
+    <OCAuthShell leftPanel={<ForgotLeft />}>
+      <div className="a-anim w-full" style={{ maxWidth: 390 }}>
+        {/* eyebrow */}
+        <div className="a-eyebrow">
+          <div className="shrink-0" style={{ width: 22, height: 1, background: "#c0392b" }} />
+          <span className="oc-mono text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".6rem", letterSpacing: ".2em", textTransform: "uppercase" }}>Account recovery</span>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Email Input */}
-          <div className="relative">
-            <input
-              id="email"
-              type="email"
-              {...register("email")}
-              className={`peer w-full border rounded-md px-3 pt-5 pb-2 bg-white dark:bg-[#2c1a0c]/50 text-black dark:text-white focus:outline-none transition-all ${
-                errors.email
-                  ? "border-red-500"
-                  : "border-gray-300 dark:border-gray-600/50"
-              }`}
-              placeholder=" "
-            />
-            <label
-              htmlFor="email"
-              className={`absolute left-3 text-gray-500 dark:text-gray-400 transition-all pointer-events-none ${
-                emailValue
-                  ? "text-xs top-1"
-                  : "peer-focus:text-xs peer-focus:top-1 top-3"
-              }`}
-            >
-              Email Address
-            </label>
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
+        <h1 className="oc-serif text-[#1c1510] dark:text-[#f5f0e8]" style={{ fontSize: "2.8rem", fontWeight: 400, lineHeight: 1.04, letterSpacing: "-.02em", marginBottom: ".6rem" }}>
+          Forgot your<br /><em style={{ fontStyle: "italic", color: "#c0392b" }}>password?</em>
+        </h1>
+        <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".88rem", lineHeight: 1.6, fontWeight: 500, marginBottom: "2rem" }}>
+          Enter your email address and we&apos;ll send you a secure link to reset your password.
+        </p>
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="a-field">
+            <input id="email" type="email" {...register("email")} className="a-input" placeholder=" "
+              style={{ borderColor: errors.email ? "#ef4444" : undefined }} />
+            <label htmlFor="email" className={`a-label ${emailVal ? "up" : ""}`}>Email Address</label>
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
           </div>
 
-          <Button
-            disabled={loading}
-            type="submit"
-            className="w-full py-6 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-md"
-          >
-            {!loading ? (
-              <span>Send Reset Link</span>
-            ) : (
-              <PulseLoader color="#fff" size={15} />
-            )}
-          </Button>
+          <button type="submit" disabled={loading} className="a-submit w-full rounded-lg text-[#f5f0e8] font-extrabold uppercase tracking-widest cursor-pointer transition-all disabled:opacity-60 mt-2"
+            style={{ padding: "1rem", border: "none", background: "#1c1510", fontSize: ".88rem", letterSpacing: ".1em", boxShadow: "0 4px 18px rgba(28,21,16,.2)" }}>
+            {loading ? <PulseLoader color="#f5f0e8" size={10}/> : "Send Reset Link →"}
+          </button>
 
-          <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+          <div className="h-px a-line my-6" />
+          <p className="text-center text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".88rem", fontWeight: 500 }}>
             Remember your password?{" "}
-            <Link href="/login" className="text-[#c14e2a] hover:underline">
+            <Link href="/login" style={{ color: "#c0392b", fontWeight: 800, textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+              onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
+            >
               Sign in
             </Link>
           </p>
         </form>
-      </motion.div>
+
+        <p className="oc-mono text-center mt-8 text-[#8c7b6a]/40 dark:text-[rgba(245,240,232,0.15)]" style={{ fontSize: ".62rem", letterSpacing: ".06em" }}>
+          © {new Date().getFullYear()} Orchard Capitals
+        </p>
       </div>
-    </PagePreloader>
+    </OCAuthShell>
   );
 }

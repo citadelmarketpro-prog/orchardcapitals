@@ -24,8 +24,8 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import NotificationDropdown from "./portfolio/NotificationDropdown";
 import UserProfileMenu from "./portfolio/UserProfileMenu";
-import Image from "next/image";
 import { apiFetch } from "@/lib/api";
+import OCLogo from "@/components/site/OCLogo";
 
 const primaryLinks = [
   { name: "Dashboard", href: "/portfolio", icon: Home },
@@ -113,22 +113,7 @@ export default function TopNav({ onMenuClick, user }: TopNavProps) {
           </button>
 
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-0">
-            <Image
-              src={"/logo_dark.png"}
-              className="block dark:hidden w-40"
-              alt=""
-              width={1000}
-              height={250}
-            />
-            <Image
-              src={"/logo_light.png"}
-              className="hidden dark:block w-40"
-              alt=""
-              width={1000}
-              height={250}
-            />
-          </Link>
+          <OCLogo size="sm" href="/" />
 
           {/* Desktop Nav Links */}
           <nav className="hidden lg:flex items-center space-x-0.5">

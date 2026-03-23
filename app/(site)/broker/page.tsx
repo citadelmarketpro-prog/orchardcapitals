@@ -1,13 +1,9 @@
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import OCPageShell from "@/components/site/OCPageShell";
 import Link from "next/link";
-import PagePreloader from "@/components/PagePreloader";
 
 export default function BrokerPartnership() {
   return (
-    <PagePreloader>
-      <Navbar />
-      <main className="pt-16 lg:pt-20">
+    <OCPageShell>
         {/* Hero Section (img4) */}
         <section className="relative overflow-hidden bg-white dark:bg-gray-900/50 py-24 lg:py-36">
           <div className="pointer-events-none absolute inset-0 opacity-20 bg-[radial-gradient(circle,var(--dot-color)_1px,transparent_1px)] bg-size-[16px_16px]" />
@@ -373,8 +369,6 @@ export default function BrokerPartnership() {
           </div>
         </section>
 
-        <Footer />
-      </main>
-    </PagePreloader>
+    </OCPageShell>
   );
 }

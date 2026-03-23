@@ -1,13 +1,9 @@
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import OCPageShell from "@/components/site/OCPageShell";
 import Link from "next/link";
-import PagePreloader from "@/components/PagePreloader";
 
 export default function EndUserLicenseAgreement() {
   return (
-    <PagePreloader>
-      <Navbar />
-      <main className="pt-16 lg:pt-20">
+    <OCPageShell>
         <div className="max-w-4xl mx-auto px-6 py-12 lg:py-20">
           {/* Header */}
           <div className="mb-12">
@@ -325,8 +321,6 @@ export default function EndUserLicenseAgreement() {
             </section>
           </div>
         </div>
-        <Footer />
-      </main>
-    </PagePreloader>
+    </OCPageShell>
   );
 }
