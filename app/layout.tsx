@@ -19,7 +19,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://scopstrade.com"),
+  metadataBase: new URL("https://orchardcapitals.com"),
   title: {
     default: "Orchard Capitals - Copy Futures, Options & Contracts with Precision",
     template: "%s | Orchard Capitals",
@@ -34,6 +34,23 @@ export const metadata: Metadata = {
     "trade copying",
     "Orchard Capitals",
   ],
+  openGraph: {
+    type: "website",
+    url: "https://orchardcapitals.com",
+    siteName: "Orchard Capitals",
+    title: "Orchard Capitals - Copy Futures, Options & Contracts with Precision",
+    description:
+      "Mirror real-time stock and options trades from top-performing traders. Precision, flexibility, and transparency straight to your fingertips.",
+    // og:image is generated automatically from app/opengraph-image.jpg
+    // (Next.js reads actual dimensions from the file — no manual entry needed)
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Orchard Capitals - Copy Futures, Options & Contracts with Precision",
+    description:
+      "Mirror real-time stock and options trades from top-performing traders. Precision, flexibility, and transparency straight to your fingertips.",
+    // twitter:image is generated automatically from app/twitter-image.jpg
+  },
   icons: {
     icon: [
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
