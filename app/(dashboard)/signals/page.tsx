@@ -35,7 +35,6 @@ interface PurchasedSignal {
   amount_paid: string;
   purchase_reference: string;
   purchased_at: string;
-  signal_data: any;
   current_signal: {
     name: string;
     signal_strength: string;
