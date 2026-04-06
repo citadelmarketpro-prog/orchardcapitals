@@ -31,6 +31,77 @@ import { useParams } from "next/navigation";
 import { PulseLoader } from "react-spinners";
 import { apiFetch } from "@/lib/api";
 
+const ASSET_LOGOS: Record<string, string> = {
+  // Stocks
+  AAPL:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768483429/AAPL_meg5uo.jpg",
+  TSLA:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768481807/Tesla__Inc.-Logo.wine_wwoywg.png",
+  NVDA:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768481834/Nvidia-Logo.wine_yo5q4t.png",
+  AMD:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768481985/Advanced_Micro_Devices-Logo.wine_shieiv.png",
+  MSFT:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768482104/MSFT_jg76ey.webp",
+  GOOGL: "https://res.cloudinary.com/dkii82r08/image/upload/v1768482264/googl_jb5hhg.webp",
+  AMZN:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768482319/Amazon_icon_c2x9qa.png",
+  META:  "https://res.cloudinary.com/dkii82r08/image/upload/v1771617427/pngimg.com_-_meta_PNG4_n8lrzf.png",
+  NFLX:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768482473/Netflix-Symbol_r7jspj.png",
+  INTC:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768482618/intel_zwi8d7.png",
+  PLTR:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768482690/PLTR_toi98h.jpg",
+  BA:    "https://res.cloudinary.com/dkii82r08/image/upload/v1768482804/PLTR_sqxwt2.png",
+  JPM:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768482867/JPM_btmunm.jpg",
+  BAC:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768482921/BAC_vns4wa.png",
+  WMT:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768482990/WMT_xdtp3q.png",
+  DIS:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768483074/DIS_n9o5md.png",
+  NKE:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768483167/NKE_iu2j3s.jpg",
+  V:     "https://res.cloudinary.com/dkii82r08/image/upload/v1768483228/visa_aw2sla.png",
+  MA:    "https://res.cloudinary.com/dkii82r08/image/upload/v1768483269/Mastercard-Logo.wine_qgppxs.png",
+  PYPL:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768483362/PYPL_p0lepo.png",
+  // Indices
+  NDX:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768484442/NDX_yu49af.png",
+  DJI:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768484480/DJI_vwotht.png",
+  RUT:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768484565/RUT_ysxqx8.png",
+  SPX:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768481285/spx-express-indonesia-seeklogo_y48fw2.png",
+  SPX1:  "https://res.cloudinary.com/dkii82r08/image/upload/v1768481285/spx-express-indonesia-seeklogo_y48fw2.png",
+  // ETFs
+  SPY:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768485376/SPY_cdsxvi.png",
+  QQQ:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768485415/QQQ_ez5rlo.png",
+  DIA:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768485455/DIA_jmzqm4.png",
+  IWM:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768485544/IWM_ucevnx.png",
+  VOO:   "https://res.cloudinary.com/dkii82r08/image/upload/v1768485590/VOO_ijarju.png",
+  // Forex
+  "EUR/USD": "https://res.cloudinary.com/dkii82r08/image/upload/v1768483658/EURUSD_esh2vx.png",
+  "GBP/USD": "https://res.cloudinary.com/dkii82r08/image/upload/v1768484686/GBPUSD_bfuz6d.png",
+  "USD/JPY": "https://res.cloudinary.com/dkii82r08/image/upload/v1768484792/USDJPY_lqsfsf.png",
+  "AUD/USD": "https://res.cloudinary.com/dkii82r08/image/upload/v1768484910/AUDUSD_t9dpps.png",
+  "USD/CAD": "https://res.cloudinary.com/dkii82r08/image/upload/v1768484974/USDCAD_zggbbx.jpg",
+  "USD/CHF": "https://res.cloudinary.com/dkii82r08/image/upload/v1768485021/USDCHF_cmofc9.jpg",
+  "NZD/USD": "https://res.cloudinary.com/dkii82r08/image/upload/v1768485097/NZDUSD_cgh0ns.jpg",
+  "EUR/GBP": "https://res.cloudinary.com/dkii82r08/image/upload/v1768485157/EURGBP_benw9p.jpg",
+};
+
+function AssetIcon({ ticker, name }: { ticker: string; name: string }) {
+  const logoUrl = ASSET_LOGOS[ticker?.toUpperCase()] ?? ASSET_LOGOS[ticker] ?? null;
+  if (logoUrl) {
+    return (
+      <div className="w-10 h-10 rounded-full overflow-hidden bg-white dark:bg-gray-800 shrink-0 border border-gray-100 dark:border-white/10 flex items-center justify-center">
+        <Image
+          src={logoUrl}
+          alt={name}
+          width={40}
+          height={40}
+          className="w-full h-full object-contain"
+          unoptimized
+        />
+      </div>
+    );
+  }
+  // Fallback: colored circle with initial
+  return (
+    <div className="w-10 h-10 rounded-full bg-[#c14e2a]/10 dark:bg-[#c14e2a]/20 flex items-center justify-center shrink-0">
+      <span className="text-[#c14e2a] text-sm font-bold">
+        {ticker?.charAt(0) || name.charAt(0)}
+      </span>
+    </div>
+  );
+}
+
 interface TraderDetail {
   id: number;
   name: string;
@@ -651,7 +722,7 @@ export default function TraderProfilePage() {
           <>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* Earnings Chart */}
-              <div className="lg:col-span-2 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
+              {/* <div className="lg:col-span-2 bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
                 <div className="mb-1">
                   <h2 className="text-sm font-medium text-gray-500 dark:text-gray-400">
                     Earnings
@@ -661,7 +732,7 @@ export default function TraderProfilePage() {
                   </p>
                 </div>
 
-                {/* Period Selector */}
+                
                 <div className="flex gap-1 mb-4">
                   {["1D", "1W", "1M", "3M", "1Y"].map((p) => (
                     <button
@@ -678,7 +749,7 @@ export default function TraderProfilePage() {
                   ))}
                 </div>
 
-                {/* Value */}
+                
                 <div className="flex items-baseline gap-3 mb-6">
                   <span className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">
                     ${earningsValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
@@ -695,7 +766,7 @@ export default function TraderProfilePage() {
                   </span>
                 </div>
 
-                {/* Chart */}
+                
                 <div className="h-56 sm:h-64">
                   <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData}>
@@ -767,7 +838,7 @@ export default function TraderProfilePage() {
                     </AreaChart>
                   </ResponsiveContainer>
                 </div>
-              </div>
+              </div> */}
 
               {/* Profile Data Sidebar */}
               <div className="bg-white dark:bg-[#1c0f06] border border-gray-100 dark:border-white/5 rounded-2xl p-5 sm:p-6">
@@ -878,11 +949,7 @@ export default function TraderProfilePage() {
                           >
                             <td className="py-4">
                               <div className="flex items-center gap-3">
-                                <div className="w-10 h-10 rounded-full bg-gray-900 dark:bg-gray-800 flex items-center justify-center shrink-0">
-                                  <span className="text-white text-sm font-bold">
-                                    {asset.ticker?.charAt(0) || asset.name.charAt(0)}
-                                  </span>
-                                </div>
+                                <AssetIcon ticker={asset.ticker} name={asset.name} />
                                 <div>
                                   <div className="text-sm font-semibold text-gray-900 dark:text-white">
                                     {asset.name}

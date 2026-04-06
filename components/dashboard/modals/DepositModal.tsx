@@ -29,7 +29,7 @@ interface DepositModalProps {
   onClose: () => void;
 }
 
-type DepositStep = "select" | "card" | "address" | "amount" | "details" | "success";
+type DepositStep = "select" | "card" | "amount" | "details" | "success";
 
 export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
   const [step, setStep] = useState<DepositStep>("select");
@@ -223,7 +223,9 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
       setSendingIntent(false);
     }
 
-    setStep("address");
+    setCountdown(7200);
+    setCopied(false);
+    setStep("details");
   };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -669,136 +671,32 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
             </div>
           )}
 
-          {/* ==================== STEP: COPY WALLET ADDRESS ==================== */}
-          {step === "address" && selectedWallet && (
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Deposit {selectedWallet.currency_display}
-                </h3>
-                <button
-                  onClick={handleClose}
-                  className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Selected Coin Info */}
-              <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/30 rounded-xl p-4 mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center bg-gray-200 dark:bg-[#0e0804]">
-                    {getCryptoIcon(selectedWallet.currency)}
-                  </div>
-                  <div>
-                    <p className="text-[#c14e2a] dark:text-orange-400 font-semibold">
-                      {selectedWallet.currency_display}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      {getNetworkName(selectedWallet.currency)}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Wallet Address */}
-              <div className="mb-5">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Send to this wallet address
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={selectedWallet.wallet_address}
-                    readOnly
-                    className="flex-1 px-3 py-2.5 bg-gray-100 dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-lg text-gray-700 dark:text-gray-300 text-xs font-mono focus:outline-none"
-                  />
-                  <button
-                    onClick={handleCopy}
-                    className={`px-4 py-2.5 rounded-lg transition-all flex items-center gap-1.5 text-sm font-medium ${
-                      copied
-                        ? "bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400"
-                        : "bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 text-gray-900 dark:text-white"
-                    }`}
-                  >
-                    {copied ? (
-                      <>
-                        <Check className="w-4 h-4" /> Copied
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="w-4 h-4" /> Copy
-                      </>
-                    )}
-                  </button>
-                </div>
-              </div>
-
-              {/* QR Code */}
-              {selectedWallet.qr_code_url && (
-                <div className="flex justify-center mb-5">
-                  <div className="bg-white p-4 rounded-lg border border-gray-200 dark:border-white/10">
-                    <Image
-                      src={selectedWallet.qr_code_url}
-                      alt="QR Code"
-                      width={150}
-                      height={150}
-                      className="rounded"
-                    />
-                    <p className="text-center text-xs text-gray-600 dark:text-gray-400 mt-2 font-medium">
-                      Scan to Pay
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Prompt to copy */}
-              {!copied && (
-                <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3 mb-5">
-                  <div className="flex items-start gap-2">
-                    <Info className="w-4 h-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                    <p className="text-xs text-gray-700 dark:text-gray-300">
-                      Please copy the wallet address above before proceeding to
-                      the next step.
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Buttons */}
-              <div className="flex gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setStep("amount");
-                    setCopied(false);
-                  }}
-                  className="flex-1 py-3 bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 text-gray-900 dark:text-white rounded-lg font-semibold transition-colors text-sm"
-                >
-                  Back
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setCountdown(7200);
-                    setStep("details");
-                  }}
-                  disabled={!copied}
-                  className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg font-semibold transition-colors disabled:opacity-40 disabled:cursor-not-allowed text-sm"
-                >
-                  Continue
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* ==================== STEP: ENTER AMOUNT ==================== */}
+          {/* ==================== STEP: AMOUNT ==================== */}
           {step === "amount" && selectedWallet && (
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                  Enter Amount
-                </h3>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => {
+                      setStep("select");
+                      setSelectedWallet(null);
+                      setDollarAmount("");
+                      setCurrencyAmount("");
+                      setError("");
+                    }}
+                    className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+                  >
+                    <ArrowLeft className="w-5 h-5" />
+                  </button>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white">
+                      Deposit {selectedWallet.currency_display}
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      Enter the amount you want to deposit
+                    </p>
+                  </div>
+                </div>
                 <button
                   onClick={handleClose}
                   className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
@@ -807,89 +705,64 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                 </button>
               </div>
 
-              {/* Currency Info */}
-              <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/30 rounded-xl p-4 mb-5">
-                <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full flex items-center justify-center bg-gray-200 dark:bg-[#0e0804]">
-                    {getCryptoIcon(selectedWallet.currency)}
-                  </div>
-                  <div>
-                    <p className="text-[#c14e2a] dark:text-orange-400 font-semibold">
-                      {selectedWallet.currency_display}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Rate: ${selectedWallet.amount} per unit
-                    </p>
-                  </div>
+              {/* Coin Info */}
+              <div className="flex items-center gap-4 bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/10 rounded-xl p-4 mb-6">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gray-200 dark:bg-[#0e0804] shrink-0">
+                  {getCryptoIcon(selectedWallet.currency)}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-semibold text-gray-900 dark:text-white">
+                    {selectedWallet.currency_display}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {getNetworkName(selectedWallet.currency)}
+                  </p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    Rate: <span className="text-gray-700 dark:text-gray-300 font-medium">${selectedWallet.amount} per unit</span>
+                  </p>
                 </div>
               </div>
 
-              {/* Info Banner */}
-              <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-xl p-4 mb-5">
-                <div className="flex items-start gap-2">
-                  <Info className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-xs text-gray-700 dark:text-gray-300 mb-2">
-                      Don&apos;t have cryptocurrency? Purchase from:
-                    </p>
-                    <div className="flex flex-wrap gap-1.5">
-                      {[
-                        { name: "Binance", url: "https://www.binance.com" },
-                        { name: "Coinbase", url: "https://www.coinbase.com" },
-                        { name: "Crypto.com", url: "https://crypto.com" },
-                        { name: "Kraken", url: "https://www.kraken.com" },
-                      ].map((ex) => (
-                        <a
-                          key={ex.name}
-                          href={ex.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="px-2.5 py-1 bg-gray-200 dark:bg-white/5 rounded-md text-[10px] text-gray-700 dark:text-gray-300 font-medium hover:bg-orange-100 dark:hover:bg-[#c14e2a]/10 hover:text-[#c14e2a] dark:hover:text-orange-400 transition-colors"
-                        >
-                          {ex.name}
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Amount Form */}
               <form onSubmit={handleAmountSubmit} className="space-y-4">
+                {/* USD Amount */}
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-2 font-medium">
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                     Amount (USD)
                   </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={dollarAmount}
-                    onChange={(e) => {
-                      setDollarAmount(e.target.value);
-                      setError("");
-                    }}
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1c0f06] border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-[#c14e2a] text-lg font-semibold placeholder-gray-400 dark:placeholder-gray-600"
-                    placeholder="0.00"
-                  />
-                  {error && (
-                    <p className="text-red-400 text-xs mt-1">{error}</p>
-                  )}
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 font-medium text-sm">$</span>
+                    <input
+                      type="number"
+                      min="1"
+                      step="any"
+                      value={dollarAmount}
+                      onChange={(e) => {
+                        setDollarAmount(e.target.value);
+                        setError("");
+                      }}
+                      className="w-full pl-7 pr-4 py-3 bg-gray-100 dark:bg-[#1c0f06] border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white focus:outline-none focus:border-[#c14e2a] text-sm placeholder-gray-400 dark:placeholder-gray-600"
+                      placeholder="0.00"
+                      autoFocus
+                    />
+                  </div>
                 </div>
 
-                {currencyAmount && dollarAmount && (
-                  <div className="bg-gray-100 dark:bg-[#1c0f06] rounded-lg p-4 border border-gray-200 dark:border-white/10">
-                    <p className="text-[10px] text-gray-500 dark:text-gray-400 mb-1">
-                      You will send:
+                {/* Crypto equivalent */}
+                {currencyAmount && (
+                  <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-xl p-3">
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-0.5">You will send</p>
+                    <p className="text-lg font-bold text-[#c14e2a] dark:text-orange-400">
+                      {currencyAmount}{" "}
+                      <span className="text-sm font-normal text-gray-500">{selectedWallet.currency}</span>
                     </p>
-                    <div className="flex items-baseline gap-2">
-                      <p className="text-xl font-bold text-[#c14e2a] dark:text-orange-400">
-                        {currencyAmount}
-                      </p>
-                      <p className="text-sm text-gray-500 dark:text-gray-400">
-                        {selectedWallet.currency}
-                      </p>
-                    </div>
                   </div>
+                )}
+
+                {error && (
+                  <p className="text-red-400 text-xs flex items-center gap-1">
+                    <AlertCircle className="w-3.5 h-3.5" />
+                    {error}
+                  </p>
                 )}
 
                 <div className="flex gap-3 pt-2">
@@ -897,7 +770,9 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                     type="button"
                     onClick={() => {
                       setStep("select");
+                      setSelectedWallet(null);
                       setDollarAmount("");
+                      setCurrencyAmount("");
                       setError("");
                     }}
                     className="flex-1 py-3 bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 text-gray-900 dark:text-white rounded-lg font-semibold transition-colors text-sm"
@@ -906,8 +781,8 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                   </button>
                   <button
                     type="submit"
-                    disabled={!dollarAmount || !currencyAmount || sendingIntent}
-                    className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center gap-2"
+                    disabled={sendingIntent || !dollarAmount || parseFloat(dollarAmount) <= 0}
+                    className="flex-1 py-3 bg-[#c14e2a] hover:bg-[#a8401f] text-white rounded-lg font-semibold transition-colors disabled:opacity-50 flex items-center justify-center gap-2 text-sm"
                   >
                     {sendingIntent ? (
                       <>
@@ -949,11 +824,11 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                   has been initiated.
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Send{" "}
+                  Please send{" "}
                   <span className="text-[#c14e2a] dark:text-orange-400 font-bold">
                     {currencyAmount} {selectedWallet.currency}
                   </span>{" "}
-                  to the address you copied.
+                  to the address below.
                 </p>
               </div>
 
@@ -961,13 +836,13 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
               <div className="bg-gray-50 dark:bg-[#1c0f06]/80 rounded-xl p-4 space-y-4">
                 {/* Step 1 */}
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#c14e2a] flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">
+                  <div className="w-6 h-6 rounded-full bg-[#c14e2a] flex items-center justify-center shrink-0 text-white text-xs font-bold">
                     1
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
                       <Target className="w-3.5 h-3.5" />
-                      Check coin
+                      Check coin ticker
                     </p>
                     <div className="flex items-center gap-2 bg-white dark:bg-[#0e0804] px-3 py-2 rounded-md">
                       <div className="w-5 h-5">
@@ -982,13 +857,13 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
 
                 {/* Step 2 */}
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#c14e2a] flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">
+                  <div className="w-6 h-6 rounded-full bg-[#c14e2a] flex items-center justify-center shrink-0 text-white text-xs font-bold">
                     2
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5 flex items-center gap-1.5">
                       <Shield className="w-3.5 h-3.5" />
-                      Total amount
+                      Check the total amount
                     </p>
                     <div className="bg-white dark:bg-[#0e0804] px-3 py-2 rounded-md">
                       <p className="text-lg font-bold text-[#c14e2a] dark:text-orange-400">
@@ -998,29 +873,64 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                         </span>
                       </p>
                       <p className="text-sm text-gray-500 dark:text-gray-400">
-                        = ${dollarAmount} USD
+                        ≈ ${dollarAmount} USD
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Step 3 */}
+                {/* Step 3 — wallet address with copy */}
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0 text-white text-xs font-bold">
-                    <Check className="w-3.5 h-3.5" />
+                  <div className="w-6 h-6 rounded-full bg-[#c14e2a] flex items-center justify-center shrink-0 text-white text-xs font-bold">
+                    3
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">
-                      Wallet address copied
+                      Send to this wallet address
                     </p>
-                    <div className="bg-white dark:bg-[#0e0804] px-3 py-2 rounded-md">
-                      <p className="text-xs font-mono text-gray-700 dark:text-gray-300 break-all">
-                        {selectedWallet.wallet_address}
-                      </p>
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={selectedWallet.wallet_address}
+                        readOnly
+                        className="flex-1 px-3 py-2.5 bg-white dark:bg-[#0e0804] border border-gray-200 dark:border-white/10 rounded-md text-gray-700 dark:text-gray-300 text-xs font-mono focus:outline-none"
+                      />
+                      <button
+                        onClick={handleCopy}
+                        className={`px-3 py-2.5 rounded-md transition-all flex items-center gap-1.5 text-xs font-medium shrink-0 ${
+                          copied
+                            ? "bg-green-500/10 border border-green-500/30 text-green-600 dark:text-green-400"
+                            : "bg-gray-200 dark:bg-white/5 hover:bg-gray-300 dark:hover:bg-white/10 text-gray-900 dark:text-white"
+                        }`}
+                      >
+                        {copied ? (
+                          <><Check className="w-3.5 h-3.5" /> Copied</>
+                        ) : (
+                          <><Copy className="w-3.5 h-3.5" /> Copy</>
+                        )}
+                      </button>
                     </div>
                   </div>
                 </div>
               </div>
+
+              {/* QR Code */}
+              {selectedWallet.qr_code_url && (
+                <div className="flex justify-center">
+                  <div className="bg-white p-4 rounded-xl border border-gray-200 dark:border-white/10 shadow-sm">
+                    <Image
+                      src={selectedWallet.qr_code_url}
+                      alt="QR Code"
+                      width={150}
+                      height={150}
+                      className="rounded"
+                    />
+                    <p className="text-center text-xs text-gray-500 dark:text-gray-400 mt-2 font-medium">
+                      Scan to Pay
+                    </p>
+                  </div>
+                </div>
+              )}
 
               {/* Countdown */}
               <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 text-center">
@@ -1106,7 +1016,7 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
               <div className="flex gap-3 pt-2 border-t border-gray-200 dark:border-white/10">
                 <button
                   onClick={() => {
-                    setStep("address");
+                    setStep("amount");
                     setReceipt(null);
                     setError("");
                   }}

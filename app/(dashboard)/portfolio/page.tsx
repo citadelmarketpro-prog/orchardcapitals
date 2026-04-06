@@ -12,6 +12,7 @@ import {
   FollowingSection,
   TradeCopiedSection,
 } from "@/components/dashboard/portfolio/TradingSections";
+import WalletConnectButton from "@/components/dashboard/WalletConnectButton";
 import DepositModal from "@/components/dashboard/modals/DepositModal";
 import WithdrawModal from "@/components/dashboard/modals/WithdrawModal";
 import TransactionHistoryModal from "@/components/dashboard/modals/TransactionHistoryModal";
@@ -122,19 +123,23 @@ export default function PortfolioPage() {
 
   return (
     <div className="space-y-4">
-      {/* Greeting */}
-      <motion.div
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-          {getGreeting()}, {dashboardData.firstName || "Trader"}
-        </h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
-          Here&apos;s an overview of your portfolio and trading activity
-        </p>
-      </motion.div>
+      {/* Greeting + Wallet Connect */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+        >
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            {getGreeting()}, {dashboardData.firstName || "Trader"}
+          </h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            Here&apos;s an overview of your portfolio and trading activity
+          </p>
+        </motion.div>
+
+        <WalletConnectButton />
+      </div>
 
       {/* ROW 1: Balance Card (2/3) + Right Sidebar (1/3) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">

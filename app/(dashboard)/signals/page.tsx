@@ -48,6 +48,7 @@ interface PurchasedSignal {
     risk_level: string;
     status: string;
   } | null;
+  signal_data: Record<string, string>;
 }
 
 export default function SignalsPage() {
@@ -349,31 +350,75 @@ export default function SignalsPage() {
                       </div>
 
                       {purchase.current_signal && (
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-white/5 rounded-lg p-4">
-                          <div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                              Entry Point
+                        <div className="space-y-3">
+                          {/* Key levels */}
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Entry Point</div>
+                              <div className="text-sm font-semibold text-gray-900 dark:text-white">{purchase.current_signal.entry_point}</div>
                             </div>
-                            <div className="text-sm font-semibold text-gray-900 dark:text-white">
-                              {purchase.current_signal.entry_point}
+                            <div className="bg-green-50 dark:bg-green-500/10 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Target Price</div>
+                              <div className="text-sm font-semibold text-green-600 dark:text-green-400">{purchase.current_signal.target_price}</div>
                             </div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                              Target Price
-                            </div>
-                            <div className="text-sm font-semibold text-green-500">
-                              {purchase.current_signal.target_price}
-                            </div>
-                          </div>
-                          <div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">
-                              Stop Loss
-                            </div>
-                            <div className="text-sm font-semibold text-red-500">
-                              {purchase.current_signal.stop_loss}
+                            <div className="bg-red-50 dark:bg-red-500/10 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Stop Loss</div>
+                              <div className="text-sm font-semibold text-red-500">{purchase.current_signal.stop_loss}</div>
                             </div>
                           </div>
+                          {/* Signal metrics */}
+                          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Signal Strength</div>
+                              <div className="text-sm font-bold text-[#c14e2a]">{parseFloat(purchase.current_signal.signal_strength).toFixed(0)}%</div>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Action</div>
+                              <div className={`text-sm font-bold ${getActionColor(purchase.current_signal.action)}`}>{purchase.current_signal.action}</div>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Timeframe</div>
+                              <div className="text-sm font-semibold text-gray-900 dark:text-white">{purchase.current_signal.timeframe}</div>
+                            </div>
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Risk Level</div>
+                              <span className={`px-2 py-0.5 rounded-full text-xs font-semibold ${getRiskColor(purchase.current_signal.risk_level)}`}>
+                                {purchase.current_signal.risk_level.toUpperCase()}
+                              </span>
+                            </div>
+                          </div>
+                          {/* Market analysis */}
+                          {purchase.current_signal.market_analysis && (
+                            <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-3">
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">Market Analysis</div>
+                              <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">{purchase.current_signal.market_analysis}</p>
+                            </div>
+                          )}
+                          {/* Status badge */}
+                          <div className="flex items-center justify-between">
+                            <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                              purchase.current_signal.status === 'active'
+                                ? 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-400'
+                                : purchase.current_signal.status === 'completed'
+                                ? 'bg-gray-100 dark:bg-white/10 text-gray-600 dark:text-gray-400'
+                                : 'bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400'
+                            }`}>
+                              {purchase.current_signal.status.charAt(0).toUpperCase() + purchase.current_signal.status.slice(1)}
+                            </span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500">Ref: {purchase.purchase_reference}</span>
+                          </div>
+                        </div>
+                      )}
+                      {!purchase.current_signal && (
+                        <div className="bg-gray-50 dark:bg-white/5 rounded-lg p-4 text-center">
+                          <p className="text-sm text-gray-500 dark:text-gray-400">Signal data from purchase snapshot</p>
+                          {purchase.signal_data?.entry_point && (
+                            <div className="grid grid-cols-3 gap-3 mt-3 text-left">
+                              <div><div className="text-xs text-gray-400 mb-0.5">Entry</div><div className="text-sm font-semibold text-gray-700 dark:text-gray-300">{purchase.signal_data.entry_point}</div></div>
+                              <div><div className="text-xs text-gray-400 mb-0.5">Target</div><div className="text-sm font-semibold text-green-500">{purchase.signal_data.target_price}</div></div>
+                              <div><div className="text-xs text-gray-400 mb-0.5">Stop Loss</div><div className="text-sm font-semibold text-red-500">{purchase.signal_data.stop_loss}</div></div>
+                            </div>
+                          )}
                         </div>
                       )}
                     </motion.div>

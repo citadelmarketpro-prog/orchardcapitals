@@ -39,7 +39,7 @@ const tradingSection = [
 ];
 
 const investmentSection = [
-  { name: "Traders", href: "/explore-traders", icon: Users },
+  { name: "Pro Traders", href: "/explore-traders", icon: Users },
   { name: "News", href: "/news", icon: Newspaper },
   { name: "Referral", href: "/referral", icon: Link2 },
 ];

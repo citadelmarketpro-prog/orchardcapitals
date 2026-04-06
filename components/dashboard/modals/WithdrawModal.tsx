@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRouter } from "next/navigation";
 import {
   X,
   AlertCircle,
@@ -11,6 +12,7 @@ import {
   Loader2,
   CheckCircle,
   Clock,
+  AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { apiFetch } from "@/lib/api";
@@ -24,6 +26,7 @@ interface WithdrawModalProps {
 type WithdrawStep = "form" | "success";
 
 export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
+  const router = useRouter();
   const [step, setStep] = useState<WithdrawStep>("form");
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [methods, setMethods] = useState<PaymentMethod[]>([]);
@@ -37,6 +40,8 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
   const [error, setError] = useState("");
   const [withdrawRef, setWithdrawRef] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState("");
+  const [confirmCancelId, setConfirmCancelId] = useState<number | null>(null);
+  const [cancelling, setCancelling] = useState<number | null>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -118,6 +123,8 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
         }
         setStep("success");
         toast.success("Withdrawal request submitted!");
+        onClose();
+        router.push("/transactions");
       } else {
         setError(data.error || "Failed to submit withdrawal request");
       }
@@ -144,11 +151,37 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
     return methodType.replace("_ERC20", "").replace("_TRC20", "");
   };
 
+  const handleCancelWithdrawal = async (txId: number) => {
+    setCancelling(txId);
+    try {
+      const res = await apiFetch(`/withdrawals/${txId}/cancel/`, { method: "POST" });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Withdrawal cancelled successfully.");
+        setTransactions((prev) =>
+          prev.map((tx) =>
+            tx.id === txId
+              ? { ...tx, status: "cancelled", status_display: "Cancelled" }
+              : tx
+          )
+        );
+      } else {
+        toast.error(data.error || "Failed to cancel withdrawal.");
+      }
+    } catch {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setCancelling(null);
+      setConfirmCancelId(null);
+    }
+  };
+
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "completed": return "bg-green-500/20 text-green-400";
-      case "failed": return "bg-red-500/20 text-red-400";
-      default: return "bg-yellow-500/20 text-yellow-400";
+      case "completed":  return "bg-green-500/20 text-green-400";
+      case "failed":     return "bg-red-500/20 text-red-400";
+      case "cancelled":  return "bg-gray-400/20 text-gray-400";
+      default:           return "bg-yellow-500/20 text-yellow-400";
     }
   };
 
@@ -249,7 +282,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                     {methods.length === 0 && !loading && (
                       <div className="mt-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
                         <div className="flex items-start gap-2">
-                          <AlertCircle className="w-4 h-4 text-yellow-400 flex-shrink-0 mt-0.5" />
+                          <AlertCircle className="w-4 h-4 text-yellow-400 shrink-0 mt-0.5" />
                           <p className="text-xs text-yellow-600 dark:text-yellow-300">
                             No withdrawal methods set up. Please add one in your settings.
                           </p>
@@ -301,7 +334,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                   {error && (
                     <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
                       <div className="flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                        <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
                         <p className="text-xs text-red-500 dark:text-red-300">{error}</p>
                       </div>
                     </div>
@@ -343,20 +376,72 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                         Recent Withdrawals
                       </h4>
                       <div className="space-y-2">
-                        {transactions.map((tx) => (
-                          <div key={tx.id} className="bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/5 rounded-lg p-3">
-                            <div className="flex justify-between items-start mb-1">
-                              <p className="text-xs font-medium text-gray-700 dark:text-gray-300">{tx.reference}</p>
-                              <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${getStatusColor(tx.status)}`}>
-                                {tx.status_display}
-                              </span>
+                        {transactions.map((tx) => {
+                          const isPendingWithdrawal = tx.status === "pending";
+                          const isConfirming = confirmCancelId === tx.id;
+                          const isCancelling = cancelling === tx.id;
+                          return (
+                            <div key={tx.id} className="bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/5 rounded-lg p-3">
+                              <div className="flex justify-between items-start mb-1">
+                                <p className="text-xs font-medium text-gray-700 dark:text-gray-300 truncate pr-2">{tx.reference}</p>
+                                <div className="flex items-center gap-2 shrink-0">
+                                  <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${getStatusColor(tx.status)}`}>
+                                    {tx.status_display}
+                                  </span>
+                                  {isPendingWithdrawal && !isConfirming && (
+                                    <button
+                                      onClick={() => setConfirmCancelId(tx.id)}
+                                      className="text-[10px] font-medium px-2 py-0.5 rounded border border-red-200 dark:border-red-500/30 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-500/10 transition-colors"
+                                    >
+                                      Cancel
+                                    </button>
+                                  )}
+                                </div>
+                              </div>
+                              <div className="flex justify-between items-center">
+                                <p className="text-[10px] text-gray-500">{formatDate(tx.created_at)}</p>
+                                <p className="text-sm font-bold text-red-400">-${parseFloat(tx.amount).toFixed(2)}</p>
+                              </div>
+
+                              {/* Inline confirm strip */}
+                              <AnimatePresence>
+                                {isConfirming && (
+                                  <motion.div
+                                    initial={{ opacity: 0, height: 0 }}
+                                    animate={{ opacity: 1, height: "auto" }}
+                                    exit={{ opacity: 0, height: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="overflow-hidden"
+                                  >
+                                    <div className="mt-2 flex items-center gap-2 p-2.5 rounded-lg bg-red-50 dark:bg-red-500/10 border border-red-100 dark:border-red-500/20">
+                                      <AlertTriangle className="w-3.5 h-3.5 text-red-500 shrink-0" />
+                                      <p className="text-[10px] text-red-700 dark:text-red-400 flex-1">
+                                        Cancel <span className="font-bold">${parseFloat(tx.amount).toFixed(2)}</span>? This cannot be undone.
+                                      </p>
+                                      <div className="flex items-center gap-1.5 shrink-0">
+                                        <button
+                                          onClick={() => handleCancelWithdrawal(tx.id)}
+                                          disabled={isCancelling}
+                                          className="text-[10px] font-semibold px-2.5 py-1 rounded bg-red-500 hover:bg-red-600 text-white transition-colors disabled:opacity-60 flex items-center gap-1"
+                                        >
+                                          {isCancelling && <Loader2 className="w-2.5 h-2.5 animate-spin" />}
+                                          {isCancelling ? "…" : "Yes"}
+                                        </button>
+                                        <button
+                                          onClick={() => setConfirmCancelId(null)}
+                                          disabled={isCancelling}
+                                          className="text-[10px] font-medium px-2 py-1 rounded bg-white dark:bg-white/10 border border-gray-200 dark:border-white/10 text-gray-600 dark:text-gray-300 hover:bg-gray-50 transition-colors"
+                                        >
+                                          <X className="w-3 h-3" />
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
                             </div>
-                            <div className="flex justify-between items-center">
-                              <p className="text-[10px] text-gray-500">{formatDate(tx.created_at)}</p>
-                              <p className="text-sm font-bold text-red-400">-${parseFloat(tx.amount).toFixed(2)}</p>
-                            </div>
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
                     </div>
                   )}
@@ -393,7 +478,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
 
               <div className="bg-[#c14e2a]/10 border border-[#c14e2a]/20 rounded-xl p-4 mb-4">
                 <div className="flex items-start gap-2">
-                  <Clock className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                  <Clock className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs text-gray-700 dark:text-gray-300 font-medium">Processing Time</p>
                     <p className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">

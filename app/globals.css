@@ -416,6 +416,56 @@ a:focus-visible {
   color: #ffffff;
 }
 
+/* ── Wallet Connect shimmer border ── */
+.wallet-shimmer-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  padding: 2px;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.wallet-shimmer-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: -60%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #c14e2a 60deg,
+    #e8784e 100deg,
+    #f5c5a8 140deg,
+    #ffffff 180deg,
+    #f5c5a8 220deg,
+    #e8784e 260deg,
+    #c14e2a 300deg,
+    transparent 360deg
+  );
+  animation: wallet-border-spin 2.8s linear infinite;
+  border-radius: inherit;
+}
+
+@keyframes wallet-border-spin {
+  to { transform: rotate(360deg); }
+}
+
+.dark .wallet-shimmer-wrapper::before {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    #7a2d14 40deg,
+    #c14e2a 80deg,
+    #e8784e 120deg,
+    #f0956a 160deg,
+    #ffe8d0 200deg,
+    #f0956a 240deg,
+    #e8784e 280deg,
+    #c14e2a 320deg,
+    transparent 360deg
+  );
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
