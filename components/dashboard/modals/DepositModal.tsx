@@ -389,7 +389,7 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
               </div>
 
               {/* Card Payment Option - Always at top */}
-              <div
+              {/* <div
                 className="bg-gray-50 dark:bg-[#1c0f06]/80 border border-gray-200 dark:border-white/10 rounded-xl p-4 hover:border-orange-400 dark:hover:border-[#c14e2a]/30 transition-all mb-4 cursor-pointer"
                 onClick={() => setStep("card")}
               >
@@ -415,7 +415,9 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                 >
                   Pay with Card
                 </button>
-              </div>
+              </div> */}
+
+            
 
               {loading ? (
                 <div className="flex items-center justify-center py-12">
