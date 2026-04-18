@@ -50,6 +50,15 @@ const TRADERS = [
   { i:"MC", img:"https://i.pravatar.cc/150?img=67", name:"Marcus Chen",    spec:"Swing Trader",       followers:"2.4K followers", badge:"Top 1%", ret:"+319%", bar:"95%", wr:"69%", tr:"2,108", dd:"−15.1%", col:"linear-gradient(135deg,#0369a1,#0ea5e9)" },
 ];
 
+const REVIEWS = [
+  { img:"https://i.pravatar.cc/150?img=33", name:"David R.",       loc:"San Francisco, CA",   rating:5, text:"OrchardCapitals completely changed how I invest. I've been mirroring Jake Reynolds for 8 months and my portfolio is up 94%. The execution is flawless — every trade hits instantly." },
+  { img:"https://i.pravatar.cc/150?img=47", name:"Priya K.",       loc:"London, UK",          rating:5, text:"I was skeptical at first but the results speak for themselves. Up 61% in six months just by following Sofia Martinez. The transparency and analytics are incredible." },
+  { img:"https://i.pravatar.cc/150?img=15", name:"Tom W.",         loc:"Sydney, Australia",   rating:5, text:"Finally a copy trading platform that actually works. No slippage, no excuses. I've tried three others and none come close to the fill quality here." },
+  { img:"https://i.pravatar.cc/150?img=64", name:"Amara O.",       loc:"Lagos, Nigeria",      rating:5, text:"The setup took literally four minutes. Now my account mirrors a top trader automatically. I check in once a week and the returns have been consistently strong." },
+  { img:"https://i.pravatar.cc/150?img=22", name:"Carlos M.",      loc:"Mexico City, Mexico", rating:5, text:"Best fintech product I've used in years. The trader analytics are deep — Sharpe ratios, full drawdown history, audited returns. Everything you need to make an informed choice." },
+  { img:"https://i.pravatar.cc/150?img=56", name:"Emma S.",        loc:"Toronto, Canada",     rating:4, text:"Really impressed with how smooth the onboarding was. Portfolio is up 38% in four months. Would love even more trader options but what's available is high quality." },
+];
+
 /* ─── Page ─── */
 export default function HomePage() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -59,6 +68,7 @@ export default function HomePage() {
   const [footerOpen, setFooterOpen] = useState<string|null>(null);
   const [intIdx, setIntIdx] = useState(0);
   const [intFade, setIntFade] = useState(false);
+  const [reviewIdx, setReviewIdx] = useState(0);
   const dotRef  = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
 
@@ -159,6 +169,10 @@ export default function HomePage() {
         /* reveal */
         .oc-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s ease,transform .75s ease; }
         .oc-reveal.oc-revealed { opacity:1; transform:none; }
+
+        /* review card fade-in */
+        @keyframes oc-review-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+        .oc-review-card { animation:oc-review-in .35s ease both; }
 
         /* marquee */
         @keyframes oc-mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
@@ -514,7 +528,7 @@ export default function HomePage() {
               <span className="oc-serif" style={{ fontSize:"clamp(1.5rem,2.5vw,2.8rem)", fontWeight:300, color:fg, letterSpacing:"-.01em" }}>Globally Regulated</span>
             </div>
             <div className="oc-stats-grid" style={{ border:`1px solid ${border}`, borderRadius:12, overflow:"hidden", maxWidth:860, margin:"0 auto", background:surf }}>
-              {[["118+","Active Traders"],["$10M+","Total Volume"],["1M+","Users"]].map(([v,l],i) => (
+              {[["32K+","Active Traders"],["$150M+","Total Volume"],["10M+","Users"]].map(([v,l],i) => (
                 <div key={i} style={{ padding:"clamp(1.2rem,3vw,2.5rem) clamp(.75rem,2vw,1.5rem)", textAlign:"center", borderRight: i<2?`1px solid ${border}`:undefined }}>
                   <span className="oc-serif" style={{ display:"block", fontSize:"clamp(2rem,5vw,3.8rem)", fontWeight:300, color:rust, lineHeight:1 }}>{v}</span>
                   <span className="oc-mono" style={{ display:"block", fontSize:".6rem", color:muted, textTransform:"uppercase", letterSpacing:".1em", marginTop:".5rem" }}>{l}</span>
@@ -540,7 +554,7 @@ export default function HomePage() {
 
           <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:1, background:`1px solid ${border}`, border:`1px solid ${isDark?"rgba(255,255,255,.06)":border}`, borderRadius:14, overflow:"hidden", marginTop: isDark?"5rem":"0" }}>
             {[
-              { n:"01", icon:<Link2 size={26}/>, title:"Register & Sign Up",    body:"Create your free account in under 2 minutes. Sign up with your email, verify your identity, and you're ready to start copy trading." },
+              { n:"01", icon:<Link2 size={26}/>, title:"Setting Up your Account",    body:"Create your free account in under 2 minutes. Sign up with your email, verify your identity, and you're ready to start copy trading." },
               { n:"02", icon:<Target size={26}/>, title:"Choose Expert Traders",  body:"Browse 340+ verified performers filtered by return, drawdown, win rate, and strategy. Every trader is fully audited — no black boxes." },
               { n:"03", icon:<Zap size={26}/>,    title:"Trades Mirror Instantly", body:"The moment a trade fires, your account mirrors proportionally. Zero delay. Complete control to pause or stop anytime." },
             ].map((step, i) => (
@@ -611,7 +625,6 @@ export default function HomePage() {
           <div className="oc-reveal oc-bento" style={{ display:"grid", gridTemplateColumns:"repeat(12,1fr)", gridTemplateRows:"auto auto", gap:"1.5rem", marginTop:"5rem" }}>
             {/* A — spans 7 */}
             <div className="oc-bc oc-bento-a" style={{ gridColumn:"span 7", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", overflow:"hidden", position:"relative" }}>
-              <div aria-hidden style={{ position:"absolute", bottom:"-1rem", right:"-.5rem", fontFamily:"var(--oc-serif)", fontStyle:"italic", fontSize:"8rem", fontWeight:300, color: isDark?"rgba(255,255,255,.03)":"rgba(139,124,106,.06)", pointerEvents:"none", lineHeight:1 }}>⚡</div>
               <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Execution Engine</div>
               <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>Real-Time Copy.<br/><em style={{ color:rust }}>Zero Delay.</em></div>
               <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>Trades execute in your account the millisecond they trigger. Proprietary order routing ensures fills within 0.01% of the original trade. Not lagged. Not approximated.</p>
@@ -619,7 +632,6 @@ export default function HomePage() {
             </div>
             {/* B — spans 5 */}
             <div className="oc-bc oc-bento-b" style={{ gridColumn:"span 5", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", position:"relative", overflow:"hidden" }}>
-              <div aria-hidden style={{ position:"absolute", bottom:"-1rem", right:"-.5rem", fontFamily:"var(--oc-serif)", fontStyle:"italic", fontSize:"8rem", fontWeight:300, color: isDark?"rgba(255,255,255,.03)":"rgba(139,124,106,.06)", pointerEvents:"none", lineHeight:1 }}>🛡</div>
               <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Compliance & Security</div>
               <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>Fully <em style={{ color:rust }}>Regulated.</em><br/>Always Audited.</div>
               <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>Compliant across major global jurisdictions. Your funds never leave your own brokerage. We only copy signals — we never hold your capital.</p>
@@ -635,7 +647,7 @@ export default function HomePage() {
             {/* D — spans 4, centered stat */}
             <div className="oc-bc oc-bento-d" style={{ gridColumn:"span 4", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:"center" }}>
               <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Active Copiers</div>
-              <div className="oc-serif" style={{ fontSize:"5rem", fontWeight:300, color:fg, lineHeight:1, letterSpacing:"-.03em" }}>12<span style={{ color:rust }}>K+</span></div>
+              <div className="oc-serif" style={{ fontSize:"5rem", fontWeight:300, color:fg, lineHeight:1, letterSpacing:"-.03em" }}>212<span style={{ color:rust }}>K+</span></div>
               <p style={{ fontSize:".85rem", color:muted, marginTop:".5rem", fontWeight:500 }}>investors worldwide</p>
             </div>
             {/* E — spans 4 */}
@@ -817,6 +829,74 @@ export default function HomePage() {
             ))}
           </div>
         </section>
+        {/* ════════════════════════ MEMBER REVIEWS ════════════════════════ */}
+        <section style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)" }}>
+          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", marginBottom:"3.5rem", textAlign:"center" }}>
+            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
+              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
+              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>Member Reviews</span>
+              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
+            </div>
+            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, marginTop:".5rem" }}>
+              Trusted by<br/><em style={{ color:rust }}>real investors.</em>
+            </h2>
+          </div>
+
+          <div style={{ position:"relative" }}>
+            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(290px,1fr))", gap:"1.5rem" }}>
+              {[
+                REVIEWS[reviewIdx % REVIEWS.length],
+                REVIEWS[(reviewIdx + 1) % REVIEWS.length],
+                REVIEWS[(reviewIdx + 2) % REVIEWS.length],
+              ].map((r, i) => (
+                <div key={`${reviewIdx}-${i}`} className="oc-review-card" style={{ border:`1px solid ${border}`, background:surf, borderRadius:14, padding:"2rem", display:"flex", flexDirection:"column", gap:"1.2rem" }}>
+                  <p style={{ fontSize:".9rem", color:muted, lineHeight:1.75, fontWeight:500, flexGrow:1 }}>&quot;{r.text}&quot;</p>
+                  <div style={{ display:"flex", alignItems:"center", gap:".85rem", paddingTop:"1rem", borderTop:`1px solid ${border}` }}>
+                    <img src={r.img} alt={r.name} style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", flexShrink:0 }}/>
+                    <div>
+                      <div style={{ fontWeight:800, fontSize:".9rem", color:fg }}>{r.name}</div>
+                      <div className="oc-mono" style={{ fontSize:".6rem", color:muted, letterSpacing:".06em", marginTop:".15rem" }}>{r.loc}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Trustpilot star rating strip */}
+            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:".75rem", marginTop:"2.5rem", paddingTop:"2.5rem", borderTop:`1px solid ${border}` }}>
+              <img src="/trustpilot_images/star.svg" alt="Trustpilot 4.5 star rating" style={{ width:120, height:"auto", display:"block" }}/>
+              <div style={{ display:"flex", alignItems:"center", gap:".75rem" }}>
+                <img src={isDark ? "/trustpilot_images/logo.svg" : "/trustpilot_images/logo_dark.svg"} alt="Trustpilot" style={{ height:18, display:"block" }}/>
+              </div>
+            </div>
+
+            <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem", marginTop:"2rem" }}>
+              <button
+                onClick={() => setReviewIdx((reviewIdx - 1 + REVIEWS.length) % REVIEWS.length)}
+                style={{ width:44, height:44, borderRadius:"50%", border:`1px solid ${border}`, background:surf, color:fg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"background .2s,border-color .2s" }}
+                onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background=rust;(e.currentTarget as HTMLButtonElement).style.borderColor=rust;}}
+                onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background=surf;(e.currentTarget as HTMLButtonElement).style.borderColor=border;}}
+                aria-label="Previous review">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
+              </button>
+              <div style={{ display:"flex", alignItems:"center", gap:".5rem" }}>
+                {REVIEWS.map((_,i) => (
+                  <button key={i} onClick={() => setReviewIdx(i)} style={{ width: reviewIdx===i ? 20 : 6, height:6, borderRadius:3, background: reviewIdx===i ? rust : border, border:"none", cursor:"pointer", padding:0, transition:"width .25s,background .25s" }} aria-label={`Go to review ${i+1}`}/>
+                ))}
+              </div>
+              <button
+                onClick={() => setReviewIdx((reviewIdx + 1) % REVIEWS.length)}
+                style={{ width:44, height:44, borderRadius:"50%", border:`1px solid ${border}`, background:surf, color:fg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"background .2s,border-color .2s" }}
+                onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background=rust;(e.currentTarget as HTMLButtonElement).style.borderColor=rust;}}
+                onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background=surf;(e.currentTarget as HTMLButtonElement).style.borderColor=border;}}
+                aria-label="Next review">
+                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+
 
 
         {/* ════════════════════════ CTA ════════════════════════ */}
@@ -834,7 +914,7 @@ export default function HomePage() {
               Start Copying<br/><em style={{ color:rust }}>the Best.</em>
             </h2>
             <p style={{ fontSize:"1rem", color:"rgba(245,240,232,.45)", lineHeight:1.7, maxWidth:480, margin:"0 auto 3.5rem", fontWeight:500 }}>
-              Join 12,000+ investors already mirroring the world's top traders. Setup takes under 5 minutes.
+              Join 300,000+ investors already mirroring the world's top traders. Setup takes under 5 minutes.
             </p>
             <div style={{ display:"flex", gap:"1rem", justifyContent:"center", flexWrap:"wrap" }}>
               <Link href="/register" style={{ background:cream, color:dark, padding:"1.1rem 3rem", fontSize:".85rem", fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none", borderRadius:4, transition:"background .2s,color .2s", display:"inline-block" }}
