@@ -45,9 +45,9 @@ const MARQUEE = [
 ];
 
 const TRADERS = [
-  { i:"JR", name:"Jake Reynolds",  spec:"Options Specialist", followers:"847 followers",  badge:"Top 1%", ret:"+182%", bar:"72%", wr:"74%", tr:"1,204", dd:"−8.2%",  col:"linear-gradient(135deg,#9b2c2c,#c0392b)" },
-  { i:"SM", name:"Sofia Martinez", spec:"Futures Trader",     followers:"1.2K followers", badge:"Top 3%", ret:"+241%", bar:"88%", wr:"81%", tr:"892",   dd:"−11.4%", col:"linear-gradient(135deg,#6d28d9,#a855f7)" },
-  { i:"MC", name:"Marcus Chen",    spec:"Swing Trader",       followers:"2.4K followers", badge:"Top 1%", ret:"+319%", bar:"95%", wr:"69%", tr:"2,108", dd:"−15.1%", col:"linear-gradient(135deg,#0369a1,#0ea5e9)" },
+  { i:"JR", img:"https://i.pravatar.cc/150?img=11", name:"Jake Reynolds",  spec:"Options Specialist", followers:"847 followers",  badge:"Top 1%", ret:"+182%", bar:"72%", wr:"74%", tr:"1,204", dd:"−8.2%",  col:"linear-gradient(135deg,#9b2c2c,#c0392b)" },
+  { i:"SM", img:"https://i.pravatar.cc/150?img=5",  name:"Sofia Martinez", spec:"Futures Trader",     followers:"1.2K followers", badge:"Top 3%", ret:"+241%", bar:"88%", wr:"81%", tr:"892",   dd:"−11.4%", col:"linear-gradient(135deg,#6d28d9,#a855f7)" },
+  { i:"MC", img:"https://i.pravatar.cc/150?img=67", name:"Marcus Chen",    spec:"Swing Trader",       followers:"2.4K followers", badge:"Top 1%", ret:"+319%", bar:"95%", wr:"69%", tr:"2,108", dd:"−15.1%", col:"linear-gradient(135deg,#0369a1,#0ea5e9)" },
 ];
 
 /* ─── Page ─── */
@@ -437,7 +437,7 @@ export default function HomePage() {
                     </div>
                     <div style={{ padding:"1.4rem" }}>
                       <div style={{ display:"flex", alignItems:"center", gap:".9rem", marginBottom:"1.2rem" }}>
-                        <div style={{ width:44, height:44, borderRadius:"50%", background:"linear-gradient(135deg,#9b2c2c,#c0392b)", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:".9rem", color:"white" }}>JR</div>
+                        <img src="https://i.pravatar.cc/150?img=11" alt="Jake Reynolds" style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
                         <div><div style={{ fontWeight:800, fontSize:".95rem", color:fg }}>Jake Reynolds</div><div style={{ fontSize:".72rem", color:muted, marginTop:".1rem" }}>Options Specialist · 847 followers</div></div>
                       </div>
                       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:"1rem" }}>
@@ -535,12 +535,12 @@ export default function HomePage() {
             <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, maxWidth:620, marginTop:".5rem" }}>
               Three steps.<br/><em style={{ color:rust }}>Zero complexity.</em>
             </h2>
-            {!isDark && <p style={{ fontSize:"1rem", color:bark, lineHeight:1.75, maxWidth:500, marginBottom:"5rem", fontWeight:500, marginTop:"1.2rem" }}>No manual trades. No order entry. Just link your broker, pick a trader, and every move mirrors instantly.</p>}
+            {!isDark && <p style={{ fontSize:"1rem", color:bark, lineHeight:1.75, maxWidth:500, marginBottom:"5rem", fontWeight:500, marginTop:"1.2rem" }}>No manual trades. No order entry. Just register, pick a trader, and every move mirrors instantly.</p>}
           </div>
 
           <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:1, background:`1px solid ${border}`, border:`1px solid ${isDark?"rgba(255,255,255,.06)":border}`, borderRadius:14, overflow:"hidden", marginTop: isDark?"5rem":"0" }}>
             {[
-              { n:"01", icon:<Link2 size={26}/>, title:"Connect Your Broker",    body:"Link your existing brokerage in under 2 minutes via secure API. We support TradeStation, Tastytrade, Ally Invest and more." },
+              { n:"01", icon:<Link2 size={26}/>, title:"Register & Sign Up",    body:"Create your free account in under 2 minutes. Sign up with your email, verify your identity, and you're ready to start copy trading." },
               { n:"02", icon:<Target size={26}/>, title:"Choose Expert Traders",  body:"Browse 340+ verified performers filtered by return, drawdown, win rate, and strategy. Every trader is fully audited — no black boxes." },
               { n:"03", icon:<Zap size={26}/>,    title:"Trades Mirror Instantly", body:"The moment a trade fires, your account mirrors proportionally. Zero delay. Complete control to pause or stop anytime." },
             ].map((step, i) => (
@@ -698,7 +698,7 @@ export default function HomePage() {
                 <div key={t.i} className="oc-tc" style={{ background:"rgba(255,255,255,.03)", border:"1px solid rgba(255,255,255,.07)", borderRadius:14, padding:"2rem" }}>
                   <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1.5rem" }}>
                     <div style={{ display:"flex", alignItems:"center", gap:".9rem" }}>
-                      <div style={{ width:52, height:52, borderRadius:"50%", background:t.col, display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:"1rem", color:"white" }}>{t.i}</div>
+                      <img src={t.img} alt={t.name} style={{ width:52, height:52, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
                       <div><div style={{ fontWeight:800, fontSize:".95rem", color:cream }}>{t.name}</div><div style={{ fontSize:".7rem", color:"rgba(245,240,232,.4)", marginTop:".15rem" }}>{t.spec} · {t.followers}</div></div>
                     </div>
                     <span className="oc-mono" style={{ fontSize:".55rem", letterSpacing:".1em", textTransform:"uppercase", border:"1px solid rgba(192,57,43,.35)", color:rust, padding:".2rem .65rem", borderRadius:100 }}>{t.badge}</span>
@@ -743,7 +743,7 @@ export default function HomePage() {
                 "OrchardCapitals is the first platform that actually <em style={{ color:rust }}>delivers</em> on the promise of copy trading. The execution quality is unlike anything else I've used in twelve years of investing."
               </blockquote>
               <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginBottom:"2.5rem" }}>
-                <div style={{ width:44, height:44, borderRadius:"50%", background:"linear-gradient(135deg,#0d9488,#2dd4bf)", display:"flex", alignItems:"center", justifyContent:"center", fontWeight:800, fontSize:".9rem", color:"white" }}>DR</div>
+                <img src="https://i.pravatar.cc/150?img=33" alt="David R." style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
                 <div><div style={{ fontWeight:800, fontSize:".95rem", color:fg }}>David R.</div><div style={{ fontSize:".75rem", color:muted, marginTop:".15rem" }}>Portfolio Manager · San Francisco</div></div>
               </div>
               <div style={{ display:"flex", gap:"3rem", paddingTop:"2.5rem", borderTop:`1px solid ${border}` }}>
