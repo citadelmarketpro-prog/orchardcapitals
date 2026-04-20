@@ -32,9 +32,11 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
   const [methods, setMethods] = useState<PaymentMethod[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [selectedMethod, setSelectedMethod] = useState("");
+  const [withdrawSource, setWithdrawSource] = useState<"balance" | "profit">("balance");
   const [amount, setAmount] = useState("");
   const [withdrawalAddress, setWithdrawalAddress] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isSourceDropdownOpen, setIsSourceDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -94,9 +96,15 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
     if (!selectedMethod) { setError("Please select a withdrawal method"); return; }
     if (!amount || parseFloat(amount) <= 0) { setError("Please enter a valid amount"); return; }
     if (!withdrawalAddress) { setError("Withdrawal address is required"); return; }
-    if (profile && parseFloat(amount) > parseFloat(profile.balance)) {
-      setError(`Insufficient balance. Your balance is ${profile.formatted_balance}`);
-      return;
+    if (profile) {
+      const available = withdrawSource === "profit"
+        ? parseFloat(profile.profit)
+        : parseFloat(profile.balance);
+      const label = withdrawSource === "profit" ? profile.formatted_profit : profile.formatted_balance;
+      if (parseFloat(amount) > available) {
+        setError(`Insufficient ${withdrawSource === "profit" ? "profit" : "balance"}. Available: ${label}`);
+        return;
+      }
     }
 
     setSubmitting(true);
@@ -107,6 +115,7 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
           method_type: selectedMethod,
           amount: amount,
           withdrawal_address: withdrawalAddress,
+          source: withdrawSource,
         }),
       });
 
@@ -138,10 +147,12 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
   const handleClose = () => {
     setStep("form");
     setSelectedMethod("");
+    setWithdrawSource("balance");
     setAmount("");
     setWithdrawalAddress("");
     setError("");
     setIsDropdownOpen(false);
+    setIsSourceDropdownOpen(false);
     setWithdrawRef("");
     setWithdrawAmount("");
     onClose();
@@ -230,14 +241,61 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
               ) : (
                 <div className="space-y-5">
                   {/* Balance Display */}
-                  <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Wallet Balance</p>
-                    <p className="text-3xl font-bold text-gray-900 dark:text-white">
-                      {profile ? profile.formatted_balance : "$0.00"}
-                    </p>
+                  <div className="flex gap-4">
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Main Balance</p>
+                      <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                        {profile ? profile.formatted_balance : "$0.00"}
+                      </p>
+                    </div>
+                    <div className="w-px bg-gray-200 dark:bg-white/10" />
+                    <div className="flex-1">
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Profit</p>
+                      <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                        {profile ? profile.formatted_profit : "$0.00"}
+                      </p>
+                    </div>
                   </div>
 
                   <hr className="border-gray-200 dark:border-white/10" />
+
+                  {/* Source Dropdown */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                      Withdraw From:
+                    </label>
+                    <div className="relative">
+                      <button
+                        onClick={() => setIsSourceDropdownOpen(!isSourceDropdownOpen)}
+                        className={`w-full px-4 py-3 rounded-lg text-left flex items-center justify-between transition-all bg-gray-100 dark:bg-[#1c0f06] border ${
+                          isSourceDropdownOpen ? "border-[#c14e2a]" : "border-gray-300 dark:border-white/10"
+                        } text-gray-900 dark:text-white`}
+                      >
+                        <span>{withdrawSource === "profit" ? "Profit" : "Main Balance"}</span>
+                        <ChevronDown className={`w-4 h-4 transition-transform ${isSourceDropdownOpen ? "rotate-180" : ""}`} />
+                      </button>
+                      {isSourceDropdownOpen && (
+                        <div className="absolute z-10 w-full mt-1.5 bg-white dark:bg-[#1c0f06] border border-gray-200 dark:border-white/10 rounded-lg shadow-lg overflow-hidden">
+                          {(["balance", "profit"] as const).map((src) => (
+                            <button
+                              key={src}
+                              onClick={() => { setWithdrawSource(src); setIsSourceDropdownOpen(false); setError(""); setAmount(""); }}
+                              className={`w-full px-4 py-2.5 text-left text-sm transition-colors hover:bg-gray-100 dark:hover:bg-white/5 ${
+                                withdrawSource === src ? "text-[#c14e2a] font-semibold" : "text-gray-900 dark:text-white"
+                              }`}
+                            >
+                              {src === "profit" ? "Profit" : "Main Balance"}
+                              {profile && (
+                                <span className="ml-2 text-xs text-gray-500">
+                                  ({src === "profit" ? profile.formatted_profit : profile.formatted_balance})
+                                </span>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
                   {/* Method Dropdown */}
                   <div>
@@ -305,9 +363,9 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                       step="0.01"
                       className="w-full px-4 py-3 bg-gray-100 dark:bg-[#1c0f06] border border-gray-300 dark:border-white/10 rounded-lg text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-600 focus:outline-none focus:border-[#c14e2a] transition-all"
                     />
-                    {profile && amount && parseFloat(amount) > parseFloat(profile.balance) && (
+                    {profile && amount && parseFloat(amount) > parseFloat(withdrawSource === "profit" ? profile.profit : profile.balance) && (
                       <p className="mt-1.5 text-xs text-red-400">
-                        Amount exceeds your balance of {profile.formatted_balance}
+                        Amount exceeds your {withdrawSource === "profit" ? "profit" : "balance"} of {withdrawSource === "profit" ? profile.formatted_profit : profile.formatted_balance}
                       </p>
                     )}
                   </div>
@@ -465,6 +523,10 @@ export default function WithdrawModal({ isOpen, onClose }: WithdrawModalProps) {
                 <div className="flex justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Amount:</span>
                   <span className="text-gray-900 dark:text-white font-semibold">${parseFloat(withdrawAmount).toFixed(2)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500 dark:text-gray-400">Source:</span>
+                  <span className="text-gray-900 dark:text-white font-semibold">{withdrawSource === "profit" ? "Profit" : "Main Balance"}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500 dark:text-gray-400">Method:</span>
