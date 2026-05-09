@@ -207,7 +207,7 @@ export default function BalanceCard({
                 className="text-[9px] font-semibold dark:text-orange-200 text-white uppercase tracking-widest mb-1"
                 style={{ textShadow: "0 1px 8px rgba(0,0,0,0.8)" }}
               >
-                Total Balance
+                Trading Balance
               </p>
               <p
                 className="text-2xl sm:text-[28px] font-extrabold text-white tracking-tight font-mono leading-none"
@@ -269,27 +269,43 @@ export default function BalanceCard({
             </div>
 
             {/* Bottom stats strip — white in light mode, dark panel in dark mode */}
-            <div className="relative z-10 mt-25 lg:mt-5 lg:max-w-112.5 grid grid-cols-2 rounded-xl overflow-hidden bg-white/95 dark:bg-black/30 backdrop-blur-md border border-white/80 dark:border-yellow-400/20">
-              <div className="px-4 py-3">
-                <p className="text-[9px] font-semibold text-gray-500 dark:text-orange-200/60 uppercase tracking-wider mb-1">
-                  Profit
-                </p>
-                <p className="text-[13px] font-semibold text-gray-900 dark:text-white font-mono">
-                  $
-                  {totalProfits.toLocaleString("en-US", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </p>
+            <div className="relative z-10 mt-25 lg:mt-5 lg:max-w-112.5 space-y-1.5">
+              <div className="grid grid-cols-2 rounded-xl overflow-hidden bg-white/95 dark:bg-black/30 backdrop-blur-md border border-white/80 dark:border-yellow-400/20">
+                <div className="px-4 py-3">
+                  <p className="text-[9px] font-semibold text-gray-500 dark:text-orange-200/60 uppercase tracking-wider mb-1">
+                    Profit
+                  </p>
+                  <p className="text-[13px] font-semibold text-gray-900 dark:text-white font-mono">
+                    $
+                    {totalProfits.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
+                </div>
+
+                <div className="px-4 py-3 border-l border-gray-100 dark:border-yellow-400/20">
+                  <p className="text-[9px] font-semibold text-gray-500 dark:text-orange-200/60 uppercase tracking-wider mb-1">
+                    Deposited
+                  </p>
+                  <p className="text-[13px] font-semibold text-gray-900 dark:text-white font-mono">
+                    $
+                    {totalDeposits.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </p>
+                </div>
               </div>
 
-              <div className="px-4 py-3 border-l border-gray-100 dark:border-yellow-400/20">
-                <p className="text-[9px] font-semibold text-gray-500 dark:text-orange-200/60 uppercase tracking-wider mb-1">
-                  Deposited
+              {/* Total Balance row */}
+              <div className="rounded-xl overflow-hidden bg-white/95 dark:bg-black/30 backdrop-blur-md border border-white/80 dark:border-yellow-400/20 px-4 py-3 flex items-center justify-between">
+                <p className="text-[9px] font-semibold text-gray-500 dark:text-orange-200/60 uppercase tracking-wider">
+                  Total Balance
                 </p>
                 <p className="text-[13px] font-semibold text-gray-900 dark:text-white font-mono">
                   $
-                  {totalDeposits.toLocaleString("en-US", {
+                  {(balance + totalProfits).toLocaleString("en-US", {
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
