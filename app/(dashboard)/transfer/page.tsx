@@ -19,8 +19,8 @@ export default function TransferPage() {
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const fromLabel = direction === "balance_to_profit" ? "Balance" : "Profit";
-  const toLabel = direction === "balance_to_profit" ? "Profit" : "Balance";
+  const fromLabel = direction === "balance_to_profit" ? "Trading Balance" : "Profit";
+  const toLabel = direction === "balance_to_profit" ? "Profit" : "Trading Balance";
   const fromValue = direction === "balance_to_profit" ? balance : profit;
   const toValue = direction === "balance_to_profit" ? profit : balance;
 
@@ -133,7 +133,7 @@ export default function TransferPage() {
         </label>
         <div className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/8">
           <span className="text-sm font-medium text-gray-900 dark:text-white">
-            {fromLabel} Account
+            {fromLabel}
           </span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             ${parseFloat(fromValue).toLocaleString(undefined, { minimumFractionDigits: 2 })}
@@ -158,7 +158,7 @@ export default function TransferPage() {
         </label>
         <div className="flex items-center justify-between px-4 py-3.5 rounded-xl bg-gray-50 dark:bg-white/[0.04] border border-gray-200 dark:border-white/8">
           <span className="text-sm font-medium text-gray-900 dark:text-white">
-            {toLabel} Account
+            {toLabel}
           </span>
           <span className="text-xs text-gray-500 dark:text-gray-400">
             ${parseFloat(toValue).toLocaleString(undefined, { minimumFractionDigits: 2 })}
