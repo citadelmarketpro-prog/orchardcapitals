@@ -20,6 +20,7 @@ import {
   Settings,
   ArrowDownToLine,
   ArrowUpFromLine,
+  ScrollText,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -36,6 +37,7 @@ const tradingSection = [
   { name: "Live Trade", href: "/live-trading", icon: Radio },
   { name: "Signals", href: "/signals", icon: TrendingUp },
   { name: "Trade History", href: "/trade-history", icon: History },
+  { name: "Order History", href: "/history", icon: ScrollText },
 ];
 
 const investmentSection = [
