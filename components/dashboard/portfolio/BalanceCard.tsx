@@ -264,7 +264,7 @@ export default function BalanceCard({
                 className="text-[8px] text-white/60 dark:text-orange-200/40 mt-1 uppercase tracking-wider"
                 style={{ textShadow: "0 1px 4px rgba(0,0,0,0.6)" }}
               >
-                Total Profit / Loss
+                Total PnL
               </p>
             </div>
 

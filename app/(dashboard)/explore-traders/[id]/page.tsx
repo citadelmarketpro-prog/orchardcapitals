@@ -270,6 +270,7 @@ export default function TraderProfilePage() {
   const [loadingBalance, setLoadingBalance] = useState(false);
   const [copyActionLoading, setCopyActionLoading] = useState(false);
   const [similarTraders, setSimilarTraders] = useState<SimilarTrader[]>([]);
+  const [activeCopy, setActiveCopy] = useState<{ trader_id: number; trader_name: string; cancel_requested: boolean } | null>(null);
 
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -277,6 +278,7 @@ export default function TraderProfilePage() {
 
   useEffect(() => {
     fetchUserBalance();
+    fetchActiveCopy();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -309,6 +311,21 @@ export default function TraderProfilePage() {
       console.error("Error fetching balance:", err);
     } finally {
       setLoadingBalance(false);
+    }
+  };
+
+  const fetchActiveCopy = async () => {
+    try {
+      const response = await apiFetch("/copy-trader/active/");
+      if (!response.ok) return;
+      const data = await response.json();
+      if (data.success && data.is_copying) {
+        setActiveCopy({ trader_id: data.trader_id, trader_name: data.trader_name, cancel_requested: data.cancel_requested });
+      } else {
+        setActiveCopy(null);
+      }
+    } catch (err) {
+      console.error("Error fetching active copy:", err);
     }
   };
 
@@ -569,8 +586,49 @@ export default function TraderProfilePage() {
                 </div>
 
                 {/* Copy Button */}
-                <div className="flex gap-2 shrink-0">
-                  {!isCopying ? (
+                <div className="flex flex-col gap-2 shrink-0">
+                  {isCopying ? (
+                    // Currently copying THIS trader
+                    cancelRequested ? (
+                      <span className="px-4 py-2.5 bg-orange-100 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 rounded-xl text-sm font-semibold flex items-center gap-1.5">
+                        <Clock className="w-4 h-4" />
+                        Cancel Requested
+                      </span>
+                    ) : (
+                      <div className="flex gap-2">
+                        <span className="px-4 py-2.5 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-xl text-sm font-semibold flex items-center gap-1.5">
+                          <UserCheck className="w-4 h-4" />
+                          Copying
+                        </span>
+                        <button
+                          onClick={handleCancelCopy}
+                          disabled={copyActionLoading}
+                          className={`px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
+                            copyActionLoading ? "opacity-50 cursor-not-allowed" : ""
+                          }`}
+                        >
+                          <X className="w-4 h-4" />
+                          {copyActionLoading ? "..." : "Stop"}
+                        </button>
+                      </div>
+                    )
+                  ) : activeCopy && activeCopy.trader_id !== Number(traderId) ? (
+                    // Copying a DIFFERENT trader — block
+                    <div className="flex flex-col items-end gap-1">
+                      <button
+                        disabled
+                        className="px-6 py-2.5 rounded-xl text-sm font-semibold bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed"
+                      >
+                        Copy Trader
+                      </button>
+                      <p className="text-xs text-orange-500 dark:text-orange-400 text-right max-w-[200px]">
+                        {activeCopy.cancel_requested
+                          ? `Awaiting admin approval to stop copying ${activeCopy.trader_name}`
+                          : `Already copying ${activeCopy.trader_name}. Stop that copy first.`}
+                      </p>
+                    </div>
+                  ) : (
+                    // Not copying any trader
                     <button
                       onClick={handleCopyTrader}
                       disabled={loadingBalance || copyActionLoading}
@@ -580,34 +638,8 @@ export default function TraderProfilePage() {
                           : "bg-lime-500 hover:bg-lime-600 text-gray-900 shadow-lg shadow-lime-500/25 hover:shadow-lime-500/40"
                       }`}
                     >
-                      {loadingBalance
-                        ? "Loading..."
-                        : copyActionLoading
-                          ? "Processing..."
-                          : "Copy Trader"}
+                      {loadingBalance ? "Loading..." : copyActionLoading ? "Processing..." : "Copy Trader"}
                     </button>
-                  ) : cancelRequested ? (
-                    <span className="px-4 py-2.5 bg-orange-100 dark:bg-orange-500/10 text-orange-700 dark:text-orange-400 rounded-xl text-sm font-semibold flex items-center gap-1.5">
-                      <Clock className="w-4 h-4" />
-                      Cancel Requested
-                    </span>
-                  ) : (
-                    <>
-                      <span className="px-4 py-2.5 bg-emerald-100 dark:bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 rounded-xl text-sm font-semibold flex items-center gap-1.5">
-                        <UserCheck className="w-4 h-4" />
-                        Copying
-                      </span>
-                      <button
-                        onClick={handleCancelCopy}
-                        disabled={copyActionLoading}
-                        className={`px-4 py-2.5 bg-red-500 hover:bg-red-600 text-white rounded-xl text-sm font-medium transition-all flex items-center gap-1.5 ${
-                          copyActionLoading ? "opacity-50 cursor-not-allowed" : ""
-                        }`}
-                      >
-                        <X className="w-4 h-4" />
-                        {copyActionLoading ? "..." : "Stop"}
-                      </button>
-                    </>
                   )}
                 </div>
               </div>
