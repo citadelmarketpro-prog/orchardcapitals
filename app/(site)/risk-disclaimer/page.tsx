@@ -36,7 +36,7 @@ export default function RiskDisclaimer() {
                   Orchard Capitals (UK) Ltd authorised by FCA under FRN 583263
                 </li>
                 <li>
-                  Orchard Capitals (USA) Ltd authorised by SEC; CRD 298461
+                  Orchard Capitals (USA) Ltd authorised by SEC; CRD 18000661
                 </li>
                 <li>
                   Orchard Capitals (ME) Limited licensed by ADGM&rsquo;s FSRA under Permission

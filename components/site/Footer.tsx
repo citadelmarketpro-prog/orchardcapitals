@@ -95,7 +95,7 @@ const Footer = () => {
               Authority (FCA) under the license FRN 583263. Registered Office:
               24th floor, One Canada Square, Canary Wharf, London E14 5AB.
               Orchard Capitals (USA) Ltd, a financial company authorised and regulated
-              by SEC; CRD 298461. API Level 2 Securities and Investments
+              by SEC; CRD 18000661. API Level 2 Securities and Investments
               Commission on Futures and Investments; Commission registered under
               Financial Services License 491139. Registered Office: Level 3, 60
               Castlereagh Street, Sydney NSW 2000, Australia. Orchard Capitals (ME)
