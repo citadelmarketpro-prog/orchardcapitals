@@ -1,17 +1,28 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
-import { useTheme } from "next-themes";
+import { Eye, EyeOff, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { apiFetch } from "@/lib/api";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { PulseLoader } from "react-spinners";
-import OCAuthShell, { OCBrand } from "@/components/site/OCAuthShell";
+import { Poppins } from "next/font/google";
+import OCLogo from "@/components/site/OCLogo";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--oc-poppins",
+  display: "swap",
+});
+
+const OC    = "#c14e2a";
+const BLACK = "#0a0a0a";
+const WHITE = "#ffffff";
 
 type FormValues = { email: string; password: string };
 
@@ -21,68 +32,22 @@ const loginSchema = z.object({
 });
 
 const TICKER = [
-  { s: "AAPL", p: "$189.42", c: "+2.34%", up: true },
-  { s: "NVDA", p: "$495.80", c: "+3.10%", up: true },
+  { s: "AAPL", p: "$189.42", c: "+2.34%", up: true  },
+  { s: "NVDA", p: "$495.80", c: "+3.10%", up: true  },
   { s: "TSLA", p: "$248.91", c: "−1.22%", up: false },
-  { s: "SPY",  p: "$475.30", c: "+0.87%", up: true },
+  { s: "SPY",  p: "$475.30", c: "+0.87%", up: true  },
 ];
 
-/* ─── Left panel ─── */
-function LoginLeft() {
-  return (
-    <div className="flex flex-col flex-1 p-[2.8rem_3rem] relative" style={{ padding: "2.8rem 3rem" }}>
-      {/* glows */}
-      <div className="absolute rounded-full pointer-events-none" style={{ width: 700, height: 700, top: -200, right: -200, background: "radial-gradient(circle,rgba(155,44,44,.18) 0%,transparent 65%)", animation: "aGlowA 18s ease-in-out infinite alternate" }} />
-      {/* watermark */}
-      <div className="oc-serif absolute pointer-events-none select-none" style={{ bottom: "-2rem", left: "-1rem", fontSize: "22vw", fontWeight: 300, lineHeight: 1, color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,.035)", fontStyle: "italic", whiteSpace: "nowrap" }}>
-        Trade
-      </div>
-      {/* nav row */}
-      <div className="relative z-10 flex items-center justify-between">
-        <OCBrand light />
-        <Link href="/register" className="oc-mono transition-colors" style={{ fontSize: ".62rem", letterSpacing: ".12em", textTransform: "uppercase", color: "rgba(245,240,232,.3)", textDecoration: "none" }}
-          onMouseEnter={e => (e.currentTarget.style.color = "#f5f0e8")}
-          onMouseLeave={e => (e.currentTarget.style.color = "rgba(245,240,232,.3)")}
-        >
-          New here? Create account →
-        </Link>
-      </div>
-      {/* body */}
-      <div className="relative z-10 flex flex-col flex-1 justify-center py-12">
-        <h2 className="oc-serif" style={{ fontSize: "clamp(3rem,4.5vw,5.5rem)", fontWeight: 300, lineHeight: .96, letterSpacing: "-.025em", color: "#f5f0e8", marginBottom: "2rem" }}>
-          Welcome<br /><em style={{ fontStyle: "italic", color: "#c0392b", display: "block" }}>back.</em>
-        </h2>
-        <p style={{ fontSize: "1rem", color: "rgba(245,240,232,.4)", lineHeight: 1.75, maxWidth: 360, fontWeight: 500, marginBottom: "2.5rem" }}>
-          Your portfolio is waiting. Sign in to see your copied trades, performance, and expert traders.
-        </p>
-        {/* ticker */}
-        <div className="flex flex-col gap-2" style={{ maxWidth: 340 }}>
-          {TICKER.map(t => (
-            <div key={t.s} className="flex items-center justify-between" style={{ background: "rgba(255,255,255,.04)", border: "1px solid rgba(255,255,255,.07)", borderRadius: 8, padding: ".7rem 1rem" }}>
-              <span className="oc-mono" style={{ fontSize: ".72rem", color: "#f5f0e8", fontWeight: 600 }}>{t.s}</span>
-              <span className="oc-mono" style={{ fontSize: ".7rem", color: "rgba(245,240,232,.5)" }}>{t.p}</span>
-              <span className="oc-mono" style={{ fontSize: ".7rem", color: t.up ? "#4ade80" : "#f87171" }}>{t.up ? "↑" : "↓"} {t.c}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* stats */}
-      <div className="relative z-10 flex pt-8" style={{ borderTop: "1px solid rgba(255,255,255,.07)" }}>
-        {[["12K+","Active Copiers"],["$2.1B","Volume Copied"],["97%","Fill Accuracy"]].map(([n,l],i,a) => (
-          <div key={l} className="flex flex-col" style={{ paddingRight: i<a.length-1?"2rem":0, marginRight: i<a.length-1?"2rem":0, borderRight: i<a.length-1?"1px solid rgba(255,255,255,.07)":"none" }}>
-            <span className="oc-serif" style={{ fontSize: "1.8rem", fontWeight: 400, color: "#f5f0e8", lineHeight: 1 }}>{n}</span>
-            <span className="oc-mono" style={{ fontSize: ".58rem", color: "rgba(245,240,232,.25)", letterSpacing: ".1em", textTransform: "uppercase", marginTop: ".25rem" }}>{l}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
+const STATS = [
+  { value: "500K+", label: "Active Investors"  },
+  { value: "$2.4B+", label: "Assets Under Copy" },
+  { value: "98%",    label: "Fill Accuracy"     },
+];
 
-/* ─── Page ─── */
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading]           = useState(false);
+  const [loading,      setLoading]      = useState(false);
+  const [focused,      setFocused]      = useState<string | null>(null);
   const router = useRouter();
 
   const { register, handleSubmit, formState: { errors }, watch } =
@@ -123,97 +88,238 @@ export default function LoginPage() {
     }
   };
 
+  /* ── Shared input style ── */
+  const inputStyle = (field: string, hasError: boolean): React.CSSProperties => ({
+    width: "100%",
+    background: focused === field ? "rgba(255,255,255,0.07)" : "rgba(255,255,255,0.04)",
+    border: `1px solid ${hasError ? "#ef4444" : focused === field ? OC : "rgba(255,255,255,0.1)"}`,
+    borderRadius: 10,
+    padding: "14px 16px",
+    color: WHITE,
+    fontSize: 15,
+    outline: "none",
+    transition: "border-color 0.2s, background 0.2s",
+    fontFamily: "var(--oc-poppins)",
+    boxSizing: "border-box",
+  });
+
   return (
-    <OCAuthShell leftPanel={<LoginLeft />}>
-      <div className="a-anim w-full" style={{ maxWidth: 390 }}>
-        {/* eyebrow */}
-        <div className="a-eyebrow">
-          <div className="flex-shrink-0" style={{ width: 22, height: 1, background: "#c0392b" }} />
-          <span className="oc-mono text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".6rem", letterSpacing: ".2em", textTransform: "uppercase" }}>Welcome back</span>
+    <div
+      className={poppins.variable}
+      style={{ fontFamily: "var(--oc-poppins), system-ui, sans-serif", minHeight: "100vh", background: BLACK, display: "flex", overflowX: "hidden" }}
+    >
+      {/* ══════════════════════════════════════════
+          LEFT PANEL — branding
+      ══════════════════════════════════════════ */}
+      <div
+        className="hidden lg:flex"
+        style={{ flex: "0 0 48%", flexDirection: "column", position: "relative", overflow: "hidden", padding: "40px 52px", borderRight: "1px solid rgba(255,255,255,0.06)" }}
+      >
+        {/* Ambient glows */}
+        <div style={{ position: "absolute", top: -140, right: -140, width: 640, height: 640, background: `radial-gradient(circle, ${OC}22 0%, transparent 65%)`, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: -80, left: -60,  width: 400, height: 400, background: `radial-gradient(circle, ${OC}10 0%, transparent 65%)`, pointerEvents: "none" }} />
+
+        {/* Watermark */}
+        <div style={{ position: "absolute", bottom: "-1.5rem", left: "-1rem", fontFamily: "var(--oc-poppins)", fontSize: "18vw", fontWeight: 300, lineHeight: 1, color: "transparent", WebkitTextStroke: "1px rgba(255,255,255,0.03)", fontStyle: "italic", whiteSpace: "nowrap", pointerEvents: "none", userSelect: "none" }}>
+          Orchard
         </div>
 
-        <h1 className="oc-serif text-[#1c1510] dark:text-[#f5f0e8]" style={{ fontSize: "2.8rem", fontWeight: 400, lineHeight: 1.04, letterSpacing: "-.02em", marginBottom: ".6rem" }}>
-          Sign in to<br /><em style={{ fontStyle: "italic", color: "#c0392b" }}>your account.</em>
-        </h1>
-        <p className="text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".88rem", lineHeight: 1.6, fontWeight: 500, marginBottom: "2rem" }}>
-          Don&apos;t have an account?{" "}
-          <Link href="/register" style={{ color: "#c0392b", fontWeight: 700, textDecoration: "none" }}
-            onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
-            onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
-          >
-            Create one free
+        {/* Logo row */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <OCLogo light size="sm" href="/" />
+          <Link href="/register"
+            style={{ color: "rgba(255,255,255,0.28)", fontSize: 12, fontWeight: 500, textDecoration: "none", transition: "color 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
+            onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.28)")}>
+            New here? Create account →
           </Link>
-        </p>
-
-        {/* Google */}
-        <button type="button" className="a-oauth w-full flex items-center justify-center gap-2 rounded-lg mb-5" style={{ padding: ".75rem 1rem", fontSize: ".82rem", fontWeight: 700, cursor: "pointer" }}>
-          <svg width="18" height="18" viewBox="0 0 24 24">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Continue with Google
-        </button>
-
-        {/* divider */}
-        <div className="flex items-center gap-3 mb-5">
-          <div className="flex-1 h-px a-line" />
-          <span className="oc-mono a-or" style={{ fontSize: ".58rem", letterSpacing: ".1em", textTransform: "uppercase" }}>or with email</span>
-          <div className="flex-1 h-px a-line" />
         </div>
 
-        {/* form */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* email */}
-          <div className="a-field">
-            <input id="email" type="email" {...register("email")} className="a-input" placeholder=" "
-              style={{ borderColor: errors.email ? "#ef4444" : undefined }} />
-            <label htmlFor="email" className={`a-label ${emailVal ? "up" : ""}`}>Email Address</label>
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+        {/* Headline + tickers */}
+        <div style={{ position: "relative", zIndex: 1, flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", paddingTop: 40, paddingBottom: 40 }}>
+          {/* Eyebrow */}
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}18`, border: `1px solid ${OC}30`, borderRadius: 100, padding: "6px 14px", marginBottom: 28, alignSelf: "flex-start" }}>
+            <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
+            <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Copy Trading Platform</span>
           </div>
 
-          {/* password */}
-          <div className="a-field">
-            <input id="password" type={showPassword ? "text" : "password"} {...register("password")} className="a-input pr-10" placeholder=" "
-              style={{ borderColor: errors.password ? "#ef4444" : undefined }} />
-            <label htmlFor="password" className={`a-label ${passwordVal ? "up" : ""}`}>Password</label>
-            <button type="button" onClick={() => setShowPassword(s => !s)}
-              className="absolute right-3 top-3.5 text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)] cursor-pointer bg-transparent border-none">
-              {showPassword ? <EyeOff size={17}/> : <Eye size={17}/>}
-            </button>
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+          <h1 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 4.5vw, 68px)", fontWeight: 300, color: WHITE, lineHeight: 1.05, letterSpacing: "-1px", marginBottom: 20 }}>
+            Welcome<br />
+            <em style={{ fontStyle: "italic", color: OC }}>back.</em>
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 16, lineHeight: 1.75, maxWidth: 360, marginBottom: 40 }}>
+            Your portfolio is waiting. Sign in to see your copied trades, live performance, and expert traders.
+          </p>
+
+          {/* Tickers */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, maxWidth: 340 }}>
+            {TICKER.map(t => (
+              <div key={t.s} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)", borderRadius: 10, padding: "10px 14px", transition: "background 0.2s" }}
+                onMouseEnter={e => (e.currentTarget.style.background = "rgba(255,255,255,0.07)")}
+                onMouseLeave={e => (e.currentTarget.style.background = "rgba(255,255,255,0.04)")}>
+                <span style={{ fontSize: 13, color: WHITE, fontWeight: 700 }}>{t.s}</span>
+                <span style={{ fontSize: 12, color: "rgba(255,255,255,0.45)" }}>{t.p}</span>
+                <span style={{ fontSize: 12, color: t.up ? "#4ade80" : "#f87171", fontWeight: 600 }}>
+                  {t.up ? "↑" : "↓"} {t.c}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Stats strip */}
+        <div style={{ position: "relative", zIndex: 1, display: "flex", gap: 0, paddingTop: 28, borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+          {STATS.map((s, i) => (
+            <div key={s.label} style={{
+              flex: 1, paddingRight: 24,
+              paddingLeft: i > 0 ? 24 : 0,
+              borderLeft: i > 0 ? "1px solid rgba(255,255,255,0.07)" : "none",
+            }}>
+              <p style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 28px)", fontWeight: 700, color: WHITE, lineHeight: 1, marginBottom: 6 }}>{s.value}</p>
+              <p style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", letterSpacing: "0.1em" }}>{s.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════
+          RIGHT PANEL — form
+      ══════════════════════════════════════════ */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "40px 24px" }}>
+        {/* Mobile logo */}
+        <div className="lg:hidden" style={{ alignSelf: "stretch", marginBottom: 40 }}>
+          <OCLogo light size="sm" href="/" />
+        </div>
+
+        <div style={{ width: "100%", maxWidth: 400 }}>
+          {/* Eyebrow */}
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+            <div style={{ width: 24, height: 1, background: OC }} />
+            <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 11, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase" }}>Welcome back</span>
           </div>
 
-          {/* forgot */}
-          <div className="text-right mb-5 -mt-2">
-            <Link href="/forgot-password" className="oc-mono transition-opacity hover:opacity-70" style={{ fontSize: ".58rem", letterSpacing: ".08em", color: "#c0392b", textDecoration: "none" }}>
-              Forgot password?
+          <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 400, color: WHITE, lineHeight: 1.1, letterSpacing: "-0.5px", marginBottom: 10 }}>
+            Sign in to<br /><em style={{ fontStyle: "italic", color: OC }}>your account.</em>
+          </h2>
+          <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, lineHeight: 1.6, marginBottom: 32 }}>
+            Don&apos;t have an account?{" "}
+            <Link href="/register" style={{ color: OC, fontWeight: 700, textDecoration: "none" }}
+              onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+              onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}>
+              Create one free
             </Link>
-          </div>
+          </p>
 
-          {/* submit */}
-          <button type="submit" disabled={loading} className="a-submit w-full rounded-lg text-[#f5f0e8] font-extrabold uppercase tracking-widest cursor-pointer transition-all disabled:opacity-60"
-            style={{ padding: "1rem", border: "none", background: "#1c1510", fontSize: ".88rem", letterSpacing: ".1em", boxShadow: "0 4px 18px rgba(28,21,16,.2)" }}>
-            {loading ? <PulseLoader color="#f5f0e8" size={10}/> : "Sign In →"}
+          {/* Google OAuth */}
+          <button type="button" style={{
+            width: "100%", display: "flex", alignItems: "center", justifyContent: "center", gap: 10,
+            background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.11)",
+            borderRadius: 10, padding: "12px 16px", color: WHITE, fontSize: 14, fontWeight: 600,
+            cursor: "pointer", transition: "background 0.2s, border-color 0.2s", marginBottom: 20,
+            fontFamily: "var(--oc-poppins)",
+          }}
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.09)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.22)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.05)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.11)"; }}>
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+            </svg>
+            Continue with Google
           </button>
 
-          <div className="h-px a-line my-7" />
-          <p className="text-center text-[#8c7b6a] dark:text-[rgba(245,240,232,0.45)]" style={{ fontSize: ".88rem", fontWeight: 500 }}>
-            New to OrchardCapitals?{" "}
-            <Link href="/register" style={{ color: "#c0392b", fontWeight: 800, textDecoration: "none" }}
+          {/* Divider */}
+          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
+            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
+            <span style={{ color: "rgba(255,255,255,0.22)", fontSize: 11, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase" }}>or with email</span>
+            <div style={{ flex: 1, height: 1, background: "rgba(255,255,255,0.08)" }} />
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Email */}
+            <div style={{ marginBottom: 16 }}>
+              <label style={{ display: "block", color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 8 }}>
+                Email Address
+              </label>
+              <input
+                id="email" type="email"
+                {...register("email")}
+                onFocus={() => setFocused("email")}
+                onBlur={() => setFocused(null)}
+                placeholder="you@example.com"
+                style={inputStyle("email", !!errors.email)}
+              />
+              {errors.email && <p style={{ color: "#ef4444", fontSize: 12, marginTop: 6 }}>{errors.email.message}</p>}
+            </div>
+
+            {/* Password */}
+            <div style={{ marginBottom: 12, position: "relative" }}>
+              <label style={{ display: "block", color: "rgba(255,255,255,0.45)", fontSize: 11, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", marginBottom: 8 }}>
+                Password
+              </label>
+              <div style={{ position: "relative" }}>
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  {...register("password")}
+                  onFocus={() => setFocused("password")}
+                  onBlur={() => setFocused(null)}
+                  placeholder="••••••••"
+                  style={{ ...inputStyle("password", !!errors.password), paddingRight: 44 }}
+                />
+                <button type="button" onClick={() => setShowPassword(s => !s)}
+                  style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.4)", padding: 0, lineHeight: 1, display: "flex" }}>
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              {errors.password && <p style={{ color: "#ef4444", fontSize: 12, marginTop: 6 }}>{errors.password.message}</p>}
+            </div>
+
+            {/* Forgot */}
+            <div style={{ textAlign: "right", marginBottom: 24 }}>
+              <Link href="/forgot-password" style={{ color: OC, fontSize: 12, fontWeight: 600, textDecoration: "none" }}
+                onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
+                onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}>
+                Forgot password?
+              </Link>
+            </div>
+
+            {/* Submit */}
+            <button type="submit" disabled={loading} style={{
+              width: "100%", padding: "14px 24px",
+              background: OC, color: WHITE,
+              border: "none", borderRadius: 10, fontSize: 15, fontWeight: 700,
+              cursor: loading ? "default" : "pointer",
+              opacity: loading ? 0.75 : 1,
+              transition: "opacity 0.2s, transform 0.2s",
+              display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
+              fontFamily: "var(--oc-poppins)",
+              boxShadow: `0 8px 28px ${OC}40`,
+            }}
+              onMouseEnter={e => { if (!loading) { e.currentTarget.style.opacity = "0.9"; e.currentTarget.style.transform = "translateY(-1px)"; } }}
+              onMouseLeave={e => { e.currentTarget.style.opacity = loading ? "0.75" : "1"; e.currentTarget.style.transform = "translateY(0)"; }}>
+              {loading ? <PulseLoader color={WHITE} size={8} /> : <>Sign In <ArrowRight className="w-4 h-4" /></>}
+            </button>
+          </form>
+
+          <div style={{ height: 1, background: "rgba(255,255,255,0.07)", margin: "28px 0" }} />
+
+          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.35)", fontSize: 14 }}>
+            New to Orchard Capitals?{" "}
+            <Link href="/register" style={{ color: OC, fontWeight: 700, textDecoration: "none" }}
               onMouseEnter={e => (e.currentTarget.style.textDecoration = "underline")}
-              onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}
-            >
+              onMouseLeave={e => (e.currentTarget.style.textDecoration = "none")}>
               Create a free account
             </Link>
           </p>
-        </form>
 
-        <p className="oc-mono text-center mt-8 text-[#8c7b6a]/40 dark:text-[rgba(245,240,232,0.15)]" style={{ fontSize: ".62rem", letterSpacing: ".06em" }}>
-          © {new Date().getFullYear()} Orchard Capitals
-        </p>
+          <p style={{ textAlign: "center", color: "rgba(255,255,255,0.14)", fontSize: 11, marginTop: 32, letterSpacing: "0.04em" }}>
+            © {new Date().getFullYear()} Orchard Capitals · SIPC Member · FINRA Registered
+          </p>
+        </div>
       </div>
-    </OCAuthShell>
+    </div>
   );
 }
