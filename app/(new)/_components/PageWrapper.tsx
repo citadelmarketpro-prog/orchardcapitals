@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { Poppins } from "next/font/google";
 import OCLogo from "@/components/site/OCLogo";
+import LiquidityProvidersSection from "@/components/site/LiquidityProvidersSection";
+import AchievementsSection from "@/components/site/AchievementsSection";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 const poppins = Poppins({
@@ -217,9 +219,15 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
         </div>
       </section>
 
+      {/* ── ACHIEVEMENTS ── */}
+      <AchievementsSection />
+
+      {/* ── LIQUIDITY PROVIDERS ── */}
+      <LiquidityProvidersSection />
+
       {/* ── FOOTER ── */}
-      <footer style={{ background: "#0a0a0a", padding: "64px 24px 32px", borderTop: "1px solid rgba(255,255,255,0.06)" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+      <footer style={{ background: "#0a0a0a", paddingTop: 64, borderTop: "1px solid rgba(255,255,255,0.06)" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
 
           {/* Top columns */}
           <div style={{ display: "grid", gap: 32, marginBottom: 48 }} className="sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr]">
@@ -229,23 +237,16 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
               <div style={{ marginBottom: 16 }}>
                 <OCLogo light size="sm" href="/" />
               </div>
-              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, lineHeight: 1.8, maxWidth: 280, marginBottom: 20 }}>
+              <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13, lineHeight: 1.8, maxWidth: 280 }}>
                 A premium copy trading platform connecting retail investors with elite professional traders. Transparent. Audited. Trusted.
               </p>
-              <div style={{ display: "flex", gap: 12 }}>
-                {["X", "in", "IG", "YT"].map(s => (
-                  <div key={s} style={{ width: 34, height: 34, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.12)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}>
-                    <span style={{ color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 600 }}>{s}</span>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Link columns */}
             {[
-              { title: "Platform", links: [["What We Offer", "/new-landing#offer"], ["Top Traders", "/lead-traders"], ["Pricing", "/new-landing#fees"], ["Copy Trading", "/option-copy-trading"], ["Software", "/software"]] },
-              { title: "Company", links: [["About Us", "/about"], ["Lead Traders", "/lead-traders"], ["Regulations", "/regulations"], ["Security", "/security"], ["Insurance", "/insurance"]] },
-              { title: "Legal", links: [["Terms of Service", "#"], ["Privacy Policy", "#"], ["Risk Disclaimer", "#"], ["SIPC Disclosure", "#"], ["Form CRS", "#"]] },
+              { title: "Platform", links: [["Top Traders", "/lead-traders"], ["Pricing", "/new-landing#fees"], ["Copy Trading", "/option-copy-trading"], ["Software", "/software"]] },
+              { title: "Company", links: [["About Us", "/about"], ["Lead Traders", "/lead-traders"], ["FAQs", "/faq"], ["Regulations", "/regulations"], ["Security", "/security"], ["Insurance", "/insurance"]] },
+              { title: "Legal", links: [["Terms of Service", "/terms-of-service"], ["Privacy Policy", "/privacy-policy"], ["Risk Disclaimer", "/risk-disclaimer"], ["SIPC Disclosure", "/sipc-disclosure"], ["Form CRS", "/form-crs"]] },
             ].map(col => (
               <div key={col.title}>
                 <p style={{ color: WHITE, fontWeight: 700, fontSize: 14, marginBottom: 16 }}>{col.title}</p>
@@ -262,22 +263,24 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
           </div>
 
           {/* Divider */}
-          <div style={{ height: 1, background: "rgba(255,255,255,0.07)", marginBottom: 28 }} />
-
-          {/* Disclaimer */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            <p style={{ fontSize: "0.72rem", color: "rgba(245,240,232,0.25)", lineHeight: 1.75, fontWeight: 500 }}>
-              Disclaimer: Orchard Capitals (Europe) Ltd., a Financial Services Company authorised and regulated by the Cyprus Securities Exchange Commission (CySEC) under the license # 109/10. Registered in Cyprus under Company No. HE 200595. Registered Office: 4 Profiti Ilia Str., Kanika Business Centre, 7th floor, Germasogeia, 4046, Limassol, Cyprus. Orchard Capitals (UK) Ltd, a Financial Services Company authorised and regulated by the Financial Conduct Authority (FCA) under the license FRN 583263. Registered Office: 24th floor, One Canada Square, Canary Wharf, London E14 5AB. Orchard Capitals (USA) Ltd, a financial company authorised and regulated by SEC; CRD 18000661. Orchard Capitals (ME) Limited, is licensed and regulated by the Abu Dhabi Global Market (&quot;ADGM&quot;)&apos;s Financial Services Regulatory Authority (&quot;FSRA&quot;) as an Authorised Person under Financial Services Permission Number 220073.
-            </p>
-            <p style={{ fontSize: "0.72rem", color: "rgba(245,240,232,0.25)", lineHeight: 1.75, fontWeight: 500 }}>
-              Past performance is not an indication of future results. You should seek advice from an independent and suitably licensed financial advisor and ensure that you have the risk appetite, relevant experience and knowledge before you decide to trade. Trading with Orchard Capitals by following and/or copying or replicating the trades of other traders involves a high level of risk, even when following and/or copying the top-performing traders.
-            </p>
-            <p style={{ fontSize: "0.7rem", color: "rgba(245,240,232,0.15)", letterSpacing: "0.04em", paddingTop: "0.5rem" }}>
-              Copyright © 2006–{new Date().getFullYear()} Orchard Capitals — Your Social Investment Network. All rights reserved.
-            </p>
-          </div>
+          <div style={{ height: 1, background: "rgba(255,255,255,0.07)", marginBottom: 32 }} />
         </div>
       </footer>
+
+      {/* Disclaimer — separate block, WHITE background, dark text */}
+      <div style={{ background: WHITE, padding: "32px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 14 }}>
+          <p style={{ fontSize: "0.72rem", color: "#4b5563", lineHeight: 1.75, fontWeight: 500 }}>
+            Disclaimer: Orchard Capital Management, LLC (Orchard Capital Management, LLC). CRD#: 269957 / SEC#: 801-106488. Registered Address: 130 N Garland Ct # 5701, Chicago, IL 60602.
+          </p>
+          <p style={{ fontSize: "0.72rem", color: "#4b5563", lineHeight: 1.75, fontWeight: 500 }}>
+            Past performance is not an indication of future results. You should seek advice from an independent and suitably licensed financial advisor and ensure that you have the risk appetite, relevant experience and knowledge before you decide to trade. Trading with Orchard Capitals by following and/or copying or replicating the trades of other traders involves a high level of risk, even when following and/or copying the top-performing traders.
+          </p>
+          <p style={{ fontSize: "0.7rem", color: "#9ca3af", letterSpacing: "0.04em", paddingTop: "0.5rem" }}>
+            Copyright © 2006–{new Date().getFullYear()} Orchard Capitals — Your Social Investment Network. All rights reserved.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

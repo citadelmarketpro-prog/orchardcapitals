@@ -1,6 +1,14 @@
 "use client";
 import PageWrapper, { OC, BLACK, WHITE, GRAY } from "../_components/PageWrapper";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
 
 const SECTIONS = [
   {
@@ -110,7 +118,7 @@ export default function EULAPage() {
       <section style={{ background: BLACK, position: "relative", overflow: "hidden", padding: "96px 24px 88px" }}>
         <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 900, height: 600, background: `radial-gradient(ellipse at center, ${OC}22 0%, transparent 65%)`, pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
+          <motion.img {...reveal} src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
         </div>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 700 }}>
@@ -118,9 +126,9 @@ export default function EULAPage() {
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
               <span style={{ color: OC, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Legal</span>
             </div>
-            <h1 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 20 }}>
+            <motion.h1 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(36px, 5vw, 60px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 20 }}>
               End User License<br /><em style={{ fontStyle: "italic", color: OC }}>Agreement.</em>
-            </h1>
+            </motion.h1>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 15 }}>Last Updated: February 2026</p>
           </div>
         </div>
@@ -131,10 +139,10 @@ export default function EULAPage() {
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: 52 }}>
             {SECTIONS.map(s => (
-              <div key={s.title}>
-                <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
+              <motion.div key={s.title} {...reveal}>
+                <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
                   {s.title}
-                </h2>
+                </motion.h2>
                 {s.body.map((p, i) => (
                   <p key={i} style={{ color: "#4b5563", fontSize: s.uppercase ? 13 : 16, lineHeight: 1.85, marginBottom: 14, fontWeight: s.uppercase ? 500 : 400, textTransform: s.uppercase ? "none" : "none" }}>{p}</p>
                 ))}
@@ -148,12 +156,12 @@ export default function EULAPage() {
                     ))}
                   </div>
                 )}
-              </div>
+              </motion.div>
             ))}
 
             {/* CTA box */}
             <div style={{ background: GRAY, borderRadius: 20, padding: "40px 36px", border: "1px solid #e5e7eb" }}>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 12 }}>Questions?</h2>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 12 }}>Questions?</motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
                 If you have any questions about this End User License Agreement, please contact us at{" "}
                 <span style={{ color: OC }}>support@orchardcapitals.com</span>. Our team is available to assist you with any inquiries regarding your rights and obligations under this agreement.

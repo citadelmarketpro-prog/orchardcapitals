@@ -2,6 +2,14 @@
 import PageWrapper, { OC, BLACK, WHITE, GRAY } from "../_components/PageWrapper";
 import Link from "next/link";
 import { ArrowRight, FileText, BarChart2, TrendingUp, BookOpen, Radio, Newspaper } from "lucide-react";
+import { motion } from "framer-motion";
+
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
 
 const SOURCES = [
   { icon: <Newspaper className="w-6 h-6" />, title: "Real-Time News Feed", desc: "Curated market news from top financial outlets — filtered by ticker, sector, or keyword. React before the crowd does." },
@@ -28,7 +36,7 @@ export default function InsightPage() {
       <section style={{ background: BLACK, position: "relative", overflow: "hidden", padding: "96px 24px 88px" }}>
         <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 900, height: 600, background: `radial-gradient(ellipse at center, ${OC}22 0%, transparent 65%)`, pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
+          <motion.img {...reveal} src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
         </div>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 700 }}>
@@ -36,9 +44,9 @@ export default function InsightPage() {
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
               <span style={{ color: OC, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Market Insight</span>
             </div>
-            <h1 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 70px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 24 }}>
+            <motion.h1 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 70px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 24 }}>
               Information Is the<br /><em style={{ fontStyle: "italic", color: OC }}>Real Edge.</em>
-            </h1>
+            </motion.h1>
             <p style={{ color: "rgba(255,255,255,0.52)", fontSize: 18, lineHeight: 1.7, marginBottom: 36, maxWidth: 540 }}>
               Real-time news, earnings calendars, analyst ratings, unusual options flow, and SEC filing alerts — the data layer that professional traders rely on, built into every Orchard account.
             </p>
@@ -58,16 +66,16 @@ export default function InsightPage() {
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}12`, border: `1px solid ${OC}25`, borderRadius: 100, padding: "5px 12px", marginBottom: 16 }}>
               <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Data Categories</span>
             </div>
-            <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px", marginBottom: 12 }}>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px", marginBottom: 12 }}>
               Three lenses on every stock.<br /><em style={{ color: OC, fontStyle: "italic" }}>All in one place.</em>
-            </h2>
+            </motion.h2>
             <p style={{ color: "#6b7280", fontSize: 16, maxWidth: 540, margin: "0 auto" }}>
               Great traders don't rely on just one kind of data. Orchard Insight combines fundamentals, technicals, and sentiment into a unified research view.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {DATA_TYPES.map(d => (
-              <div key={d.label} style={{ background: GRAY, borderRadius: 16, padding: "28px 24px", border: "1px solid #e5e7eb" }}>
+              <motion.div key={d.label} {...reveal} style={{ background: GRAY, borderRadius: 16, padding: "28px 24px", border: "1px solid #e5e7eb" }}>
                 <h3 style={{ fontSize: 18, fontWeight: 800, color: OC, marginBottom: 20 }}>{d.label}</h3>
                 {d.items.map(item => (
                   <div key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, marginBottom: 12 }}>
@@ -75,42 +83,32 @@ export default function InsightPage() {
                     <span style={{ color: "#374151", fontSize: 14, lineHeight: 1.6 }}>{item}</span>
                   </div>
                 ))}
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── SOURCES + TRADINGVIEW ── */}
-      <section style={{ background: GRAY, padding: "88px 24px" }}>
+      {/* ── SOURCES  —  ORANGE ── */}
+      <section style={{ background: OC, padding: "88px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-            <div>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}12`, border: `1px solid ${OC}25`, borderRadius: 100, padding: "5px 12px", marginBottom: 20 }}>
-                <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Insight Sources</span>
-              </div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 400, lineHeight: 1.1, marginBottom: 24, letterSpacing: "-0.5px" }}>
-                Six data streams.<br /><em style={{ fontStyle: "italic", color: OC }}>One dashboard.</em>
-              </h2>
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {SOURCES.map(s => (
-                  <div key={s.title} style={{ background: WHITE, borderRadius: 12, padding: "18px 20px", border: "1px solid #e5e7eb", display: "flex", gap: 16, alignItems: "flex-start" }}>
-                    <div style={{ color: OC, flexShrink: 0, marginTop: 2 }}>{s.icon}</div>
-                    <div>
-                      <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4, color: BLACK }}>{s.title}</h3>
-                      <p style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.6 }}>{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div style={{ maxWidth: 720, margin: "0 auto" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 100, padding: "5px 12px", marginBottom: 20 }}>
+              <span style={{ color: WHITE, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Insight Sources</span>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 24px 80px rgba(0,0,0,0.1)" }}>
-                <img src="/landing/images/tradingview-ef3dc6e2.png" alt="TradingView chart analysis" style={{ width: "100%", display: "block" }} />
-              </div>
-              <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 12px 40px rgba(0,0,0,0.08)" }}>
-                <img src="/landing/images/seeking-54318d5f.png" alt="Seeking Alpha research" style={{ width: "100%", display: "block" }} />
-              </div>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 44px)", fontWeight: 400, lineHeight: 1.1, marginBottom: 24, letterSpacing: "-0.5px", color: WHITE }}>
+              Six data streams.<br /><em style={{ fontStyle: "italic" }}>One dashboard.</em>
+            </motion.h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {SOURCES.map(s => (
+                <motion.div key={s.title} {...reveal} style={{ background: WHITE, borderRadius: 12, padding: "18px 20px", border: "1px solid rgba(0,0,0,0.05)", display: "flex", gap: 16, alignItems: "flex-start" }}>
+                  <div style={{ color: OC, flexShrink: 0, marginTop: 2 }}>{s.icon}</div>
+                  <div>
+                    <h3 style={{ fontSize: 15, fontWeight: 700, marginBottom: 4, color: BLACK }}>{s.title}</h3>
+                    <p style={{ color: "#6b7280", fontSize: 13, lineHeight: 1.6 }}>{s.desc}</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
@@ -121,10 +119,10 @@ export default function InsightPage() {
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ display: "grid", gap: 1, background: "rgba(255,255,255,0.06)", borderRadius: 16, overflow: "hidden" }} className="grid-cols-2 sm:grid-cols-4">
             {[["6", "Insight Data Streams"], ["Real-Time", "News & Filing Alerts"], ["$0", "Research Subscription Cost"], ["10K+", "Stocks Covered"]].map(([val, lbl]) => (
-              <div key={lbl} style={{ padding: "40px 24px", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
+              <motion.div key={lbl} {...reveal} style={{ padding: "40px 24px", background: "rgba(255,255,255,0.02)", textAlign: "center" }}>
                 <p style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(24px, 3vw, 40px)", fontWeight: 800, color: OC, letterSpacing: "-0.5px", marginBottom: 8 }}>{val}</p>
                 <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13 }}>{lbl}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>

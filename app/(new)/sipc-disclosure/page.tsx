@@ -1,6 +1,14 @@
 "use client";
 import PageWrapper, { OC, BLACK, WHITE, GRAY } from "../_components/PageWrapper";
 import Link from "next/link";
+import { motion } from "framer-motion";
+
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
 
 export default function SIPCDisclosurePage() {
   return (
@@ -10,7 +18,7 @@ export default function SIPCDisclosurePage() {
       <section style={{ background: BLACK, position: "relative", overflow: "hidden", padding: "96px 24px 88px" }}>
         <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 900, height: 600, background: `radial-gradient(ellipse at center, ${OC}22 0%, transparent 65%)`, pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
+          <motion.img {...reveal} src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
         </div>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 700 }}>
@@ -18,9 +26,9 @@ export default function SIPCDisclosurePage() {
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
               <span style={{ color: OC, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Legal</span>
             </div>
-            <h1 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 64px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 20 }}>
+            <motion.h1 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 64px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 20 }}>
               SIPC<br /><em style={{ fontStyle: "italic", color: OC }}>Disclosure.</em>
-            </h1>
+            </motion.h1>
             <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 15 }}>Last Updated: February 2026</p>
           </div>
         </div>
@@ -35,10 +43,10 @@ export default function SIPCDisclosurePage() {
               ["$250,000", "Cash Protection Sublimit"],
               ["SIPC Member", "Clearing Firm Status"],
             ].map(([val, lbl]) => (
-              <div key={lbl} style={{ padding: "40px 28px", background: WHITE, textAlign: "center" }}>
+              <motion.div key={lbl} {...reveal} style={{ padding: "40px 28px", background: WHITE, textAlign: "center" }}>
                 <p style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(24px, 3vw, 40px)", fontWeight: 800, color: OC, letterSpacing: "-0.5px", marginBottom: 8 }}>{val}</p>
                 <p style={{ color: "#6b7280", fontSize: 14 }}>{lbl}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -50,9 +58,9 @@ export default function SIPCDisclosurePage() {
           <div style={{ display: "flex", flexDirection: "column", gap: 52 }}>
 
             <div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
                 1. What Is SIPC?
-              </h2>
+              </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginBottom: 14 }}>
                 The Securities Investor Protection Corporation (SIPC) is a nonprofit membership organization created under the Securities Investor Protection Act of 1970. SIPC protects customers of SIPC-member broker-dealers in the event that the firm fails financially.
               </p>
@@ -62,9 +70,9 @@ export default function SIPCDisclosurePage() {
             </div>
 
             <div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
                 2. Coverage Limits
-              </h2>
+              </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginBottom: 16 }}>
                 SIPC provides the following coverage for customers of member firms:
               </p>
@@ -74,17 +82,17 @@ export default function SIPCDisclosurePage() {
                 { label: "Eligible Assets", desc: "Stocks, bonds, notes, warrants, and other securities. SIPC does not protect commodity futures contracts, currency, or fixed annuities." },
                 { label: "Account Types", desc: "Each separate account type — individual, IRA, joint — may qualify for its own $500,000 protection limit." },
               ].map(item => (
-                <div key={item.label} style={{ paddingLeft: 20, borderLeft: `3px solid ${OC}30`, marginBottom: 18 }}>
+                <motion.div key={item.label} {...reveal} style={{ paddingLeft: 20, borderLeft: `3px solid ${OC}30`, marginBottom: 18 }}>
                   <p style={{ fontWeight: 700, color: BLACK, fontSize: 16, marginBottom: 4 }}>{item.label}</p>
                   <p style={{ color: "#4b5563", fontSize: 15, lineHeight: 1.8 }}>{item.desc}</p>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
                 3. What SIPC Does Not Cover
-              </h2>
+              </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginBottom: 16 }}>
                 SIPC protection has important limitations. The following are not covered:
               </p>
@@ -95,17 +103,17 @@ export default function SIPCDisclosurePage() {
                 "Unregistered investments that are not recognized as securities",
                 "Losses from fraud perpetrated by the account holder themselves",
               ].map(item => (
-                <div key={item} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 10 }}>
+                <motion.div key={item} {...reveal} style={{ display: "flex", gap: 12, alignItems: "flex-start", marginBottom: 10 }}>
                   <div style={{ width: 6, height: 6, borderRadius: "50%", background: OC, flexShrink: 0, marginTop: 8 }} />
                   <span style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.75 }}>{item}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
 
             <div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(18px, 2vw, 22px)", fontWeight: 700, color: BLACK, marginBottom: 14, letterSpacing: "-0.3px" }}>
                 4. How to File a SIPC Claim
-              </h2>
+              </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginBottom: 14 }}>
                 If a SIPC-member broker-dealer fails, SIPC typically applies to a federal court to appoint a trustee to handle the firm's liquidation. The trustee will notify customers and provide claim forms. Most customers receive their assets within one to three months.
               </p>
@@ -117,7 +125,7 @@ export default function SIPCDisclosurePage() {
 
             {/* CTA box */}
             <div style={{ background: GRAY, borderRadius: 20, padding: "40px 36px", border: "1px solid #e5e7eb" }}>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 12 }}>Questions About Account Protection?</h2>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 12 }}>Questions About Account Protection?</motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
                 Contact our support team to learn more about how your assets are protected at Orchard Capitals. We are committed to full transparency about the safeguards in place for your investments.
               </p>

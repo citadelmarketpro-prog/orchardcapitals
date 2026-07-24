@@ -450,6 +450,19 @@ a:focus-visible {
   to { transform: rotate(360deg); }
 }
 
+/* Scrolling payment-methods strip */
+@keyframes scroll-strip {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.animate-scroll-strip {
+  animation: scroll-strip 20s linear infinite;
+  width: 200%;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
 .dark .wallet-shimmer-wrapper::before {
   background: conic-gradient(
     from 0deg,

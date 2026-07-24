@@ -2,6 +2,14 @@
 import PageWrapper, { OC, BLACK, WHITE, GRAY } from "../_components/PageWrapper";
 import Link from "next/link";
 import { ArrowRight, Shield, TrendingDown, Settings, Bell } from "lucide-react";
+import { motion } from "framer-motion";
+
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
 
 const HOW_IT_WORKS = [
   { icon: <TrendingDown className="w-6 h-6" />, title: "Monitors Every Trade", desc: "AutoGuard™ continuously monitors each leader's trading behavior and calculates a running exit value based on your specified capital protection amount." },
@@ -25,7 +33,7 @@ export default function AutoGuardPage() {
       <section style={{ background: BLACK, position: "relative", overflow: "hidden", padding: "96px 24px 88px" }}>
         <div style={{ position: "absolute", top: -80, left: "50%", transform: "translateX(-50%)", width: 900, height: 600, background: `radial-gradient(ellipse at center, ${OC}22 0%, transparent 65%)`, pointerEvents: "none" }} />
         <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
-          <img src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
+          <motion.img {...reveal} src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", opacity: 0.08 }} />
         </div>
         <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
           <div style={{ maxWidth: 700 }}>
@@ -33,9 +41,9 @@ export default function AutoGuardPage() {
               <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
               <span style={{ color: OC, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Protection Feature</span>
             </div>
-            <h1 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 70px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 24 }}>
+            <motion.h1 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(40px, 5.5vw, 70px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, letterSpacing: "-1px", marginBottom: 24 }}>
               Autoprotect<br /><em style={{ fontStyle: "italic", color: OC }}>Your Account.</em>
-            </h1>
+            </motion.h1>
             <p style={{ color: "rgba(255,255,255,0.52)", fontSize: 18, lineHeight: 1.7, marginBottom: 36, maxWidth: 540 }}>
               AutoGuard™ is an account protection feature that monitors each leader's behavior and automatically removes a leader when their trading strategy deviates from its expected loss profile. Your capital. Your rules.
             </p>
@@ -56,9 +64,9 @@ export default function AutoGuardPage() {
               <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}12`, border: `1px solid ${OC}25`, borderRadius: 100, padding: "5px 12px", marginBottom: 20 }}>
                 <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>What Is AutoGuard™</span>
               </div>
-              <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px", marginBottom: 20 }}>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 3.5vw, 44px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px", marginBottom: 20 }}>
                 Your safety net<br /><em style={{ fontStyle: "italic", color: OC }}>for copy trading.</em>
-              </h2>
+              </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 16 }}>
                 AutoGuard™ Capital Protection is available for all investors and is mandatory for users residing in the EU using the EU Orchard Capitals platform. It creates a protection shield for your investment capital.
               </p>
@@ -75,34 +83,34 @@ export default function AutoGuardPage() {
               </div>
               <h3 style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 14 }}>AutoGuard™ in Numbers</h3>
               {[["24/5", "Active monitoring during all trading hours"], ["Instant", "Position closure when threshold is hit"], ["100%", "Capital protection up to your defined limit"], ["EU Mandatory", "Required for all EU resident investors"]].map(([val, lbl]) => (
-                <div key={lbl} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: "1px solid #e5e7eb" }}>
+                <motion.div key={lbl} {...reveal} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "14px 0", borderBottom: "1px solid #e5e7eb" }}>
                   <span style={{ color: "#6b7280", fontSize: 14 }}>{lbl}</span>
                   <span style={{ fontWeight: 800, color: OC, fontSize: 16 }}>{val}</span>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS */}
-      <section style={{ background: GRAY, padding: "88px 24px" }}>
+      {/* HOW IT WORKS  —  ORANGE */}
+      <section style={{ background: OC, padding: "88px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}12`, border: `1px solid ${OC}25`, borderRadius: 100, padding: "5px 12px", marginBottom: 16 }}>
-              <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>How It Works</span>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 100, padding: "5px 12px", marginBottom: 16 }}>
+              <span style={{ color: WHITE, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>How It Works</span>
             </div>
-            <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px" }}>
-              Four layers of<br /><em style={{ color: OC, fontStyle: "italic" }}>automatic protection.</em>
-            </h2>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px", color: WHITE }}>
+              Four layers of<br /><em style={{ fontStyle: "italic" }}>automatic protection.</em>
+            </motion.h2>
           </div>
           <div style={{ display: "grid", gap: 20 }} className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {HOW_IT_WORKS.map(item => (
-              <div key={item.title} style={{ background: WHITE, borderRadius: 16, padding: "28px 24px", border: "1px solid #e5e7eb" }}>
+              <motion.div key={item.title} {...reveal} style={{ background: WHITE, borderRadius: 16, padding: "28px 24px", border: "1px solid #e5e7eb" }}>
                 <div style={{ width: 48, height: 48, borderRadius: 12, background: `${OC}12`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, color: OC }}>{item.icon}</div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: BLACK }}>{item.title}</h3>
                 <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.65 }}>{item.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -112,17 +120,17 @@ export default function AutoGuardPage() {
       <section style={{ background: WHITE, padding: "88px 24px" }}>
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 60 }}>
-            <h2 style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px" }}>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, letterSpacing: "-0.5px" }}>
               Ready to invest<br /><em style={{ color: OC, fontStyle: "italic" }}>smarter?</em>
-            </h2>
+            </motion.h2>
           </div>
           <div style={{ display: "grid", gap: 20 }} className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map(s => (
-              <div key={s.num} style={{ background: GRAY, borderRadius: 16, padding: "32px 24px", border: "1px solid #e5e7eb", textAlign: "center" }}>
+              <motion.div key={s.num} {...reveal} style={{ background: GRAY, borderRadius: 16, padding: "32px 24px", border: "1px solid #e5e7eb", textAlign: "center" }}>
                 <div style={{ width: 52, height: 52, borderRadius: "50%", background: OC, color: WHITE, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, fontWeight: 800, margin: "0 auto 20px" }}>{s.num}</div>
                 <h3 style={{ fontSize: 16, fontWeight: 700, color: BLACK, marginBottom: 10 }}>{s.title}</h3>
                 <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.65 }}>{s.desc}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
           <div style={{ textAlign: "center", marginTop: 48 }}>
