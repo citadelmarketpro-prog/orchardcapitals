@@ -3,30 +3,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { Sun, Moon } from "lucide-react";
-import {
-  Cormorant_Garamond,
-  IBM_Plex_Mono,
-  Darker_Grotesque,
-} from "next/font/google";
+import { Poppins } from "next/font/google";
 import OCLogo from "./OCLogo";
 
-const cormorant = Cormorant_Garamond({
+// Same Poppins family used site-wide (PageWrapper, login page) — backs all
+// three legacy font-role variables so every ".oc-serif" / ".oc-mono" /
+// "--oc-sans" reference across the auth pages renders in Poppins too.
+const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
-  style: ["normal", "italic"],
-  variable: "--oc-serif",
-  display: "swap",
-});
-const ibmMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--oc-mono",
-  display: "swap",
-});
-const grotesque = Darker_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--oc-sans",
+  weight: ["300", "400", "500", "600", "700", "800", "900"],
+  variable: "--oc-poppins",
   display: "swap",
 });
 
@@ -71,13 +57,13 @@ export default function OCAuthShell({
 
   return (
     <div
-      className={`${cormorant.variable} ${ibmMono.variable} ${grotesque.variable} bg-[#f5f0e8] dark:bg-[#1c1510] text-[#1c1510] dark:text-[#f5f0e8]`}
-      style={{ fontFamily: "var(--oc-sans),'Darker Grotesque',sans-serif", cursor: "none", overflowX: "hidden" }}
+      className={`${poppins.variable} bg-[#f5f0e8] dark:bg-[#1c1510] text-[#1c1510] dark:text-[#f5f0e8]`}
+      style={{ fontFamily: "var(--oc-poppins),'Poppins',sans-serif", cursor: "none", overflowX: "hidden" }}
     >
       {/* ── static CSS: no isDark computation, all via CSS vars ── */}
       <style>{`
-        .oc-serif { font-family: var(--oc-serif),'Cormorant Garamond',Georgia,serif; }
-        .oc-mono  { font-family: var(--oc-mono),'IBM Plex Mono',monospace; }
+        .oc-serif { font-family: var(--oc-poppins),'Poppins',sans-serif; }
+        .oc-mono  { font-family: var(--oc-poppins),'Poppins',sans-serif; }
 
         /* cursor */
         .a-dot  { position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;background:#c0392b;border-radius:50%;transform:translate(-50%,-50%); }
@@ -113,7 +99,7 @@ export default function OCAuthShell({
         .a-input {
           width:100%; padding:.85rem 1rem .65rem;
           background:var(--a-input); border:1.5px solid var(--a-border);
-          border-radius:8px; font-family:var(--oc-sans);
+          border-radius:8px; font-family:var(--oc-poppins);
           font-size:.95rem; font-weight:500; color:var(--a-fg);
           outline:none; transition:border-color .2s,box-shadow .2s;
         }
@@ -122,7 +108,7 @@ export default function OCAuthShell({
         .dark .a-input:focus { border-color:rgba(245,240,232,.3); box-shadow:0 0 0 3px rgba(245,240,232,.06); }
         .a-label {
           position:absolute; left:1rem; top:.82rem;
-          font-family:var(--oc-mono); font-size:.65rem;
+          font-family:var(--oc-poppins); font-size:.65rem;
           letter-spacing:.12em; text-transform:uppercase;
           color:var(--a-muted); pointer-events:none;
           transition:top .18s,font-size .18s;

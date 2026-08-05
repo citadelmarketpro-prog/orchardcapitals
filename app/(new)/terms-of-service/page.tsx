@@ -152,7 +152,7 @@ export default function TermsOfServicePage() {
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
                 If you have any questions or concerns about these Terms of Service, please contact our support team. We are here to help and will respond to your inquiry as soon as possible.
               </p>
-              <Link href="/new-landing" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
+              <Link href="/" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
                 Back to Home

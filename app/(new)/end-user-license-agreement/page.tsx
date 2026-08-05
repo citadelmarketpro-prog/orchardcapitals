@@ -166,7 +166,7 @@ export default function EULAPage() {
                 If you have any questions about this End User License Agreement, please contact us at{" "}
                 <span style={{ color: OC }}>support@orchardcapitals.com</span>. Our team is available to assist you with any inquiries regarding your rights and obligations under this agreement.
               </p>
-              <Link href="/new-landing" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
+              <Link href="/" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
                 Back to Home

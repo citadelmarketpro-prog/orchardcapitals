@@ -832,6 +832,9 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                   </span>{" "}
                   to the address below.
                 </p>
+                <p className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold mt-2">
+                  Confirm your Deposit by uploading your payment receipt.
+                </p>
               </div>
 
               {/* Transaction Steps */}
@@ -888,7 +891,7 @@ export default function DepositModal({ isOpen, onClose }: DepositModalProps) {
                   </div>
                   <div className="flex-1">
                     <p className="text-xs text-gray-500 dark:text-gray-400 mb-1.5">
-                      Send to this wallet address
+                      Send to your unique deposit wallet address.
                     </p>
                     <div className="flex gap-2">
                       <input

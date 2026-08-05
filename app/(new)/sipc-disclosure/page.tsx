@@ -129,7 +129,7 @@ export default function SIPCDisclosurePage() {
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
                 Contact our support team to learn more about how your assets are protected at Orchard Capitals. We are committed to full transparency about the safeguards in place for your investments.
               </p>
-              <Link href="/new-landing" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
+              <Link href="/" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}
                 onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
                 Back to Home

@@ -1,120 +1,317 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import OCLogo from "@/components/site/OCLogo";
-import { useTheme } from "next-themes";
-import { Sun, Moon, Menu, X, BarChart2, SlidersHorizontal, Link2, Target, Zap } from "lucide-react";
-import {
-  Cormorant_Garamond,
-  IBM_Plex_Mono,
-  Darker_Grotesque,
-} from "next/font/google";
+import { Cormorant_Garamond } from "next/font/google";
+import PageWrapper, { OC, BLACK, WHITE, GRAY } from "../(new)/_components/PageWrapper";
+import TraderCardsSkeleton from "../(new)/_components/TraderCardsSkeleton";
+import { motion } from "framer-motion";
 
-/* ─── Fonts ─── */
 const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
-  weight: ["300", "400", "600"],
+  weight: ["400", "500", "600"],
   style: ["normal", "italic"],
   variable: "--oc-serif",
   display: "swap",
 });
-const ibmMono = IBM_Plex_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--oc-mono",
-  display: "swap",
-});
-const grotesque = Darker_Grotesque({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--oc-sans",
-  display: "swap",
-});
+import {
+  ArrowRight,
+  ChevronRight,
+  ChevronDown,
+  Shield,
+  Zap,
+  BarChart2,
+  Users,
+  TrendingUp,
+  Lock,
+  Globe,
+  BookOpen,
+  Bell,
+  Clock,
+  Layers,
+  User,
+} from "lucide-react";
+
+const reveal = {
+  initial: { opacity: 0, y: 28 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.15 },
+  transition: { duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] as const },
+};
 
 /* ─── Static data ─── */
-const MARQUEE = [
-  { s: "AAPL", c: "+2.34%", up: true },
-  { s: "SPY",  c: "+0.87%", up: true },
-  { s: "TSLA", c: "−1.22%", up: false },
-  { s: "NVDA", c: "+3.10%", up: true },
-  { s: "QQQ",  c: "+1.05%", up: true },
-  { s: "AMZN", c: "+1.89%", up: true },
-  { s: "MSFT", c: "+0.54%", up: true },
-  { s: "META", c: "−0.33%", up: false },
+
+const AWARDS = [
+  { label: "Best Copy Trading Platform", sub: "FinTech Awards 2024" },
+  { label: "Most Transparent Broker", sub: "Investor Choice 2024" },
+  { label: "Top Rated App", sub: "App Store · 4.8★" },
+  { label: "SIPC Member", sub: "Up to $500,000 Protection" },
 ];
 
-const TRADERS = [
-  { i:"JR", img:"https://i.pravatar.cc/150?img=11", name:"Jake Reynolds",  spec:"Options Specialist", followers:"847 followers",  badge:"Top 1%", ret:"+182%", bar:"72%", wr:"74%", tr:"1,204", dd:"−8.2%",  col:"linear-gradient(135deg,#9b2c2c,#c0392b)" },
-  { i:"SM", img:"https://i.pravatar.cc/150?img=5",  name:"Sofia Martinez", spec:"Futures Trader",     followers:"1.2K followers", badge:"Top 3%", ret:"+241%", bar:"88%", wr:"81%", tr:"892",   dd:"−11.4%", col:"linear-gradient(135deg,#6d28d9,#a855f7)" },
-  { i:"MC", img:"https://i.pravatar.cc/150?img=67", name:"Marcus Chen",    spec:"Swing Trader",       followers:"2.4K followers", badge:"Top 1%", ret:"+319%", bar:"95%", wr:"69%", tr:"2,108", dd:"−15.1%", col:"linear-gradient(135deg,#0369a1,#0ea5e9)" },
+const WHY_CARDS = [
+  { icon: <TrendingUp className="w-7 h-7" />, title: "Automated Order Execution", desc: "Fine-tune your copy parameters with stop-loss limits, capital allocation controls, and real-time position sync." },
+  { icon: <Globe className="w-7 h-7" />, title: "Global Market Access", desc: "Stocks, ETFs, Options, and Index Funds — all through a single account with one unified portfolio view." },
+  { icon: <BookOpen className="w-7 h-7" />, title: "200+ Educational Courses", desc: "From beginner fundamentals to institutional-grade options strategy — learn while you earn." },
+  { icon: <Bell className="w-7 h-7" />, title: "24/7 Smart Alerts", desc: "Get notified the moment a trader you follow opens a position. Never miss a move." },
 ];
 
-const REVIEWS = [
-  { img:"https://i.pravatar.cc/150?img=33", name:"David R.",       loc:"San Francisco, CA",   rating:5, text:"OrchardCapitals completely changed how I invest. I've been mirroring Jake Reynolds for 8 months and my portfolio is up 94%. The execution is flawless — every trade hits instantly." },
-  { img:"https://i.pravatar.cc/150?img=47", name:"Priya K.",       loc:"London, UK",          rating:5, text:"I was skeptical at first but the results speak for themselves. Up 61% in six months just by following Sofia Martinez. The transparency and analytics are incredible." },
-  { img:"https://i.pravatar.cc/150?img=15", name:"Tom W.",         loc:"Sydney, Australia",   rating:5, text:"Finally a copy trading platform that actually works. No slippage, no excuses. I've tried three others and none come close to the fill quality here." },
-  { img:"https://i.pravatar.cc/150?img=64", name:"Amara O.",       loc:"Lagos, Nigeria",      rating:5, text:"The setup took literally four minutes. Now my account mirrors a top trader automatically. I check in once a week and the returns have been consistently strong." },
-  { img:"https://i.pravatar.cc/150?img=22", name:"Carlos M.",      loc:"Mexico City, Mexico", rating:5, text:"Best fintech product I've used in years. The trader analytics are deep — Sharpe ratios, full drawdown history, audited returns. Everything you need to make an informed choice." },
-  { img:"https://i.pravatar.cc/150?img=56", name:"Emma S.",        loc:"Toronto, Canada",     rating:4, text:"Really impressed with how smooth the onboarding was. Portfolio is up 38% in four months. Would love even more trader options but what's available is high quality." },
+const TRADING_STYLES = [
+  { icon: <Clock className="w-6 h-6" />, title: "Swing Trading", desc: "Capture multi-day trends with defined entries and exits — for stocks, ETFs, and options.", href: "/swing-trading" },
+  { icon: <Layers className="w-6 h-6" />, title: "Futures", desc: "Trade futures contracts on indices, commodities, and more with greater leverage potential.", href: "/futures" },
+  { icon: <BarChart2 className="w-6 h-6" />, title: "Options", desc: "$0 contract fee options trading with 13 strategies and real-time analysis tools.", href: "/option-trading" },
+  { icon: <Zap className="w-6 h-6" />, title: "Advanced Trading", desc: "Conditional orders, algorithmic execution, and pro-grade tools for active traders.", href: "/advance-trading" },
 ];
 
-/* ─── Page ─── */
+const COMMUNITY = [
+  { title: "Learn", desc: "Build your trading skills with 200+ courses — from beginner basics to advanced derivatives strategy.", link: "Get started", icon: <BookOpen className="w-6 h-6" /> },
+  { title: "24/7 Market News", desc: "Live updates from 50+ premium sources. Stay ahead of every market-moving event.", link: "Get started", icon: <Bell className="w-6 h-6" /> },
+  { title: "Orchard Community", desc: "Connect with 500K+ investors worldwide. Share insights, strategies, and trade ideas.", link: "Get started", icon: <Users className="w-6 h-6" /> },
+];
+
+const FAQS = [
+  { q: "How do I open an account?", a: "Create a free account in under two minutes — verify your identity, fund your account, and you're ready to start copy trading." },
+  { q: "How does copy trading actually work?", a: "Choose a verified trader, set your allocation, and every trade they open or close mirrors proportionally into your account in real time." },
+  { q: "What does Orchard Capitals charge in fees?", a: "$0 management fee, $0 commission on stock and ETF trades, and $0 equity options contract fee. There's no account minimum to get started." },
+  { q: "Is my money protected?", a: "Yes. Orchard Capitals is a SIPC member, protecting securities customers up to $500,000, including $250,000 for cash claims." },
+  { q: "Can I stop copying a trader at any time?", a: "Yes — you have full control to pause, adjust your allocation, or stop copying any trader instantly from your dashboard." },
+];
+
+/* ─── Copy Trader types + helpers ─── */
+interface CopyTrader {
+  id: number;
+  name: string;
+  username: string;
+  avatar_url: string | null;
+  badge: string;
+  gain: string;
+  copiers: number;
+  risk: number;
+  trades: number;
+  category: string;
+  trend_direction: string;
+  is_active: boolean;
+}
+
+function categoryLabel(cat: string): string {
+  const map: Record<string, string> = {
+    stocks: "Stock Trader", options: "Options Specialist", etf: "ETF Strategist",
+    tech: "Tech Investor", financial: "Financial Analyst", healthcare: "Healthcare Specialist",
+    all: "Diversified Trader", crypto: "Multi-Asset Trader",
+  };
+  return map[cat] ?? "Stock Trader";
+}
+
+function badgeLabel(badge: string): string {
+  const map: Record<string, string> = { gold: "Gold", silver: "Silver", bronze: "Bronze" };
+  return map[badge] ?? badge; 
+}
+
+function riskColor(risk: number): string {
+  if (risk <= 3) return "#4ade80";
+  if (risk <= 6) return "#facc15";
+  return "#f87171";
+}
+
+/* ─── TradingView Market Overview ─── */
+function MarketOverviewWidget() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!ref.current || ref.current.querySelector("script")) return;
+    const script = document.createElement("script");
+    script.src = "https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js";
+    script.async = true;
+    script.innerHTML = JSON.stringify({
+      colorTheme: "light", dateRange: "12M", showChart: true, locale: "en",
+      isTransparent: false, showSymbolLogo: true, showFloatingTooltip: false,
+      width: "100%", height: "660",
+      tabs: [
+        { title: "Stocks", symbols: [{ s: "NASDAQ:AAPL", d: "Apple" }, { s: "NASDAQ:GOOGL", d: "Alphabet" }, { s: "NASDAQ:MSFT", d: "Microsoft" }, { s: "NASDAQ:AMZN", d: "Amazon" }, { s: "NASDAQ:NVDA", d: "NVIDIA" }, { s: "NYSE:TSLA", d: "Tesla" }, { s: "NYSE:META", d: "Meta" }, { s: "NYSE:JPM", d: "JPMorgan" }], originalTitle: "Stocks" },
+        { title: "ETFs", symbols: [{ s: "AMEX:SPY", d: "S&P 500 ETF" }, { s: "AMEX:QQQ", d: "Nasdaq-100 ETF" }, { s: "AMEX:IWM", d: "Russell 2000 ETF" }, { s: "AMEX:GLD", d: "Gold ETF" }, { s: "AMEX:TLT", d: "20+ Yr Treasury ETF" }, { s: "AMEX:VTI", d: "Vanguard Total Market" }], originalTitle: "ETFs" },
+        { title: "Indices", symbols: [{ s: "FOREXCOM:SPXUSD", d: "S&P 500" }, { s: "FOREXCOM:NSXUSD", d: "Nasdaq 100" }, { s: "FOREXCOM:DJI", d: "Dow Jones" }, { s: "INDEX:NKY", d: "Nikkei 225" }, { s: "INDEX:DEU40", d: "DAX 40" }, { s: "FOREXCOM:UKXGBP", d: "FTSE 100" }], originalTitle: "Indices" },
+      ],
+    });
+    ref.current.appendChild(script);
+  }, []);
+  return (
+    <div ref={ref} className="tradingview-widget-container w-full">
+      <div className="tradingview-widget-container__widget" />
+    </div>
+  );
+}
+
+const CAROUSEL_GAP = 20;
+
+/* ─── Copy Traders Carousel ─── */
+function TradersCarousel({ traders }: { traders: CopyTrader[] }) {
+  const [idx, setIdx] = useState(0);
+  const [cardWidth, setCardWidth] = useState(0);
+  const [perView, setPerView] = useState(3);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const TOTAL = traders.length;
+
+  useEffect(() => {
+    const update = () => {
+      const cpv = window.innerWidth >= 1024 ? 3 : window.innerWidth >= 768 ? 2 : 1;
+      setPerView(cpv);
+      if (containerRef.current) {
+        const w = containerRef.current.offsetWidth;
+        setCardWidth((w - CAROUSEL_GAP * (cpv - 1)) / cpv);
+      }
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [TOTAL]);
+
+  if (TOTAL === 0) return null;
+
+  const pages = Math.max(1, Math.ceil(TOTAL / perView));
+  const maxIdx = Math.max(0, TOTAL - perView);
+  // Clamp instead of resetting via effect — keeps idx valid when perView changes on resize
+  const clampedIdx = Math.min(idx, maxIdx);
+  const currentPage = Math.floor(clampedIdx / perView);
+  const prev = () => setIdx(Math.max(0, clampedIdx - perView));
+  const next = () => setIdx(Math.min(maxIdx, clampedIdx + perView));
+  const translateX = cardWidth > 0 ? clampedIdx * (cardWidth + CAROUSEL_GAP) : 0;
+
+  const BtnStyle = (disabled: boolean): React.CSSProperties => ({
+    flexShrink: 0, width: 44, height: 44, borderRadius: "50%",
+    background: "rgba(255,255,255,0.06)", border: "1.5px solid rgba(255,255,255,0.14)",
+    alignItems: "center", justifyContent: "center",
+    cursor: disabled ? "default" : "pointer", opacity: disabled ? 0.3 : 1,
+    color: WHITE, transition: "background 0.2s, border-color 0.2s, opacity 0.2s",
+  });
+
+  const onBtnEnter = (e: React.MouseEvent<HTMLButtonElement>, disabled: boolean) => {
+    if (disabled) return;
+    e.currentTarget.style.background = OC;
+    e.currentTarget.style.borderColor = OC;
+  };
+  const onBtnLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.style.background = "rgba(255,255,255,0.06)";
+    e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)";
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+        <button onClick={prev} disabled={clampedIdx === 0} aria-label="Previous traders" className="hidden md:flex" style={BtnStyle(clampedIdx === 0)} onMouseEnter={e => onBtnEnter(e, clampedIdx === 0)} onMouseLeave={onBtnLeave}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
+        </button>
+        <div ref={containerRef} style={{ flex: 1, overflow: "hidden" }}>
+          <div style={{ display: "flex", gap: CAROUSEL_GAP, transition: "transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)", transform: `translateX(-${translateX}px)` }}>
+            {traders.map(t => (
+              <motion.div key={t.id} {...reveal} style={{ flex: `0 0 ${cardWidth > 0 ? cardWidth + "px" : "calc(33.33% - 14px)"}`, minWidth: 0 }}>
+                <div
+                  style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "24px", transition: "border-color 0.2s, background 0.2s, transform 0.2s", cursor: "pointer", position: "relative", overflow: "hidden", height: "100%" }}
+                  onMouseEnter={e => { e.currentTarget.style.borderColor = `${OC}55`; e.currentTarget.style.background = "rgba(255,255,255,0.06)"; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; e.currentTarget.style.background = "rgba(255,255,255,0.035)"; e.currentTarget.style.transform = "translateY(0)"; }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 22 }}>
+                    <div style={{ position: "relative", width: 52, height: 52, borderRadius: "50%", flexShrink: 0 }}>
+                      {t.avatar_url ? (
+                        <motion.img {...reveal} src={t.avatar_url} alt={t.name} style={{ width: 52, height: 52, borderRadius: "50%", objectFit: "cover", border: `1.5px solid ${OC}45` }} />
+                      ) : (
+                        <div style={{ width: 52, height: 52, borderRadius: "50%", background: `linear-gradient(135deg, ${OC}30 0%, ${OC}10 100%)`, border: `1.5px solid ${OC}45`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <span style={{ color: OC, fontSize: 15, fontWeight: 800 }}>{t.name.split(" ").map((w: string) => w[0]).join("").slice(0, 2)}</span>
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p style={{ color: WHITE, fontWeight: 700, fontSize: 15, marginBottom: 3, lineHeight: 1.3 }}>{t.name}</p>
+                      <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 12, lineHeight: 1 }}>{categoryLabel(t.category)}</p>
+                    </div>
+                    <div style={{ background: t.badge === "gold" ? "rgba(250,204,21,0.12)" : t.badge === "silver" ? "rgba(192,192,192,0.12)" : `${OC}18`, border: `1px solid ${t.badge === "gold" ? "rgba(250,204,21,0.35)" : t.badge === "silver" ? "rgba(192,192,192,0.3)" : `${OC}40`}`, borderRadius: 100, padding: "4px 10px", flexShrink: 0 }}>
+                      <span style={{ color: t.badge === "gold" ? "#facc15" : t.badge === "silver" ? "#d1d5db" : OC, fontSize: 10, fontWeight: 800, letterSpacing: "0.04em" }}>{badgeLabel(t.badge)}</span>
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", padding: "16px 0", borderTop: "1px solid rgba(255,255,255,0.07)", borderBottom: "1px solid rgba(255,255,255,0.07)", marginBottom: 20 }}>
+                    <div style={{ textAlign: "center", paddingRight: 12 }}>
+                      <p style={{ color: "#4ade80", fontSize: 19, fontWeight: 800, fontFamily: "var(--oc-poppins)", letterSpacing: "-0.5px", marginBottom: 4 }}>+{parseFloat(t.gain).toFixed(0)}%</p>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em" }}>Return</p>
+                    </div>
+                    <div style={{ textAlign: "center", borderLeft: "1px solid rgba(255,255,255,0.07)", borderRight: "1px solid rgba(255,255,255,0.07)", padding: "0 12px" }}>
+                      <p style={{ color: WHITE, fontSize: 19, fontWeight: 800, fontFamily: "var(--oc-poppins)", letterSpacing: "-0.5px", marginBottom: 4 }}>{t.copiers.toLocaleString()}</p>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em" }}>Copiers</p>
+                    </div>
+                    <div style={{ textAlign: "center", paddingLeft: 12 }}>
+                      <p style={{ color: riskColor(t.risk), fontSize: 19, fontWeight: 800, fontFamily: "var(--oc-poppins)", letterSpacing: "-0.5px", marginBottom: 4 }}>{t.risk}/10</p>
+                      <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 10, textTransform: "uppercase", letterSpacing: "0.07em" }}>Risk</p>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                      <TrendingUp className="w-3.5 h-3.5" style={{ color: "rgba(255,255,255,0.3)" }} />
+                      <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
+                        <span style={{ color: "rgba(255,255,255,0.7)", fontWeight: 600 }}>{t.trades.toLocaleString()}</span> trades
+                      </span>
+                    </div>
+                    <Link href="/register" style={{ background: OC, color: WHITE, fontSize: 13, fontWeight: 700, padding: "8px 20px", borderRadius: 100, textDecoration: "none", display: "flex", alignItems: "center", gap: 6, transition: "opacity 0.2s" }}
+                      onMouseEnter={e => (e.currentTarget.style.opacity = "0.85")}
+                      onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
+                      Copy <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        <button onClick={next} disabled={clampedIdx >= maxIdx} aria-label="Next traders" className="hidden md:flex" style={BtnStyle(clampedIdx >= maxIdx)} onMouseEnter={e => onBtnEnter(e, clampedIdx >= maxIdx)} onMouseLeave={onBtnLeave}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg>
+        </button>
+      </div>
+      {pages > 1 && (
+        <div style={{ display: "flex", justifyContent: "center", gap: 8, marginTop: 28 }}>
+          {Array.from({ length: pages }).map((_, i) => (
+            <button key={i} onClick={() => setIdx(Math.min(i * perView, maxIdx))} aria-label={`Go to traders page ${i + 1}`}
+              style={{ width: i === currentPage ? 28 : 8, height: 8, borderRadius: 4, border: "none", cursor: "pointer", background: i === currentPage ? OC : "rgba(255,255,255,0.18)", transition: "all 0.3s ease", padding: 0 }} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─── Persistent bottom conversion bar ─── */
+function StickyOfferBar() {
+  return (
+    <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 250, background: BLACK, borderTop: "1px solid rgba(255,255,255,0.1)", padding: "14px 20px", boxShadow: "0 -8px 24px rgba(0,0,0,0.35)" }}>
+      <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", alignItems: "center", justifyContent: "center", gap: 28, flexWrap: "wrap" }}>
+        <Link href="/login" style={{ color: "rgba(255,255,255,0.75)", fontSize: 13, fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+          <User className="w-4 h-4" /> Sign in
+        </Link>
+        <Link href="/register" style={{ background: OC, color: WHITE, fontSize: 13, fontWeight: 700, padding: "9px 22px", borderRadius: 100, textDecoration: "none" }}>
+          Open Account
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main component ─── */
+const INT_GROUPS = [
+  ["TradeStation", "Tastytrade", "Ally Invest"],
+  ["E-Trade", "WEBULL", "Think or Swim"],
+  ["TD Ameritrade", "Interactive Brokers", "Schwab"],
+];
+
 export default function HomePage() {
-  const { resolvedTheme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
-  const [faqOpen, setFaqOpen] = useState<number|null>(null);
-  const [footerOpen, setFooterOpen] = useState<string|null>(null);
+  const [traders, setTraders] = useState<CopyTrader[]>([]);
+  const [tradersLoading, setTradersLoading] = useState(true);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [intIdx, setIntIdx] = useState(0);
   const [intFade, setIntFade] = useState(false);
-  const [reviewIdx, setReviewIdx] = useState(0);
-  const dotRef  = useRef<HTMLDivElement>(null);
-  const ringRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => setMounted(true), []);
-
-  /* custom cursor */
   useEffect(() => {
-    const dot = dotRef.current, ring = ringRef.current;
-    if (!dot || !ring) return;
-    let mx = 0, my = 0, rx = 0, ry = 0, id = 0;
-    const onMove = (e: MouseEvent) => {
-      mx = e.clientX; my = e.clientY;
-      dot.style.left = mx + "px"; dot.style.top = my + "px";
-    };
-    const tick = () => {
-      rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
-      ring.style.left = rx + "px"; ring.style.top = ry + "px";
-      id = requestAnimationFrame(tick);
-    };
-    document.addEventListener("mousemove", onMove);
-    id = requestAnimationFrame(tick);
-    return () => { document.removeEventListener("mousemove", onMove); cancelAnimationFrame(id); };
+    fetch("/api/auth/traders/")
+      .then(r => r.ok ? r.json() : [])
+      .then(data => setTraders(Array.isArray(data) ? data.slice(0, 6) : []))
+      .catch(() => {})
+      .finally(() => setTradersLoading(false));
   }, []);
 
-  /* scroll reveal */
-  useEffect(() => {
-    if (!mounted) return;
-    const els = document.querySelectorAll<HTMLElement>(".oc-reveal");
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (en.isIntersecting) {
-          (en.target as HTMLElement).classList.add("oc-revealed");
-          obs.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.08 });
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, [mounted]);
-
   /* integration badge cycling */
-  const INT_GROUPS = [
-    ["TradeStation","Tastytrade","Ally Invest"],
-    ["E-Trade","WEBULL","Think or Swim"],
-    ["TD Ameritrade","Interactive Brokers","Schwab"],
-  ];
   useEffect(() => {
     const id = setInterval(() => {
       setIntFade(true);
@@ -124,881 +321,567 @@ export default function HomePage() {
       }, 350);
     }, 3000);
     return () => clearInterval(id);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const isDark = mounted && resolvedTheme === "dark";
-
-  /* ─── colour tokens ─── */
-  const rust = "#c0392b";
-  const cream = "#f5f0e8";
-  const bark = "#8c7b6a";
-  const dark = "#1c1510";
-  const darker = "#120e0a";
-  const leaf = "#3a6b35";
-
-  const bg    = isDark ? darker : cream;
-  const fg    = isDark ? cream  : dark;
-  const muted = isDark ? "rgba(245,240,232,0.4)" : bark;
-  const border= isDark ? "rgba(255,255,255,0.08)" : "rgba(74,63,53,0.12)";
-  const surf  = isDark ? "rgba(255,255,255,0.04)" : "white";
-  const surfEl= isDark ? "rgba(255,255,255,0.025)" : "#ede8de";
-
   return (
-    <div
-      className={`${cormorant.variable} ${ibmMono.variable} ${grotesque.variable} bg-[#f5f0e8] dark:bg-[#120e0a] text-[#1c1510] dark:text-[#f5f0e8]`}
-      style={{ fontFamily: "var(--oc-sans), 'Darker Grotesque', sans-serif", overflowX: "hidden", cursor: "none", minHeight: "100vh" }}
+    <>
+    <StickyOfferBar />
+    <PageWrapper
+      ctaTitle="Start growing your portfolio"
+      ctaSubtitle="Join 500,000+ investors already copying the world's top traders."
     >
 
-      {/* ── scoped CSS ── */}
-      <style>{`
-        .oc-serif { font-family: var(--oc-serif), 'Cormorant Garamond', Georgia, serif; }
-        .oc-mono  { font-family: var(--oc-mono), 'IBM Plex Mono', monospace; }
-        .oc-sans  { font-family: var(--oc-sans), 'Darker Grotesque', sans-serif; }
-
-        /* cursor */
-        .oc-dot  { position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;background:${rust};border-radius:50%;transform:translate(-50%,-50%);transition:transform .1s; }
-        .oc-ring { position:fixed;pointer-events:none;z-index:9998;width:36px;height:36px;border:1.5px solid ${isDark?"rgba(192,57,43,0.5)":"rgba(139,124,106,0.45)"};border-radius:50%;transform:translate(-50%,-50%);transition:width .18s,height .18s,border-color .18s; }
-
-        /* noise */
-        .oc-noise::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:8000;opacity:0.03;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");}
-
-        /* scrollbar */
-        ::-webkit-scrollbar{width:3px;} ::-webkit-scrollbar-thumb{background:#2a2018;border-radius:2px;}
-
-        /* reveal */
-        .oc-reveal { opacity:0; transform:translateY(28px); transition:opacity .75s ease,transform .75s ease; }
-        .oc-reveal.oc-revealed { opacity:1; transform:none; }
-
-        /* review card fade-in */
-        @keyframes oc-review-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
-        .oc-review-card { animation:oc-review-in .35s ease both; }
-
-        /* marquee */
-        @keyframes oc-mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
-        .oc-mq-track { display:inline-flex;gap:2.5rem;animation:oc-mq 30s linear infinite;white-space:nowrap; }
-        .oc-mq-track:hover { animation-play-state:paused; }
-
-        /* glow drift */
-        @keyframes oc-drift  { from{transform:translate(0,0)} to{transform:translate(40px,60px)} }
-        .oc-glow1 { animation:oc-drift 16s ease-in-out infinite alternate; }
-        .oc-glow2 { animation:oc-drift 22s ease-in-out infinite alternate-reverse; }
-
-        /* live pulse */
-        @keyframes oc-pulse { 0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.5)} 50%{box-shadow:0 0 0 5px rgba(34,197,94,0)} }
-        .oc-live-dot { display:inline-block;width:5px;height:5px;border-radius:50%;background:${isDark?"#22c55e":leaf};animation:oc-pulse 1.8s ease-in-out infinite; }
-        @keyframes oc-blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-        .oc-live-dot2 { display:inline-block;width:5px;height:5px;border-radius:50%;background:${leaf};animation:oc-blink 1.8s infinite; }
-
-        /* hero bg grid (dark) */
-        .oc-hero-grid {
-          position:absolute;inset:0;
-          background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);
-          background-size:80px 80px;
-          mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 0%,transparent 100%);
-        }
-
-        /* light hero cards */
-        .oc-hcard{position:absolute;background:white;border-radius:16px;box-shadow:0 4px 40px rgba(28,21,16,.1);overflow:hidden;border:1px solid rgba(214,207,194,.6);transition:transform .4s ease,box-shadow .4s ease;}
-        .oc-hcard:hover{box-shadow:0 12px 60px rgba(28,21,16,.18);}
-        .oc-hc1{width:min(320px,85vw);top:40px;left:0;transform:rotate(-2deg);z-index:3;} .oc-hc1:hover{transform:rotate(0) translateY(-8px);}
-        .oc-hc2{width:min(280px,75vw);top:0;right:0;transform:rotate(1.5deg);z-index:2;} .oc-hc2:hover{transform:rotate(0) translateY(-6px);}
-        .oc-hc3{width:min(200px,55vw);bottom:20px;right:20px;transform:rotate(-1deg);z-index:4;} .oc-hc3:hover{transform:rotate(0) translateY(-4px);}
-
-        /* trader card hover */
-        .oc-tc{transition:border-color .3s,background .3s,transform .3s;}
-        .oc-tc:hover{border-color:rgba(192,57,43,0.4)!important;background:${isDark?"rgba(255,255,255,0.06)":"rgba(255,255,255,0.06)"}!important;transform:translateY(-5px);}
-
-        /* ghost arrow btn */
-        .oc-ghost-arrow::after{content:'→';transition:transform .2s;}
-        .oc-ghost-arrow:hover::after{transform:translateX(4px);}
-
-        /* step/bento hover */
-        .oc-step:hover{background:${isDark?"rgba(255,255,255,0.04)":"#ede8de"};border-color:${rust}!important;}
-        .oc-bc:hover{background:${isDark?"rgba(255,255,255,0.06)":"white"};border-color:${isDark?"rgba(255,255,255,0.14)":"#c9bfb2"}!important;}
-
-        /* nav link hover */
-        .oc-navlink:hover{color:${isDark?cream:dark}!important;}
-
-        /* product card dark */
-        .oc-trader-item{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:1rem;padding:.85rem .9rem;border-radius:10px;transition:background .2s;cursor:pointer;}
-        .oc-trader-item:hover{background:rgba(255,255,255,0.04);}
-
-        /* footer link */
-        .oc-flink{font-size:.78rem;font-weight:600;color:rgba(245,240,232,.3);text-decoration:none;transition:color .2s;letter-spacing:.04em;}
-        .oc-flink:hover{color:${cream};}
-        .oc-lflink{font-size:.78rem;font-weight:500;color:${bark};text-decoration:none;transition:color .2s;letter-spacing:.04em;}
-        .oc-lflink:hover{color:${dark};}
-
-        /* CTA ghost btn */
-        .oc-cta-ghost{border:1px solid rgba(255,255,255,.2);color:rgba(245,240,232,.6);padding:1rem 2.5rem;font-size:.85rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;border-radius:4px;transition:border-color .2s,color .2s;display:inline-block;}
-        .oc-cta-ghost:hover{border-color:rgba(255,255,255,.5);color:${cream};}
-
-        /* int pill */
-        .oc-pill{border:1px solid ${isDark?"rgba(255,255,255,.1)":"rgba(74,63,53,.2)"};padding:.3rem .9rem;border-radius:100px;font-size:.75rem;font-weight:600;color:${isDark?"rgba(245,240,232,.45)":bark};transition:border-color .2s,color .2s;}
-        .oc-pill:hover{border-color:rgba(192,57,43,.5);color:${isDark?cream:dark};}
-
-        /* show only on mobile (hamburger) */
-        .oc-show-mobile{display:none;}
-
-        /* responsive */
-        @media(max-width:1024px){.oc-hero-grid{display:none;}}
-        @media(max-width:900px){
-          .oc-bento{grid-template-columns:1fr 1fr!important;}
-          .oc-bento-a,.oc-bento-b{grid-column:1/-1!important;}
-          .oc-bento-c,.oc-bento-d,.oc-bento-e{grid-column:span 1!important;}
-        }
-        @media(max-width:768px){
-          .oc-hide-mobile{display:none!important;}
-          .oc-show-mobile{display:flex!important;}
-          .oc-hero-cols{grid-template-columns:1fr!important;padding-bottom:3rem!important;}
-          .oc-hero-right{min-height:420px!important;padding-top:0!important;}
-          .oc-hc1{width:min(270px,72vw)!important;top:20px!important;left:0!important;}
-          .oc-hc2{width:min(230px,60vw)!important;top:0!important;right:0!important;}
-          .oc-hc3{width:min(150px,40vw)!important;bottom:10px!important;right:10px!important;}
-          .oc-bento{grid-template-columns:1fr!important;}
-          .oc-bento-a,.oc-bento-b,.oc-bento-c,.oc-bento-d,.oc-bento-e{grid-column:1/-1!important;}
-          .oc-testi{grid-template-columns:1fr!important;}
-          .oc-testi-quote{font-size:clamp(1.3rem,5vw,1.8rem)!important;}
-          .oc-footer{grid-template-columns:1fr!important;gap:2rem!important;justify-items:center;}
-          .oc-footer-links{justify-content:center!important;}
-          .oc-trader-item{grid-template-columns:auto 1fr auto!important;}
-          .oc-stats-strip{gap:1.5rem!important;flex-wrap:wrap;}
-        }
-        @media(max-width:480px){
-          .oc-hero-right{min-height:340px!important;}
-          .oc-hc1{width:min(220px,80vw)!important;}
-          .oc-hc2{width:min(185px,66vw)!important;}
-          .oc-hc3{width:min(135px,44vw)!important;}
-        }
-
-        /* footer two-col → one-col on mobile */
-        @media(max-width:640px){
-          .oc-footer-top{grid-template-columns:1fr!important;}
-        }
-
-        /* ── dark mode: hero cards blend with the dark surface ── */
-        .dark .oc-hcard{background:rgba(30,22,16,0.88)!important;border-color:rgba(255,255,255,0.09)!important;box-shadow:0 4px 32px rgba(0,0,0,0.45)!important;}
-        .dark .oc-hcard-border{border-color:rgba(255,255,255,0.07)!important;}
-
-        /* ── stats grid responsive ── */
-        .oc-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);}
-        @media(max-width:520px){
-          .oc-stats-grid{grid-template-columns:1fr!important;}
-          .oc-stats-grid>div{border-right:none!important;border-bottom:1px solid rgba(139,124,106,.15);}
-          .oc-stats-grid>div:last-child{border-bottom:none;}
-        }
-
-        /* ── integrates badge: show only 1 platform on small screens ── */
-        @media(max-width:520px){
-          .oc-int-platforms>span:not(:first-child){display:none!important;}
-        }
-
-        /* ── hero card stack: keep all cards on small screens ── */
-        @media(max-width:480px){
-          .oc-hero-right{min-height:440px!important;}
-          .oc-hc1{width:min(220px,78vw)!important;}
-          .oc-hc2{width:min(185px,64vw)!important;}
-          .oc-hc3{width:min(130px,40vw)!important;}
-        }
-      `}</style>
-
-      {/* cursor */}
-      <div ref={dotRef}  className="oc-dot" />
-      <div ref={ringRef} className="oc-ring" />
-      {/* noise */}
-      <div className="oc-noise" aria-hidden />
-
-
-      {/* ════════════════════════ NAVBAR ════════════════════════ */}
-      <nav className="bg-[rgba(245,240,232,0.92)] dark:bg-[rgba(18,14,10,0.88)]" style={{
-        position:"fixed", top:0, left:0, right:0, zIndex:600, height:66,
-        display:"flex", alignItems:"center", justifyContent:"space-between",
-        padding:"0 clamp(1.2rem,4vw,3.5rem)",
-        backdropFilter:"blur(20px) saturate(1.4)",
-        borderBottom:`1px solid ${border}`,
-      }}>
-        {/* brand */}
-        <OCLogo size="md" />
-
-        {/* centre links — desktop */}
-        <div className="oc-hide-mobile" style={{ display:"flex", gap:"2.5rem", alignItems:"center" }}>
-          {["#how","#features","#traders","#pricing"].map((h, i) => (
-            <a key={h} href={h} className="oc-navlink" style={{ fontSize:".8rem", fontWeight:600, letterSpacing:".06em", textTransform:"uppercase", color: isDark ? "rgba(245,240,232,.4)" : bark, textDecoration:"none", transition:"color .2s" }}>
-              {["How It Works","Features","Traders","Pricing"][i]}
-            </a>
-          ))}
-        </div>
-
-        {/* right actions */}
-        <div style={{ display:"flex", alignItems:"center", gap:"1rem" }}>
-          {/* theme toggle */}
-          <button onClick={() => setTheme(isDark ? "light" : "dark")}
-            style={{ width:36, height:36, borderRadius:"50%", border:`1px solid ${border}`, background:"transparent", color:fg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"all .2s", flexShrink:0 }}>
-            {mounted ? (isDark ? <Sun size={15}/> : <Moon size={15}/>) : <Moon size={15}/>}
-          </button>
-          <Link href="/login" className="oc-hide-mobile oc-navlink" style={{ fontSize:".8rem", fontWeight:600, letterSpacing:".06em", textTransform:"uppercase", color: isDark ? "rgba(245,240,232,.4)" : bark, textDecoration:"none" }}>
-            Sign In
-          </Link>
-          <Link href="/register" className="oc-hide-mobile" style={{ background:rust, color:"white", padding:".55rem 1.4rem", borderRadius:6, fontSize:".78rem", fontWeight:800, letterSpacing:".08em", textTransform:"uppercase", textDecoration:"none", boxShadow:"0 2px 14px rgba(192,57,43,.4)", transition:"background .2s,transform .15s", flexShrink:0 }}
-            onMouseEnter={e=>(e.currentTarget.style.background="#a93226")} onMouseLeave={e=>(e.currentTarget.style.background=rust)}>
-            Get Started
-          </Link>
-          {/* hamburger */}
-          <button onClick={()=>setMobileOpen(o=>!o)} style={{ background:"transparent", border:"none", color:fg, cursor:"pointer", padding:4 }}
-            className="oc-show-mobile" aria-label="menu">
-            {mobileOpen ? <X size={22}/> : <Menu size={22}/>}
-          </button>
-        </div>
-      </nav>
-
-      {/* mobile nav overlay */}
-      {mobileOpen && (
-        <div className="bg-[#f5f0e8] dark:bg-[#120e0a]" style={{ position:"fixed", inset:0, zIndex:500, paddingTop:72, display:"flex", flexDirection:"column", alignItems:"center", gap:0, overflowY:"auto" }}>
-          <div style={{ width:"100%", maxWidth:360, padding:"1.5rem 2rem", display:"flex", flexDirection:"column", gap:0 }}>
-            {[["#how","How It Works"],["#features","Features"],["#traders","Traders"],["#pricing","Pricing"]].map(([h,l]) => (
-              <a key={h} href={h} onClick={()=>setMobileOpen(false)} style={{ fontSize:"1rem", fontWeight:700, letterSpacing:".08em", textTransform:"uppercase", color:fg, textDecoration:"none", padding:"1rem 0", borderBottom:`1px solid ${border}` }}>
-                {l}
-              </a>
-            ))}
-          </div>
-          <div style={{ width:"100%", maxWidth:360, padding:"1.5rem 2rem", display:"flex", flexDirection:"column", gap:".8rem" }}>
-            <Link href="/login" onClick={()=>setMobileOpen(false)} style={{ width:"100%", textAlign:"center", border:`1px solid ${border}`, color:fg, padding:".9rem", borderRadius:6, fontSize:".85rem", fontWeight:700, letterSpacing:".06em", textTransform:"uppercase", textDecoration:"none", transition:"border-color .2s" }}>
-              Sign In
-            </Link>
-            <Link href="/register" onClick={()=>setMobileOpen(false)} style={{ width:"100%", textAlign:"center", background:rust, color:"white", padding:".9rem", borderRadius:6, fontSize:".85rem", fontWeight:800, letterSpacing:".08em", textTransform:"uppercase", textDecoration:"none", boxShadow:"0 2px 14px rgba(192,57,43,.4)" }}>
-              Get Started
-            </Link>
-          </div>
-        </div>
-      )}
-
-
-      <main style={{ paddingTop:10 }}>
-
-        {/* ════════════════════════ HERO ════════════════════════ */}
-        <section style={{ minHeight:"100vh", position:"relative", overflow:"hidden", display:"flex", flexDirection:"column" }}>
-
-          {/* atmospheric background */}
-          <div style={{ position:"absolute", inset:0, zIndex:0, pointerEvents:"none" }}>
-            {isDark && <div className="oc-hero-grid" />}
-            {isDark && <>
-              <div className="oc-glow1" style={{ position:"absolute", width:700, height:700, borderRadius:"50%", top:-200, right:-100, background:"radial-gradient(circle,rgba(155,44,44,.22) 0%,transparent 65%)" }}/>
-              <div className="oc-glow2" style={{ position:"absolute", width:500, height:500, borderRadius:"50%", bottom:-100, left:"5%", background:"radial-gradient(circle,rgba(183,134,12,.1) 0%,transparent 65%)" }}/>
-            </>}
-          </div>
-
-          {/* watermark */}
-          <div aria-hidden style={{ position:"absolute", bottom:"-3rem", left:"-1rem", fontFamily:"var(--oc-serif),'Cormorant Garamond',serif", fontStyle:"italic", fontSize:"22vw", fontWeight:300, lineHeight:1, color:"transparent", WebkitTextStroke:`1px ${isDark?"rgba(255,255,255,.035)":"rgba(74,63,53,.07)"}`, pointerEvents:"none", whiteSpace:"nowrap", userSelect:"none", letterSpacing:"-.03em" }}>
-            {isDark ? "Grow" : "Grow"}
-          </div>
-
-          {/* hero content */}
-          <div style={{ position:"relative", zIndex:1, maxWidth:1320, margin:"0 auto", width:"100%", padding:"clamp(6rem,12vw,140px) clamp(1.2rem,4vw,3.5rem) clamp(4rem,7vw,7rem)", display:"grid", gridTemplateColumns:"clamp(300px,50%,620px) 1fr", gap:"clamp(2rem,5vw,5rem)", alignItems:"flex-start", flex:1 }} className="oc-reveal oc-hero-cols">
-
-            {/* left */}
-            <div>
+      {/* ══════════════════════════════════════════
+          HERO  —  BLACK
+      ══════════════════════════════════════════ */}
+      <section style={{ background: BLACK, position: "relative", overflow: "hidden", padding: "48px 24px 0" }} className="lg:pt-18">
+        <div style={{ position: "absolute", top: -100, left: "50%", transform: "translateX(-50%)", width: 800, height: 600, background: `radial-gradient(ellipse at center, ${OC}28 0%, transparent 65%)`, pointerEvents: "none" }} />
+        <div style={{ position: "absolute", bottom: 0, right: 0, width: 500, height: 400, background: `radial-gradient(ellipse at center, ${OC}14 0%, transparent 65%)`, pointerEvents: "none" }} />
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 items-end gap-10 lg:gap-12">
+            <div className="lg:pb-16">
               {/* Integrates-with cycling badge — group of platforms, compact single line */}
-              <div style={{ display:"inline-flex", alignItems:"center", gap:".5rem", border:"1px solid rgba(139,124,106,.18)", background:"rgba(139,124,106,.07)", backdropFilter:"blur(12px)", padding:".38rem .85rem", borderRadius:100, marginBottom:"2.5rem", maxWidth:"100%", flexWrap:"nowrap", overflow:"hidden" }}>
-                <span style={{ width:5, height:5, borderRadius:"50%", background:"#22c55e", flexShrink:0, animation:"oc-pulse 1.8s ease-in-out infinite" }}/>
-                <span className="oc-mono" style={{ fontSize:".56rem", letterSpacing:".07em", color:muted, whiteSpace:"nowrap", flexShrink:0 }}>Integrates with</span>
-                <span className="oc-int-platforms" style={{ display:"flex", alignItems:"center", gap:".3rem", transition:"opacity .35s,transform .35s", opacity: intFade ? 0 : 1, transform: intFade ? "translateY(5px)" : "translateY(0)", overflow:"hidden" }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: ".5rem", border: "1px solid rgba(255,255,255,0.12)", background: "rgba(255,255,255,0.04)", backdropFilter: "blur(12px)", padding: ".38rem .85rem", borderRadius: 100, marginBottom: 24, maxWidth: "100%", flexWrap: "nowrap", overflow: "hidden" }}>
+                <span style={{ width: 5, height: 5, borderRadius: "50%", background: "#22c55e", flexShrink: 0, animation: "oc-pulse 1.8s ease-in-out infinite" }} />
+                <span style={{ fontFamily: "monospace", fontSize: ".62rem", letterSpacing: ".07em", color: "rgba(255,255,255,0.4)", whiteSpace: "nowrap", flexShrink: 0 }}>Integrates with</span>
+                <span style={{ display: "flex", alignItems: "center", gap: ".3rem", transition: "opacity .35s,transform .35s", opacity: intFade ? 0 : 1, transform: intFade ? "translateY(5px)" : "translateY(0)", overflow: "hidden" }}>
                   {INT_GROUPS[intIdx].map((p, i) => (
-                    <span key={p} style={{ display:"inline-flex", alignItems:"center", gap:".3rem" }}>
-                      <span className="oc-mono" style={{ fontSize:".56rem", fontWeight:700, color:fg, whiteSpace:"nowrap" }}>{p}</span>
-                      {i < INT_GROUPS[intIdx].length - 1 && <span style={{ color:muted, fontSize:".65rem", lineHeight:1 }}>·</span>}
+                    <span key={p} style={{ display: "inline-flex", alignItems: "center", gap: ".3rem" }}>
+                      <span style={{ fontFamily: "monospace", fontSize: ".62rem", fontWeight: 700, color: WHITE, whiteSpace: "nowrap" }}>{p}</span>
+                      {i < INT_GROUPS[intIdx].length - 1 && <span style={{ color: "rgba(255,255,255,0.4)", fontSize: ".65rem", lineHeight: 1 }}>·</span>}
                     </span>
                   ))}
                 </span>
               </div>
 
-              <h1 className="oc-serif" style={{ fontSize:"clamp(3.8rem,6.5vw,7.5rem)", fontWeight:300, lineHeight:.96, letterSpacing:"-.025em", color: isDark ? cream : dark, marginBottom:"2rem" }}>
-                {isDark ? (
-                  <>Trade Like<br/><em style={{ color:rust, fontStyle:"italic" }}>the Best</em><br/><span style={{ color: isDark ? "rgba(245,240,232,.35)":"rgba(28,21,16,.35)" }}>on Earth.</span></>
-                ) : (
-                  <>Trade<br/>Like the<br/><em style={{ color:rust, fontStyle:"italic" }}>Very Best.</em></>
-                )}
-              </h1>
-
-              <p style={{ fontSize:"1.05rem", color:muted, lineHeight:1.75, maxWidth:440, marginBottom:"3rem", fontWeight:500 }}>
-                Mirror real-time stock and options trades from top-performing traders. Precision, flexibility, and transparency — straight to your fingertips.
+              <motion.h1 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(42px, 6vw, 80px)", fontWeight: 300, color: WHITE, lineHeight: 1.05, letterSpacing: "-1px", marginBottom: 24 }}>
+                The Premium<br />
+                <em style={{ fontStyle: "italic", color: OC }}>Copy Trading</em><br />
+                Platform
+              </motion.h1>
+              <p style={{ color: "rgba(255,255,255,0.55)", fontSize: 18, lineHeight: 1.7, marginBottom: 36, maxWidth: 480 }}>
+                Mirror verified professional traders automatically. Your account, their expertise — executed in milliseconds.
               </p>
-
-              <div style={{ display:"flex", gap:"1.2rem", alignItems:"center", marginBottom:"4rem", flexWrap:"wrap" }}>
-                <Link href="/register" style={{ background:isDark?rust:dark, color: isDark?"white":cream, padding:"1rem 2.5rem", fontSize:".85rem", fontWeight: isDark?800:700, letterSpacing:".08em", textTransform:"uppercase", textDecoration:"none", borderRadius: isDark?6:2, boxShadow: isDark?"0 4px 18px rgba(192,57,43,.4)":"none", transition:"background .22s,transform .15s", display:"inline-block" }}
-                  onMouseEnter={e=>(e.currentTarget.style.background=isDark?"#a93226":rust)} onMouseLeave={e=>(e.currentTarget.style.background=isDark?rust:dark)}>
-                  Start Copying Now
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 40 }} className="sm:flex sm:flex-wrap sm:gap-4">
+                {AWARDS.map(a => (
+                  <motion.div key={a.label} {...reveal} style={{ border: "1px solid rgba(255,255,255,0.12)", borderRadius: 12, padding: "10px 14px", background: "rgba(255,255,255,0.03)" }}>
+                    <p style={{ color: WHITE, fontSize: 11, fontWeight: 700, lineHeight: 1.3, marginBottom: 2 }}>{a.label}</p>
+                    <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 10 }}>{a.sub}</p>
+                  </motion.div>
+                ))}
+              </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 16, flexWrap: "wrap" }}>
+                <Link href="/register" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 100, textDecoration: "none", boxShadow: `0 8px 32px ${OC}40`, transition: "opacity 0.2s, transform 0.2s" }}
+                  onMouseEnter={e => { e.currentTarget.style.opacity = "0.9"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                  onMouseLeave={e => { e.currentTarget.style.opacity = "1"; e.currentTarget.style.transform = "translateY(0)"; }}>
+                  Open Account
                 </Link>
-                <a href="#traders" className="oc-ghost-arrow" style={{ background:"none", border:"none", padding:0, color:isDark?bark:bark+"cc", fontSize:".85rem", fontWeight:700, letterSpacing:".06em", textTransform:"uppercase", display:"inline-flex", alignItems:"center", gap:".5rem", cursor:"pointer", textDecoration:"none", transition:"color .2s" }}>
-                  View Expert Traders
-                </a>
+                <Link href="/lead-traders" style={{ color: "rgba(255,255,255,0.65)", fontSize: 15, fontWeight: 500, textDecoration: "none", display: "flex", alignItems: "center", gap: 6 }}>
+                  View Top Traders <ChevronRight className="w-4 h-4" />
+                </Link>
               </div>
-
-            </div>
-
-            {/* right: card stack (always shown) */}
-            <div className="oc-hero-right" style={{ position:"relative", paddingTop:"clamp(1rem,3vw,3rem)", display:"flex", alignItems:"flex-start", justifyContent:"center", minHeight:520 }}>
-              {(
-                /* ── card stack ── */
-                <div style={{ position:"relative", width:"100%", height:520, flexShrink:0 }}>
-                  {/* card 1 — trader */}
-                  <div className="oc-hcard oc-hc1">
-                    <div className="oc-hcard-border" style={{ padding:"1.2rem 1.4rem", borderBottom:"1px solid rgba(74,63,53,.12)", display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                      <span className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".12em", textTransform:"uppercase", color:muted }}>Top Trader · Options</span>
-                      <span style={{ display:"flex", alignItems:"center", gap:".4rem", fontFamily:"var(--oc-mono)", fontSize:".58rem", color:leaf }}>
-                        <span className="oc-live-dot2"/>Live
-                      </span>
-                    </div>
-                    <div style={{ padding:"1.4rem" }}>
-                      <div style={{ display:"flex", alignItems:"center", gap:".9rem", marginBottom:"1.2rem" }}>
-                        <img src="https://i.pravatar.cc/150?img=11" alt="Jake Reynolds" style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
-                        <div><div style={{ fontWeight:800, fontSize:".95rem", color:fg }}>Jake Reynolds</div><div style={{ fontSize:".72rem", color:muted, marginTop:".1rem" }}>Options Specialist · 847 followers</div></div>
-                      </div>
-                      <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-end", marginBottom:"1rem" }}>
-                        <div className="oc-serif" style={{ fontSize:"3.2rem", fontWeight:600, color:leaf, lineHeight:1 }}>+182%</div>
-                        <div style={{ textAlign:"right" }}><span className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".1em", color:muted, textTransform:"uppercase", display:"block" }}>12-Month<br/>Return</span></div>
-                      </div>
-                      <div className="oc-hcard-border" style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:".5rem", paddingTop:"1rem", borderTop:"1px solid rgba(74,63,53,.12)" }}>
-                        {[["74%","Win Rate"],["1,204","Trades"],["−8.2%","Max DD"]].map(([v,l]) => (
-                          <div key={l}><div style={{ fontWeight:800, fontSize:".88rem", color:fg }}>{v}</div><div className="oc-mono" style={{ fontSize:".55rem", color:muted, textTransform:"uppercase", letterSpacing:".08em", marginTop:".1rem" }}>{l}</div></div>
-                        ))}
-                      </div>
-                      <button style={{ width:"100%", marginTop:"1rem", background:rust, color:"white", border:"none", padding:".75rem", borderRadius:6, fontFamily:"var(--oc-sans)", fontWeight:700, fontSize:".8rem", letterSpacing:".08em", textTransform:"uppercase", cursor:"pointer", transition:"background .2s" }}
-                        onMouseEnter={e=>(e.currentTarget.style.background="#a93226")} onMouseLeave={e=>(e.currentTarget.style.background=rust)}>
-                        Copy This Trader
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* card 2 — chart */}
-                  <div className="oc-hcard oc-hc2">
-                    <div className="oc-hcard-border" style={{ padding:"1.2rem 1.4rem", borderBottom:"1px solid rgba(74,63,53,.12)" }}>
-                      <span className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".12em", textTransform:"uppercase", color:muted }}>Portfolio Performance</span>
-                    </div>
-                    <div style={{ padding:"1.2rem 1.4rem", height:120, position:"relative", overflow:"hidden" }}>
-                      <svg width="100%" height="100%" viewBox="0 0 260 100" preserveAspectRatio="none">
-                        <defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stopColor={leaf} stopOpacity=".25"/><stop offset="100%" stopColor={leaf} stopOpacity="0"/></linearGradient></defs>
-                        <path d="M0,80 L20,72 L40,75 L60,60 L80,55 L100,42 L120,38 L140,30 L160,25 L180,18 L200,12 L220,8 L240,5 L260,2" fill="none" stroke={leaf} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                        <path d="M0,80 L20,72 L40,75 L60,60 L80,55 L100,42 L120,38 L140,30 L160,25 L180,18 L200,12 L220,8 L240,5 L260,2 L260,100 L0,100 Z" fill="url(#cg)"/>
-                      </svg>
-                    </div>
-                    <div style={{ padding:"0 1.4rem 1rem" }}><span className="oc-mono" style={{ fontSize:".55rem", color:muted, textTransform:"uppercase", letterSpacing:".1em" }}>Account Growth · Last 12 Months</span></div>
-                  </div>
-
-                  {/* card 3 — stat */}
-                  <div className="oc-hcard oc-hc3">
-                    <div style={{ padding:"1.4rem" }}>
-                      <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".12em", textTransform:"uppercase", color:muted, marginBottom:".5rem" }}>Avg Fill Rate</div>
-                      <div className="oc-serif" style={{ fontSize:"2.8rem", fontWeight:600, color:leaf, lineHeight:1 }}>97%</div>
-                      <div style={{ fontSize:".72rem", color:muted, marginTop:".3rem" }}>Real-time mirroring</div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
-        </section>
-
-
-        {/* ════════════════════════ MARQUEE ════════════════════════ */}
-        <div style={{ overflow:"hidden", whiteSpace:"nowrap", background: isDark ? darker : dark, borderTop:`1px solid ${isDark?"rgba(255,255,255,.05)":"rgba(255,255,255,.04)"}`, borderBottom:`1px solid ${isDark?"rgba(255,255,255,.05)":"rgba(255,255,255,.04)"}`, padding:".85rem 0" }}>
-          <div className="oc-mq-track">
-            {[...MARQUEE, ...MARQUEE].map((item, i) => (
-              <span key={i} style={{ display:"inline-flex", alignItems:"center", gap:".6rem" }}>
-                <span className="oc-mono" style={{ fontSize:".7rem", letterSpacing:".05em", color:"rgba(245,240,232,.4)" }}>
-                  {item.s} <span style={{ color: item.up ? "#4ade80" : "#f87171" }}>{item.up?"↑":"↓"} {item.c}</span>
-                </span>
-                {i < MARQUEE.length*2-1 && <span style={{ color:"rgba(245,240,232,.1)", fontSize:".8rem" }}>·</span>}
-              </span>
-            ))}
-          </div>
-        </div>
-
-
-        {/* ════════════════════════ STATS ════════════════════════ */}
-        <section style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(4rem,7vw,7rem) clamp(1.2rem,4vw,3.5rem)" }}>
-          <div className="oc-reveal" style={{ textAlign:"center" }}>
-            <div style={{ display:"inline-flex", alignItems:"center", gap:"1rem", marginBottom:"3.5rem" }}>
-              <div style={{ width:44, height:44, borderRadius:"50%", background: isDark?"rgba(192,57,43,.15)":"rgba(192,57,43,.1)", display:"flex", alignItems:"center", justifyContent:"center" }}>
-                <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke={rust} strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                </svg>
-              </div>
-              <span className="oc-serif" style={{ fontSize:"clamp(1.5rem,2.5vw,2.8rem)", fontWeight:300, color:fg, letterSpacing:"-.01em" }}>Globally Regulated</span>
-            </div>
-            <div className="oc-stats-grid" style={{ border:`1px solid ${border}`, borderRadius:12, overflow:"hidden", maxWidth:860, margin:"0 auto", background:surf }}>
-              {[["32K+","Active Traders"],["$150M+","Total Volume"],["10M+","Users"]].map(([v,l],i) => (
-                <div key={i} style={{ padding:"clamp(1.2rem,3vw,2.5rem) clamp(.75rem,2vw,1.5rem)", textAlign:"center", borderRight: i<2?`1px solid ${border}`:undefined }}>
-                  <span className="oc-serif" style={{ display:"block", fontSize:"clamp(2rem,5vw,3.8rem)", fontWeight:300, color:rust, lineHeight:1 }}>{v}</span>
-                  <span className="oc-mono" style={{ display:"block", fontSize:".6rem", color:muted, textTransform:"uppercase", letterSpacing:".1em", marginTop:".5rem" }}>{l}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ HOW IT WORKS ════════════════════════ */}
-        <section id="how" style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)" }}>
-          <div className="oc-reveal">
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>How It Works</span>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, maxWidth:620, marginTop:".5rem" }}>
-              Three steps.<br/><em style={{ color:rust }}>Zero complexity.</em>
-            </h2>
-            {!isDark && <p style={{ fontSize:"1rem", color:bark, lineHeight:1.75, maxWidth:500, marginBottom:"5rem", fontWeight:500, marginTop:"1.2rem" }}>No manual trades. No order entry. Just register, pick a trader, and every move mirrors instantly.</p>}
-          </div>
-
-          <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(240px,1fr))", gap:1, background:`1px solid ${border}`, border:`1px solid ${isDark?"rgba(255,255,255,.06)":border}`, borderRadius:14, overflow:"hidden", marginTop: isDark?"5rem":"0" }}>
-            {[
-              { n:"01", icon:<Link2 size={26}/>, title:"Setting Up your Account",    body:"Create your free account in under 2 minutes. Sign up with your email, verify your identity, and you're ready to start copy trading." },
-              { n:"02", icon:<Target size={26}/>, title:"Choose Expert Traders",  body:"Browse 340+ verified performers filtered by return, drawdown, win rate, and strategy. Every trader is fully audited — no black boxes." },
-              { n:"03", icon:<Zap size={26}/>,    title:"Trades Mirror Instantly", body:"The moment a trade fires, your account mirrors proportionally. Zero delay. Complete control to pause or stop anytime." },
-            ].map((step, i) => (
-              <div key={i} className="oc-step" style={{ background: isDark ? darker : "white", padding:"3rem 2.5rem", position:"relative", borderRight: i<2 ? `1px solid ${isDark?"rgba(255,255,255,.06)":border}` : undefined, transition:"background .3s,border-color .3s" }}>
-                <span className="oc-serif" style={{ fontStyle:"italic", fontSize:"5rem", fontWeight:300, lineHeight:1, color: isDark?"rgba(255,255,255,.04)":"rgba(139,124,106,.12)", display:"block", marginBottom:"1.5rem" }}>{step.n}</span>
-                <div style={{ marginBottom:"1.2rem", color:rust }}>{step.icon}</div>
-                <div className="oc-serif" style={{ fontSize:"1.5rem", color:fg, marginBottom:".8rem", lineHeight:1.2 }}>{step.title}</div>
-                <p style={{ fontSize:".9rem", color:muted, lineHeight:1.7, fontWeight:500 }}>{step.body}</p>
-                {i<2 && <div style={{ position:"absolute", right:-1, top:"50%", transform:"translateY(-50%)", color: isDark?"rgba(255,255,255,.08)":"rgba(139,124,106,.25)", fontSize:"1rem" }}>→</div>}
-              </div>
-            ))}
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ WHY CHOOSE US ════════════════════════ */}
-        <section style={{ maxWidth:1320, margin:"0 auto", padding:"0 clamp(1.2rem,4vw,3.5rem) clamp(5rem,9vw,9rem)" }}>
-          <div className="oc-reveal" style={{ marginBottom:"4rem" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>The Problem &amp; Solution</span>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, maxWidth:540, marginTop:".5rem" }}>
-              You should<br/><em style={{ color:rust }}>know this.</em>
-            </h2>
-          </div>
-          <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(300px,1fr))", gap:"1.5rem" }}>
-            {/* Challenge */}
-            <div style={{ border:`1px solid ${isDark?"rgba(239,68,68,.18)":"rgba(239,68,68,.25)"}`, background: isDark?"rgba(239,68,68,.04)":"rgba(254,242,242,.7)", borderRadius:14, padding:"2.5rem", position:"relative", overflow:"hidden" }}>
-              <div style={{ position:"absolute", top:-60, right:-60, width:160, height:160, borderRadius:"50%", background:"rgba(239,68,68,.06)", pointerEvents:"none" }}/>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:".5rem", background: isDark?"rgba(239,68,68,.12)":"#fee2e2", padding:".3rem .9rem", borderRadius:100, marginBottom:"1.5rem" }}>
-                <span style={{ width:6, height:6, borderRadius:"50%", background:"#ef4444", flexShrink:0 }}/>
-                <span className="oc-mono" style={{ fontSize:".6rem", letterSpacing:".1em", textTransform:"uppercase", color:"#ef4444" }}>The Challenge</span>
-              </div>
-              <div className="oc-serif" style={{ fontSize:"1.5rem", color:fg, marginBottom:"1rem", lineHeight:1.2 }}>Studying the market<br/>takes time</div>
-              <p style={{ fontSize:".9rem", color:muted, lineHeight:1.75, fontWeight:500 }}>Building and maintaining a trading strategy is hard. Options require timing, strategy, and discipline. Only 11–26% of manual investors succeed on their own. With OrchardCapitals, you can replicate successful trades from seasoned options traders to tilt the odds in your favor.</p>
-            </div>
-            {/* Solution */}
-            <div style={{ border:`1px solid ${isDark?"rgba(34,197,94,.18)":"rgba(34,197,94,.25)"}`, background: isDark?"rgba(34,197,94,.04)":"rgba(240,253,244,.7)", borderRadius:14, padding:"2.5rem", position:"relative", overflow:"hidden" }}>
-              <div style={{ position:"absolute", top:-60, right:-60, width:160, height:160, borderRadius:"50%", background:"rgba(34,197,94,.06)", pointerEvents:"none" }}/>
-              <div style={{ display:"inline-flex", alignItems:"center", gap:".5rem", background: isDark?"rgba(34,197,94,.12)":"#dcfce7", padding:".3rem .9rem", borderRadius:100, marginBottom:"1.5rem" }}>
-                <span style={{ width:6, height:6, borderRadius:"50%", background:"#22c55e", flexShrink:0 }}/>
-                <span className="oc-mono" style={{ fontSize:".6rem", letterSpacing:".1em", textTransform:"uppercase", color:"#22c55e" }}>The Solution</span>
-              </div>
-              <div className="oc-serif" style={{ fontSize:"1.5rem", color:fg, marginBottom:"1rem", lineHeight:1.2 }}>Beat the odds with<br/><em style={{ color: isDark?"#4ade80":leaf }}>Copy Trading</em></div>
-              <p style={{ fontSize:".9rem", color:muted, lineHeight:1.75, fontWeight:500, marginBottom:"1.8rem" }}>Proven success rate: over 73% of investors generate profits by copying top leaders — especially in dynamic options markets.</p>
-              <Link href="/register" style={{ display:"inline-flex", alignItems:"center", gap:".5rem", background:rust, color:"white", padding:".75rem 1.8rem", borderRadius:6, fontSize:".8rem", fontWeight:800, letterSpacing:".07em", textTransform:"uppercase", textDecoration:"none", boxShadow:"0 2px 14px rgba(192,57,43,.35)" }}>
-                Start Copy Trading
-                <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-              </Link>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ FEATURES BENTO ════════════════════════ */}
-        <section id="features" style={{ maxWidth:1320, margin:"0 auto", padding:"0 clamp(1.2rem,4vw,3.5rem) clamp(5rem,9vw,9rem)" }}>
-          <div className="oc-reveal">
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>Platform Features</span>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, maxWidth:580, marginTop:".5rem" }}>
-              {isDark ? <>Everything you need.<br/><em style={{ color:rust }}>Nothing you don't.</em></> : <>Built for <em style={{ color:rust }}>serious</em> investors.</>}
-            </h2>
-          </div>
-
-          <div className="oc-reveal oc-bento" style={{ display:"grid", gridTemplateColumns:"repeat(12,1fr)", gridTemplateRows:"auto auto", gap:"1.5rem", marginTop:"5rem" }}>
-            {/* A — spans 7 */}
-            <div className="oc-bc oc-bento-a" style={{ gridColumn:"span 7", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", overflow:"hidden", position:"relative" }}>
-              <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Execution Engine</div>
-              <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>Real-Time Copy.<br/><em style={{ color:rust }}>Zero Delay.</em></div>
-              <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>Trades execute in your account the millisecond they trigger. Proprietary order routing ensures fills within 0.01% of the original trade. Not lagged. Not approximated.</p>
-              <span style={{ display:"inline-block", marginTop:"1.2rem", border:`1px solid ${isDark?"rgba(58,107,53,.4)":"rgba(58,107,53,.3)"}`, padding:".2rem .8rem", borderRadius:100, fontFamily:"var(--oc-mono)", fontSize:".58rem", letterSpacing:".1em", color:"#4ade80" }}>0ms LATENCY</span>
-            </div>
-            {/* B — spans 5 */}
-            <div className="oc-bc oc-bento-b" style={{ gridColumn:"span 5", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", position:"relative", overflow:"hidden" }}>
-              <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Compliance & Security</div>
-              <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>Fully <em style={{ color:rust }}>Regulated.</em><br/>Always Audited.</div>
-              <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>Compliant across major global jurisdictions. Your funds never leave your own brokerage. We only copy signals — we never hold your capital.</p>
-              <span style={{ display:"inline-block", marginTop:"1.2rem", border:`1px solid ${isDark?"rgba(58,107,53,.4)":"rgba(58,107,53,.3)"}`, padding:".2rem .8rem", borderRadius:100, fontFamily:"var(--oc-mono)", fontSize:".58rem", letterSpacing:".1em", color:"#4ade80" }}>GLOBALLY REGULATED</span>
-            </div>
-            {/* C — spans 4 */}
-            <div className="oc-bc oc-bento-c" style={{ gridColumn:"span 4", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s" }}>
-              <div style={{ marginBottom:"1.5rem", color:rust }}><BarChart2 size={28}/></div>
-              <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Analytics</div>
-              <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>Deep Trader<br/><em style={{ color:rust }}>Analytics</em></div>
-              <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>24 months of audited live performance per trader. Sharpe ratio, drawdown, win rate, full trade history — all public.</p>
-            </div>
-            {/* D — spans 4, centered stat */}
-            <div className="oc-bc oc-bento-d" style={{ gridColumn:"span 4", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", textAlign:"center" }}>
-              <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Active Copiers</div>
-              <div className="oc-serif" style={{ fontSize:"5rem", fontWeight:300, color:fg, lineHeight:1, letterSpacing:"-.03em" }}>212<span style={{ color:rust }}>K+</span></div>
-              <p style={{ fontSize:".85rem", color:muted, marginTop:".5rem", fontWeight:500 }}>investors worldwide</p>
-            </div>
-            {/* E — spans 4 */}
-            <div className="oc-bc oc-bento-e" style={{ gridColumn:"span 4", border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", transition:"background .3s,border-color .3s" }}>
-              <div style={{ marginBottom:"1.5rem", color:rust }}><SlidersHorizontal size={28}/></div>
-              <div className="oc-mono" style={{ fontSize:".58rem", letterSpacing:".15em", textTransform:"uppercase", color:muted, marginBottom:"1rem" }}>Risk Controls</div>
-              <div className="oc-serif" style={{ fontSize:"1.7rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}><em style={{ color:rust }}>You</em> Stay<br/>In Control</div>
-              <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>Max position size, daily loss limits, excluded instruments. Your parameters override the trader's — always.</p>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ WHAT YOU CAN COPY ════════════════════════ */}
-        <section style={{ maxWidth:1320, margin:"0 auto", padding:"0 clamp(1.2rem,4vw,3.5rem) clamp(5rem,9vw,9rem)" }}>
-          <div className="oc-reveal" style={{ marginBottom:"4rem" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>Instruments</span>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, maxWidth:540, marginTop:".5rem" }}>
-              What you<br/>can <em style={{ color:rust }}>copy.</em>
-            </h2>
-          </div>
-          <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(260px,1fr))", gap:"1.5rem" }}>
-            {[
-              { icon:<svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>, title:"Stocks & ETFs", body:"Full-share orders or fractional allocations, instantaneous entry/exit mirroring, price-based T/P and S/L." },
-              { icon:<svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>, title:"Single-Leg Options", body:"Replicate trade by trade: ticker, strike, expiry, premium, quantity, and timestamp. Calls and puts covered." },
-              { icon:<svg width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><circle cx="12" cy="12" r="3" fill="currentColor"/><path strokeLinecap="round" strokeLinejoin="round" d="M12 2v4m0 12v4M2 12h4m12 0h4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>, title:"Multi-Leg Strategies", body:"Copy complex structures as a single unit: verticals, iron condors, butterflies, calendars, ratio spreads." },
-            ].map((item, i) => (
-              <div key={i} className="oc-bc" style={{ border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2.5rem", textAlign:"center", transition:"background .3s,border-color .3s,transform .3s", cursor:"default" }}
-                onMouseEnter={e=>{e.currentTarget.style.transform="translateY(-5px)"}} onMouseLeave={e=>{e.currentTarget.style.transform="none"}}>
-                <div style={{ width:52, height:52, borderRadius:14, background: isDark?"rgba(192,57,43,.1)":"rgba(192,57,43,.07)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 1.5rem", color:rust }}>
-                  {item.icon}
-                </div>
-                <div className="oc-serif" style={{ fontSize:"1.4rem", color:fg, marginBottom:".8rem", lineHeight:1.15 }}>{item.title}</div>
-                <p style={{ fontSize:".88rem", color:muted, lineHeight:1.7, fontWeight:500 }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ TRADERS ════════════════════════ */}
-        <section id="traders" style={{ background: isDark ? "rgba(255,255,255,.02)" : dark, borderTop:`1px solid ${isDark?"rgba(255,255,255,.06)":"transparent"}`, borderBottom:`1px solid ${isDark?"rgba(255,255,255,.06)":"transparent"}` }}>
-          <div style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)" }}>
-            <div className="oc-reveal">
-              <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-                <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-                <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:"rgba(245,240,232,.4)" }}>Expert Traders</span>
-              </div>
-              <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:cream, maxWidth:560, marginTop:".5rem" }}>
-                Handpicked. Verified.<br/><em style={{ color:rust }}>Consistent.</em>
-              </h2>
-              <p style={{ fontSize:"1rem", color:"rgba(245,240,232,.4)", lineHeight:1.7, maxWidth:500, marginTop:"1.2rem", fontWeight:500 }}>Every trader passes a 6-month live performance review. No paper trading. No simulations. Real money, real results.</p>
-            </div>
-
-            <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(280px,1fr))", gap:"1.5rem", marginTop:"5rem" }}>
-              {TRADERS.map((t) => (
-                <div key={t.i} className="oc-tc" style={{ background:"rgba(255,255,255,.03)", border:"1px solid rgba(255,255,255,.07)", borderRadius:14, padding:"2rem" }}>
-                  <div style={{ display:"flex", justifyContent:"space-between", alignItems:"flex-start", marginBottom:"1.5rem" }}>
-                    <div style={{ display:"flex", alignItems:"center", gap:".9rem" }}>
-                      <img src={t.img} alt={t.name} style={{ width:52, height:52, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
-                      <div><div style={{ fontWeight:800, fontSize:".95rem", color:cream }}>{t.name}</div><div style={{ fontSize:".7rem", color:"rgba(245,240,232,.4)", marginTop:".15rem" }}>{t.spec} · {t.followers}</div></div>
-                    </div>
-                    <span className="oc-mono" style={{ fontSize:".55rem", letterSpacing:".1em", textTransform:"uppercase", border:"1px solid rgba(192,57,43,.35)", color:rust, padding:".2rem .65rem", borderRadius:100 }}>{t.badge}</span>
-                  </div>
-                  <div className="oc-serif" style={{ fontSize:"4rem", fontWeight:300, color:"#4ade80", lineHeight:1, marginBottom:".2rem" }}>{t.ret}</div>
-                  <div className="oc-mono" style={{ fontSize:".58rem", color:"rgba(245,240,232,.25)", letterSpacing:".1em", textTransform:"uppercase", marginBottom:"1.5rem" }}>12-Month Return</div>
-                  <div style={{ height:2, background:"rgba(255,255,255,.06)", borderRadius:2, marginBottom:"1.5rem" }}>
-                    <div style={{ height:2, background:`linear-gradient(90deg,${rust},#b7860c)`, borderRadius:2, width:t.bar }}/>
-                  </div>
-                  <div style={{ display:"grid", gridTemplateColumns:"repeat(3,1fr)", gap:".5rem", marginBottom:"1.5rem" }}>
-                    {[[t.wr,"Win Rate"],[t.tr,"Trades"],[t.dd,"Max DD"]].map(([v,l])=>(
-                      <div key={String(l)}><div style={{ fontWeight:800, fontSize:".88rem", color:cream }}>{v}</div><div style={{ fontSize:".62rem", color:"rgba(245,240,232,.3)", textTransform:"uppercase", letterSpacing:".06em", marginTop:".1rem" }}>{l}</div></div>
-                    ))}
-                  </div>
-                  <button style={{ width:"100%", background:"transparent", border:"1px solid rgba(255,255,255,.1)", color:cream, padding:".8rem", borderRadius:8, fontFamily:"var(--oc-sans)", fontWeight:800, fontSize:".78rem", letterSpacing:".08em", textTransform:"uppercase", cursor:"pointer", transition:"background .2s,border-color .2s" }}
-                    onMouseEnter={e=>{e.currentTarget.style.background=rust;e.currentTarget.style.borderColor=rust;}} onMouseLeave={e=>{e.currentTarget.style.background="transparent";e.currentTarget.style.borderColor="rgba(255,255,255,.1)";}}>
-                    Copy This Trader
-                  </button>
-                </div>
-              ))}
-            </div>
-
-            <div className="oc-reveal" style={{ textAlign:"center", marginTop:"3.5rem", paddingTop:"3.5rem", borderTop:"1px solid rgba(255,255,255,.06)" }}>
-              <Link href="/explore-traders" className="oc-ghost-arrow" style={{ fontFamily:"var(--oc-mono)", fontSize:".72rem", letterSpacing:".15em", textTransform:"uppercase", color:"rgba(245,240,232,.35)", textDecoration:"none", display:"inline-flex", alignItems:"center", gap:".6rem", transition:"color .2s" }}
-                onMouseEnter={e=>(e.currentTarget.style.color=cream)} onMouseLeave={e=>(e.currentTarget.style.color="rgba(245,240,232,.35)")}>
-                View all 340+ verified traders
-              </Link>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ TESTIMONIAL ════════════════════════ */}
-        <section style={{ borderTop:`1px solid ${border}` }}>
-          <div className="oc-reveal oc-testi" style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)", display:"grid", gridTemplateColumns:"1fr 2fr", gap:"clamp(3rem,7vw,7rem)", alignItems:"center" }}>
-            <div>
-              <div className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted, marginBottom:"1.5rem" }}>What Our Members Say</div>
-              <div className="oc-serif" style={{ fontStyle:"italic", fontSize:"9rem", color: isDark?"rgba(255,255,255,.06)":bark+"33", lineHeight:.7 }}>"</div>
-            </div>
-            <div>
-              <blockquote className="oc-serif oc-testi-quote" style={{ fontSize:"clamp(1.6rem,2.5vw,2.8rem)", fontWeight:300, lineHeight:1.35, color:fg, marginBottom:"2rem", letterSpacing:"-.01em" }}>
-                "OrchardCapitals is the first platform that actually <em style={{ color:rust }}>delivers</em> on the promise of copy trading. The execution quality is unlike anything else I've used in twelve years of investing."
-              </blockquote>
-              <div style={{ display:"flex", alignItems:"center", gap:"1rem", marginBottom:"2.5rem" }}>
-                <img src="https://i.pravatar.cc/150?img=33" alt="David R." style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", display:"block" }}/>
-                <div><div style={{ fontWeight:800, fontSize:".95rem", color:fg }}>David R.</div><div style={{ fontSize:".75rem", color:muted, marginTop:".15rem" }}>Portfolio Manager · San Francisco</div></div>
-              </div>
-              <div style={{ display:"flex", gap:"3rem", paddingTop:"2.5rem", borderTop:`1px solid ${border}` }}>
-                {[["+247%","Portfolio Return"],["18mo","On Platform"],["3","Traders Copied"]].map(([v,l])=>(
-                  <div key={l}>
-                    <span className="oc-serif" style={{ fontSize:"2rem", color: isDark?"#4ade80":leaf, display:"block", lineHeight:1 }}>{v}</span>
-                    <span className="oc-mono" style={{ fontSize:".58rem", color:muted, textTransform:"uppercase", letterSpacing:".1em", marginTop:".3rem", display:"block" }}>{l}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ FAQ ════════════════════════ */}
-        <section style={{ maxWidth:900, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)" }}>
-          <div className="oc-reveal" style={{ textAlign:"center", marginBottom:"4rem" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem", justifyContent:"center" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>FAQ</span>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, marginTop:".5rem" }}>
-              Your questions,<br/><em style={{ color:rust }}>answered.</em>
-            </h2>
-            <p style={{ fontSize:"1rem", color:muted, lineHeight:1.7, maxWidth:480, margin:"1.2rem auto 0", fontWeight:500 }}>Everything you need to know about copy trading on OrchardCapitals.</p>
-          </div>
-          <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(340px,1fr))", gap:"1rem" }}>
-            {[
-              { q:"Do I need trading experience?", a:"No trading experience is required. Our platform is designed for both beginners and experienced traders. You can start copying expert traders immediately and learn as you go." },
-              { q:"Can I stop copying anytime?", a:"Yes, you have complete control. You can start or stop copying any trader at any time with just one click. There are no lock-in periods or penalties for stopping." },
-              { q:"Is my money safe?", a:"Your funds are held in top-tier institutions and are completely secure. We use bank-level encryption and security measures. Your money remains in your own brokerage account — we never have direct access to your funds." },
-              { q:"What is the minimum investment?", a:"The minimum investment varies depending on the trader you want to copy and your broker's requirements. Generally, you can start with as little as $500, but we recommend at least $1,000 for better diversification." },
-            ].map((item, i) => (
-              <div key={i} style={{ border:`1px solid ${faqOpen===i ? isDark?"rgba(192,57,43,.4)":"rgba(192,57,43,.35)" : border}`, background:surf, borderRadius:12, overflow:"hidden", transition:"border-color .25s" }}>
-                <button onClick={()=>setFaqOpen(faqOpen===i?null:i)} style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:"1.3rem 1.5rem", background:"transparent", border:"none", cursor:"pointer", color:fg, textAlign:"left", gap:"1rem" }}>
-                  <span style={{ fontSize:".95rem", fontWeight:700, color: faqOpen===i ? rust : fg, transition:"color .2s", fontFamily:"var(--oc-sans)" }}>{item.q}</span>
-                  <span style={{ width:26, height:26, borderRadius:"50%", border:`1px solid ${faqOpen===i?rust:isDark?"rgba(255,255,255,.12)":border}`, display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, color: faqOpen===i?rust:muted, background: faqOpen===i? (isDark?"rgba(192,57,43,.12)":"rgba(192,57,43,.08)"):"transparent", transition:"all .2s", transform: faqOpen===i?"rotate(45deg)":"none" }}>
-                    <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4"/></svg>
-                  </span>
-                </button>
-                {faqOpen===i && (
-                  <div style={{ padding:"0 1.5rem 1.3rem", borderTop:`1px solid ${isDark?"rgba(255,255,255,.06)":"rgba(74,63,53,.08)"}` }}>
-                    <p style={{ fontSize:".88rem", color:muted, lineHeight:1.75, fontWeight:500, paddingTop:"1rem" }}>{item.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </section>
-
-
-        {/* ════════════════════════ TRUST ════════════════════════ */}
-        <section style={{ maxWidth:1320, margin:"0 auto", padding:"0 clamp(1.2rem,4vw,3.5rem) clamp(5rem,9vw,9rem)" }}>
-          <div className="oc-reveal" style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(200px,1fr))", gap:"1.2rem" }}>
-            {[
-              { icon:<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>, title:"Social", body:"More than 35 million users globally" },
-              { icon:<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>, title:"Reliable", body:"A leader in the fintech space since 2007" },
-              { icon:<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>, title:"Secured", body:"Bank-level encryption and security for client money and assets" },
-              { icon:<svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>, title:"Global", body:"Providing services around the world" },
-            ].map((item, i) => (
-              <div key={i} className="oc-bc" style={{ border:`1px solid ${border}`, background:surfEl, borderRadius:14, padding:"2rem", textAlign:"center", transition:"background .3s,border-color .3s,transform .3s", cursor:"default" }}
-                onMouseEnter={e=>e.currentTarget.style.transform="translateY(-4px)"} onMouseLeave={e=>e.currentTarget.style.transform="none"}>
-                <div style={{ width:44, height:44, borderRadius:12, background: isDark?"rgba(192,57,43,.1)":"rgba(192,57,43,.07)", display:"flex", alignItems:"center", justifyContent:"center", margin:"0 auto 1rem", color:rust }}>
-                  {item.icon}
-                </div>
-                <div style={{ fontWeight:800, fontSize:".95rem", color:fg, marginBottom:".5rem" }}>{item.title}</div>
-                <p style={{ fontSize:".8rem", color:muted, lineHeight:1.65, fontWeight:500 }}>{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-        {/* ════════════════════════ MEMBER REVIEWS ════════════════════════ */}
-        <section style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(5rem,9vw,9rem) clamp(1.2rem,4vw,3.5rem)" }}>
-          <div style={{ display:"flex", flexDirection:"column", alignItems:"center", marginBottom:"3.5rem", textAlign:"center" }}>
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1rem" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:muted }}>Member Reviews</span>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(2.4rem,4vw,4.8rem)", fontWeight:300, lineHeight:1.03, letterSpacing:"-.02em", color:fg, marginTop:".5rem" }}>
-              Trusted by<br/><em style={{ color:rust }}>real investors.</em>
-            </h2>
-          </div>
-
-          <div style={{ position:"relative" }}>
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(290px,1fr))", gap:"1.5rem" }}>
-              {[
-                REVIEWS[reviewIdx % REVIEWS.length],
-                REVIEWS[(reviewIdx + 1) % REVIEWS.length],
-                REVIEWS[(reviewIdx + 2) % REVIEWS.length],
-              ].map((r, i) => (
-                <div key={`${reviewIdx}-${i}`} className="oc-review-card" style={{ border:`1px solid ${border}`, background:surf, borderRadius:14, padding:"2rem", display:"flex", flexDirection:"column", gap:"1.2rem" }}>
-                  <p style={{ fontSize:".9rem", color:muted, lineHeight:1.75, fontWeight:500, flexGrow:1 }}>&quot;{r.text}&quot;</p>
-                  <div style={{ display:"flex", alignItems:"center", gap:".85rem", paddingTop:"1rem", borderTop:`1px solid ${border}` }}>
-                    <img src={r.img} alt={r.name} style={{ width:44, height:44, borderRadius:"50%", objectFit:"cover", flexShrink:0 }}/>
-                    <div>
-                      <div style={{ fontWeight:800, fontSize:".9rem", color:fg }}>{r.name}</div>
-                      <div className="oc-mono" style={{ fontSize:".6rem", color:muted, letterSpacing:".06em", marginTop:".15rem" }}>{r.loc}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Trustpilot star rating strip */}
-            <div style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:".75rem", marginTop:"2.5rem", paddingTop:"2.5rem", borderTop:`1px solid ${border}` }}>
-              <img src="/trustpilot_images/star.svg" alt="Trustpilot 4.5 star rating" style={{ width:120, height:"auto", display:"block" }}/>
-              <div style={{ display:"flex", alignItems:"center", gap:".75rem" }}>
-                <img src={isDark ? "/trustpilot_images/logo.svg" : "/trustpilot_images/logo_dark.svg"} alt="Trustpilot" style={{ height:18, display:"block" }}/>
-              </div>
-            </div>
-
-            <div style={{ display:"flex", justifyContent:"center", alignItems:"center", gap:"1rem", marginTop:"2rem" }}>
-              <button
-                onClick={() => setReviewIdx((reviewIdx - 1 + REVIEWS.length) % REVIEWS.length)}
-                style={{ width:44, height:44, borderRadius:"50%", border:`1px solid ${border}`, background:surf, color:fg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"background .2s,border-color .2s" }}
-                onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background=rust;(e.currentTarget as HTMLButtonElement).style.borderColor=rust;}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background=surf;(e.currentTarget as HTMLButtonElement).style.borderColor=border;}}
-                aria-label="Previous review">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7"/></svg>
-              </button>
-              <div style={{ display:"flex", alignItems:"center", gap:".5rem" }}>
-                {REVIEWS.map((_,i) => (
-                  <button key={i} onClick={() => setReviewIdx(i)} style={{ width: reviewIdx===i ? 20 : 6, height:6, borderRadius:3, background: reviewIdx===i ? rust : border, border:"none", cursor:"pointer", padding:0, transition:"width .25s,background .25s" }} aria-label={`Go to review ${i+1}`}/>
-                ))}
-              </div>
-              <button
-                onClick={() => setReviewIdx((reviewIdx + 1) % REVIEWS.length)}
-                style={{ width:44, height:44, borderRadius:"50%", border:`1px solid ${border}`, background:surf, color:fg, display:"flex", alignItems:"center", justifyContent:"center", cursor:"pointer", transition:"background .2s,border-color .2s" }}
-                onMouseEnter={e=>{(e.currentTarget as HTMLButtonElement).style.background=rust;(e.currentTarget as HTMLButtonElement).style.borderColor=rust;}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLButtonElement).style.background=surf;(e.currentTarget as HTMLButtonElement).style.borderColor=border;}}
-                aria-label="Next review">
-                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7"/></svg>
-              </button>
-            </div>
-          </div>
-        </section>
-
-
-
-
-        {/* ════════════════════════ CTA ════════════════════════ */}
-        <section style={{ position:"relative", overflow:"hidden", background: isDark ? darker : dark, borderTop:`1px solid ${isDark?"rgba(255,255,255,.06)":"transparent"}` }}>
-          <div aria-hidden style={{ position:"absolute", bottom:"-3rem", left:"50%", transform:"translateX(-50%)", fontFamily:"var(--oc-serif)", fontStyle:"italic", fontSize:"28vw", fontWeight:300, lineHeight:1, color:"transparent", WebkitTextStroke:"1px rgba(255,255,255,0.03)", pointerEvents:"none", whiteSpace:"nowrap", userSelect:"none" }}>
-            Copy
-          </div>
-          <div className="oc-reveal" style={{ maxWidth:1320, margin:"0 auto", padding:"clamp(6rem,10vw,10rem) clamp(1.2rem,4vw,3.5rem)", textAlign:"center", position:"relative", zIndex:1 }}>
-            <div style={{ display:"flex", alignItems:"center", gap:".75rem", marginBottom:"1.5rem", justifyContent:"center" }}>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-              <span className="oc-mono" style={{ fontSize:".62rem", letterSpacing:".2em", textTransform:"uppercase", color:"rgba(245,240,232,.3)" }}>Begin your journey</span>
-              <div style={{ width:32, height:1, background:rust, flexShrink:0 }}/>
-            </div>
-            <h2 className="oc-serif" style={{ fontSize:"clamp(3.5rem,7.5vw,9.5rem)", fontWeight:300, lineHeight:.95, letterSpacing:"-.025em", color:cream, marginBottom:"2.5rem" }}>
-              Start Copying<br/><em style={{ color:rust }}>the Best.</em>
-            </h2>
-            <p style={{ fontSize:"1rem", color:"rgba(245,240,232,.45)", lineHeight:1.7, maxWidth:480, margin:"0 auto 3.5rem", fontWeight:500 }}>
-              Join 300,000+ investors already mirroring the world's top traders. Setup takes under 5 minutes.
-            </p>
-            <div style={{ display:"flex", gap:"1rem", justifyContent:"center", flexWrap:"wrap" }}>
-              <Link href="/register" style={{ background:cream, color:dark, padding:"1.1rem 3rem", fontSize:".85rem", fontWeight:700, letterSpacing:".1em", textTransform:"uppercase", textDecoration:"none", borderRadius:4, transition:"background .2s,color .2s", display:"inline-block" }}
-                onMouseEnter={e=>{e.currentTarget.style.background=rust;e.currentTarget.style.color=cream;}} onMouseLeave={e=>{e.currentTarget.style.background=cream;e.currentTarget.style.color=dark;}}>
-                Create Free Account
-              </Link>
-              <a href="#traders" className="oc-cta-ghost">Browse Traders</a>
-            </div>
-          </div>
-        </section>
-
-      </main>
-
-
-      {/* ════════════════════════ FOOTER ════════════════════════ */}
-      <footer style={{ borderTop:"1px solid rgba(255,255,255,.06)", background: isDark ? darker : dark, color:cream }}>
-        <div style={{ maxWidth:1320, margin:"0 auto", padding:"3.5rem clamp(1.2rem,4vw,3.5rem)" }}>
-
-          {/* top: brand + link sections */}
-          <div style={{ display:"grid", gridTemplateColumns:"minmax(200px,280px) 1fr", gap:"3rem", alignItems:"flex-start" }} className="oc-footer-top">
-            {/* brand col */}
-            <div>
-              <OCLogo light size="md" />
-              <p style={{ fontSize:".85rem", color:"rgba(245,240,232,.4)", lineHeight:1.65, fontWeight:500, marginTop:".6rem" }}>
-                Copy trade with Orchard Capitals
+              <p style={{ color: "rgba(255,255,255,0.3)", fontSize: 11, marginTop: 16 }}>
+                *All investing involves risk. Past performance is not indicative of future results.
               </p>
-              {/* placeholder for app store badges */}
             </div>
-
-            {/* link sections accordion */}
-            <div style={{ display:"flex", flexDirection:"column", gap:0 }}>
-              {[
-                { title:"LEGALS", links:[
-                  ["Terms Of Service","/terms-of-service"],["Privacy Policy","/privacy-policy"],["Cookies Policy","/cookies-policy"],
-                  ["Risk Disclaimer","/risk-disclaimer"],["Conflict of Interest Policy","/conflict-of-interest"],
-                  ["Declaration of Consent","/declaration-of-consent"],["End-User License Agreement","/end-user-license-agreement"],
-                ]},
-                { title:"FEATURES", links:[["AutoGuard™","/autoguard"]] },
-                { title:"RESOURCES", links:[["Affiliate Guide","/affiliate-guide"],["Leader Guide","/leader-guide"],["User Guide","/user-guide"]] },
-                { title:"ABOUT US", links:[["Company","/about"]] },
-                { title:"PARTNERSHIPS", links:[["Leader","/leader"],["Affiliate","/affiliate"],["Broker","/broker"]] },
-                { title:"CONTACT", links:[["+1 (929) 512-0241","#"],["support@orchardcapitals.com","mailto:support@orchardcapitals.com"]] },
-              ].map(({ title, links }) => (
-                <div key={title} style={{ borderBottom:"1px solid rgba(255,255,255,.07)" }}>
-                  <button
-                    onClick={()=>setFooterOpen(footerOpen===title?null:title)}
-                    style={{ width:"100%", display:"flex", alignItems:"center", justifyContent:"space-between", padding:".9rem 0", background:"transparent", border:"none", cursor:"pointer", color:cream }}
-                  >
-                    <span className="oc-mono" style={{ fontSize:".65rem", fontWeight:700, letterSpacing:".18em", textTransform:"uppercase", color:"rgba(245,240,232,.5)" }}>{title}</span>
-                    <span style={{ width:22, height:22, borderRadius:4, border:"1px solid rgba(255,255,255,.15)", display:"flex", alignItems:"center", justifyContent:"center", flexShrink:0, color:"rgba(245,240,232,.4)", transition:"transform .25s", transform: footerOpen===title?"rotate(180deg)":"none" }}>
-                      <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7"/>
-                      </svg>
-                    </span>
-                  </button>
-                  <div style={{ overflow:"hidden", maxHeight: footerOpen===title?"600px":"0", opacity: footerOpen===title?1:0, transition:"max-height .3s ease,opacity .3s ease" }}>
-                    <ul style={{ listStyle:"none", padding:0, margin:"0 0 1rem", display:"flex", flexDirection:"column", gap:".55rem" }}>
-                      {links.map(([label, href]) => (
-                        <li key={label}>
-                          <Link href={href} className="oc-flink">{label}</Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
+            <div style={{ position: "relative", alignSelf: "flex-end" }}>
+              <div style={{ borderRadius: "20px 20px 0 0", overflow: "hidden", boxShadow: "0 -24px 80px rgba(0,0,0,0.55)", border: "1px solid rgba(255,255,255,0.08)", borderBottom: "none" }}>
+                <motion.img {...reveal} src="/landing/images/anywhere-8188b22d.png" alt="Orchard Capitals Platform" style={{ width: "100%", display: "block", maxHeight: 420, objectFit: "cover", objectPosition: "center top" }} />
+              </div>
             </div>
-          </div>
-
-          {/* disclaimer */}
-          <div style={{ marginTop:"3rem", paddingTop:"2.5rem", borderTop:"1px solid rgba(255,255,255,.06)", display:"flex", flexDirection:"column", gap:"1rem" }}>
-            <p style={{ fontSize:".72rem", color:"rgba(245,240,232,.25)", lineHeight:1.75, fontWeight:500 }}>
-              Disclaimer: Orchard Capitals (Europe) Ltd., a Financial Services Company authorised and regulated by the Cyprus Securities Exchange Commission (CySEC) under the license # 109/10. Registered in Cyprus under Company No. HE 200595. Registered Office: 4 Profiti Ilia Str., Kanika Business Centre, 7th floor, Germasogeia, 4046, Limassol, Cyprus. Orchard Capitals (UK) Ltd, a Financial Services Company authorised and regulated by the Financial Conduct Authority (FCA) under the license FRN 583263. Registered Office: 24th floor, One Canada Square, Canary Wharf, London E14 5AB. Orchard Capitals (USA) Ltd, a financial company authorised and regulated by SEC; CRD 18000661. Orchard Capitals (ME) Limited, is licensed and regulated by the Abu Dhabi Global Market ("ADGM")'s Financial Services Regulatory Authority ("FSRA") as an Authorised Person under Financial Services Permission Number 220073.
-            </p>
-            <p style={{ fontSize:".72rem", color:"rgba(245,240,232,.25)", lineHeight:1.75, fontWeight:500 }}>
-              Past performance is not an indication of future results. You should seek advice from an independent and suitably licensed financial advisor and ensure that you have the risk appetite, relevant experience and knowledge before you decide to trade. Trading with Orchard Capitals by following and/or copying or replicating the trades of other traders involves a high level of risk, even when following and/or copying the top-performing traders.
-            </p>
-            <p style={{ fontSize:".7rem", color:"rgba(245,240,232,.15)", letterSpacing:".04em", paddingTop:".5rem" }}>
-              Copyright © 2006–2026 Orchard Capitals — Your Social Investment Network. All rights reserved.
-            </p>
           </div>
         </div>
-      </footer>
+      </section>
 
-    </div>
+      {/* ══════════════════════════════════════════
+          QUICK NAV CARDS  —  WHITE
+      ══════════════════════════════════════════ */}
+      <section style={{ background: WHITE, padding: "64px 24px 64px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }} className="sm:grid-cols-3">
+            {[
+              { icon: <Users className="w-5 h-5" />, label: "Top Traders", href: "/lead-traders" },
+              { icon: <TrendingUp className="w-5 h-5" />, label: "Fees & Plans", href: "#fees" },
+              { icon: <Shield className="w-5 h-5" />, label: "Why Orchard", href: "#why" },
+            ].map(card => (
+              <Link key={card.label} href={card.href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "18px 20px", border: "1px solid #e5e7eb", borderRadius: 14, textDecoration: "none", background: WHITE, transition: "border-color 0.2s, box-shadow 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.borderColor = OC; e.currentTarget.style.boxShadow = `0 4px 20px ${OC}15`; }}
+                onMouseLeave={e => { e.currentTarget.style.borderColor = "#e5e7eb"; e.currentTarget.style.boxShadow = "none"; }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <span style={{ color: OC }}>{card.icon}</span>
+                  <span style={{ color: BLACK, fontSize: 15, fontWeight: 600 }}>{card.label}</span>
+                </div>
+                <ChevronRight className="w-4 h-4" style={{ color: "#9ca3af" }} />
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          PARTNER WITH US  —  WHITE, editorial
+      ══════════════════════════════════════════ */}
+      <section className={cormorant.variable} style={{ background: WHITE, padding: "88px 24px" }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[60%_1fr] gap-10 lg:gap-16 items-center" style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ borderRadius: 20, overflow: "hidden", aspectRatio: "16 / 11" }}>
+            <motion.img {...reveal} src="/images/new/learn_support_t_journey.jpg" alt="An Orchard Capitals advisor meeting with clients" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+          </div>
+          <div>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-serif), 'Cormorant Garamond', Georgia, serif", fontWeight: 500, fontSize: "clamp(30px, 3.2vw, 44px)", lineHeight: 1.2, letterSpacing: "-0.3px", color: BLACK, marginBottom: 20 }}>
+              Explore every way we support your trading journey
+            </motion.h2>
+            <p style={{ color: "#6b7280", fontSize: 16, lineHeight: 1.75, marginBottom: 32 }}>
+              Whether you&apos;re just getting started with copy trading or managing a multi-strategy portfolio, our team offers dedicated onboarding, account guidance, and support tailored to how you trade.
+            </p>
+            <Link href="/about" style={{ display: "inline-block", border: `1.5px solid ${BLACK}`, color: BLACK, fontWeight: 600, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", transition: "background 0.2s, color 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.background = BLACK; e.currentTarget.style.color = WHITE; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "transparent"; e.currentTarget.style.color = BLACK; }}>
+              Explore working with us
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          FEES  —  BLACK / DARK
+      ══════════════════════════════════════════ */}
+      <section id="fees" style={{ background: BLACK, padding: "80px 24px", position: "relative", overflow: "hidden" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(36px, 5vw, 64px)", fontWeight: 300, color: WHITE, lineHeight: 1.1, marginBottom: 16, letterSpacing: "-0.5px" }}>
+              Keep more.<br />Trade more.
+            </motion.h2>
+            <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, maxWidth: 480, margin: "0 auto" }}>
+              Nothing to hide here — just transparent pricing across every product, every account.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4" style={{ gap: 16, marginBottom: 44 }}>
+            {[
+              { value: "$0", label: "Management fee", desc: "No AUM charge, ever." },
+              { value: "$0", label: "Commission on trades", desc: "Stocks & ETFs, unlimited." },
+              { value: "$0", label: "Options contract fee", desc: "Per-contract cost, waived." },
+              { value: "No Min", label: "Account minimum", desc: "Start with any amount." },
+            ].map(f => (
+              <motion.div key={f.label} {...reveal} style={{ background: "rgba(255,255,255,0.035)", border: "1px solid rgba(255,255,255,0.1)", borderTop: `3px solid ${OC}`, borderRadius: 14, padding: "28px 20px" }}>
+                <div style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 3.5vw, 42px)", fontWeight: 700, color: WHITE, letterSpacing: "-1px", marginBottom: 10 }}>{f.value}</div>
+                <div style={{ color: WHITE, fontSize: 14, fontWeight: 700, marginBottom: 4 }}>{f.label}</div>
+                <div style={{ color: "rgba(255,255,255,0.45)", fontSize: 13, lineHeight: 1.5 }}>{f.desc}</div>
+              </motion.div>
+            ))}
+          </div>
+          <div style={{ textAlign: "center" }}>
+            <Link href="/register" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}>
+              Start for Free
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          MARKET MOMENT  —  RUST BANNER
+      ══════════════════════════════════════════ */}
+      <section style={{ background: `radial-gradient(ellipse at center, ${OC} 0%, #6b3016 100%)`, padding: "88px 24px", textAlign: "center" }}>
+        <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(32px, 5.5vw, 64px)", fontWeight: 800, color: WHITE, letterSpacing: "-0.5px", lineHeight: 1.12, marginBottom: 36, textTransform: "uppercase" }}>
+          The market&apos;s moving.<br />Are you copying?
+        </motion.h2>
+        <Link href="/register" style={{ background: BLACK, color: WHITE, fontWeight: 800, fontSize: 15, padding: "16px 40px", borderRadius: 100, textDecoration: "none", display: "inline-block", letterSpacing: "0.02em" }}>
+          Open an Account
+        </Link>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          PARTNERS STRIP  —  LIGHT GRAY
+      ══════════════════════════════════════════ */}
+      <section style={{ background: GRAY, padding: "40px 0" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "0 24px" }}>
+          <p style={{ color: "#9ca3af", fontSize: 12, fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", textAlign: "center", marginBottom: 28 }}>
+            Regulated · Insured · Trusted
+          </p>
+        </div>
+
+        {/* Scrolling payment strip — full-bleed, matches citadelsmarket's FeaturesSection */}
+        <div className="overflow-hidden w-full h-28">
+          <div className="animate-scroll-strip">
+            {[0, 1, 2, 3].map((i) => (
+              <img
+                key={i}
+                src="/landing/payment-methods-strip.svg"
+                alt=""
+                className="h-28 w-auto flex-shrink-0"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          MARKET OVERVIEW  —  WHITE
+      ══════════════════════════════════════════ */}
+      <section style={{ background: WHITE, padding: "64px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, textAlign: "center", marginBottom: 8, letterSpacing: "-0.5px" }}>
+            Every Market. One Screen.
+          </motion.h2>
+          <p style={{ color: "#6b7280", textAlign: "center", fontSize: 16, marginBottom: 40 }}>
+            Real-time data across stocks, ETFs, and indices — so you&apos;re never trading blind.
+          </p>
+          <div style={{ borderRadius: 16, overflow: "hidden" }}>
+            <MarketOverviewWidget />
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          COPY TRADERS  —  BLACK
+      ══════════════════════════════════════════ */}
+      <section style={{ background: BLACK, padding: "88px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ maxWidth: 640, marginBottom: 60 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}18`, border: `1px solid ${OC}35`, borderRadius: 100, padding: "6px 14px", marginBottom: 20 }}>
+              <span style={{ width: 6, height: 6, borderRadius: "50%", background: OC, display: "inline-block" }} />
+              <span style={{ color: OC, fontSize: 12, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Copy Trading</span>
+            </div>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(34px, 4.5vw, 58px)", fontWeight: 300, color: WHITE, lineHeight: 1.08, marginBottom: 18, letterSpacing: "-0.5px" }}>
+              Copy the Best.<br /><em style={{ fontStyle: "italic", color: OC }}>Earn Like the Best.</em>
+            </motion.h2>
+            <p style={{ color: "rgba(255,255,255,0.45)", fontSize: 17, lineHeight: 1.7 }}>
+              Follow audited, top-performing traders and let every trade mirror into your account instantly — full transparency, zero manual work.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3" style={{ gap: 1, background: "rgba(255,255,255,0.07)", borderRadius: 16, overflow: "hidden", marginBottom: 56 }}>
+            {[{ value: "83K+", label: "Active Copiers" }, { value: "$890M+", label: "Assets Under Copy" }, { value: "98%", label: "Execution Accuracy" }].map(s => (
+              <motion.div key={s.label} {...reveal} style={{ background: "rgba(255,255,255,0.03)", padding: "20px 24px" }}>
+                <p style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(26px, 6vw, 40px)", fontWeight: 700, color: OC, marginBottom: 4, letterSpacing: "-0.5px" }}>{s.value}</p>
+                <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 13 }}>{s.label}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          <div style={{ marginBottom: 44 }}>
+            {tradersLoading
+              ? <TraderCardsSkeleton />
+              : <TradersCarousel traders={traders} />
+            }
+          </div>
+
+          <div style={{ textAlign: "center" }}>
+            <Link href="/lead-traders" style={{ color: "rgba(255,255,255,0.55)", fontWeight: 600, fontSize: 14, textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, border: "1px solid rgba(255,255,255,0.12)", borderRadius: 100, padding: "12px 28px", transition: "border-color 0.2s, color 0.2s" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = OC; e.currentTarget.style.color = OC; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.color = "rgba(255,255,255,0.55)"; }}>
+              Browse all traders <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section> 
+
+      {/* ══════════════════════════════════════════
+          BUILT TO PERFORM  —  WHITE  (plain icon grid)
+      ══════════════════════════════════════════ */}
+      <section style={{ background: WHITE, padding: "80px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${OC}12`, border: `1px solid ${OC}25`, borderRadius: 100, padding: "5px 12px", marginBottom: 16 }}>
+              <span style={{ color: OC, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Built to Perform</span>
+            </div>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, letterSpacing: "-0.5px", marginBottom: 12 }}>
+              Everything a serious<br />trader needs.
+            </motion.h2>
+            <p style={{ color: "#6b7280", fontSize: 16, maxWidth: 520, margin: "0 auto" }}>
+              No plugins, no add-ons — the tools that matter come standard with every account.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            {WHY_CARDS.map(c => (
+              <motion.div key={c.title} {...reveal} style={{ textAlign: "center" }}>
+                <div style={{ width: 56, height: 56, borderRadius: 14, background: `${OC}12`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", color: OC }}>{c.icon}</div>
+                <h3 style={{ fontSize: 16, fontWeight: 700, marginBottom: 10, color: BLACK }}>{c.title}</h3>
+                <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.65 }}>{c.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          WHY ORCHARD  —  ORANGE  (bento)
+      ══════════════════════════════════════════ */}
+      <section id="why" style={{ background: OC, padding: "80px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-5 items-start">
+            <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+              <div>
+                <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 3vw, 44px)", fontWeight: 700, lineHeight: 1.15, letterSpacing: "-0.5px", marginBottom: 20, color: WHITE }}>
+                  Built to help<br />you win.
+                </motion.h2>
+                <Link href="/register" style={{ background: BLACK, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}>
+                  Get Started
+                </Link>
+              </div>
+              <div style={{ background: "#111", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", position: "relative", minHeight: 520 }}>
+                <motion.img {...reveal} src="/images/new/advance_order.jpg" alt="Advanced orders" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.4) 100%)" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1, padding: "0 24px 28px" }}>
+                  <h3 style={{ color: WHITE, fontSize: 20, fontWeight: 700, lineHeight: 1.25, marginBottom: 8 }}>Advanced orders, <span style={{ color: OC }}>simplified</span></h3>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.55, marginBottom: 16 }}>Fine-tune your trading with conditional and advanced order types built for precision.</p>
+                  <Link href="/register" style={{ color: OC, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>Get Started</Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-5">
+              <div className="md:row-span-2" style={{ background: "#111", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", position: "relative", minHeight: 680 }}>
+                <motion.img {...reveal} src="/images/new/deep_market.jpg" alt="Market insights" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.8) 32%, rgba(0,0,0,0.4) 62%, rgba(0,0,0,0.4) 100%)" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1, padding: "0 24px 28px" }}>
+                  <h3 style={{ color: WHITE, fontSize: 20, fontWeight: 700, lineHeight: 1.25, marginBottom: 8 }}>Unlock in-depth market insights</h3>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.55, marginBottom: 16 }}>Navigate markets with real-time data and up to 60 bid/ask price levels.</p>
+                  <Link href="/register" style={{ color: OC, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>Get Started</Link>
+                </div>
+              </div>
+              <div style={{ background: "#111", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", position: "relative", minHeight: 380 }}>
+                <motion.img {...reveal} src="/images/new/pro_support.jpg" alt="24/7 support" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.4) 100%)" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1, padding: "0 24px 28px" }}>
+                  <h3 style={{ color: WHITE, fontSize: 20, fontWeight: 700, lineHeight: 1.25, marginBottom: 8 }}>24/7 professional support</h3>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.55, marginBottom: 16 }}>Our team is available around the clock to assist you at every step.</p>
+                  <Link href="/register" style={{ color: OC, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>Get Started</Link>
+                </div>
+              </div>
+              <div style={{ background: "#111", borderRadius: 16, overflow: "hidden", border: "1px solid rgba(255,255,255,0.07)", position: "relative", minHeight: 380 }}>
+                <motion.img {...reveal} src="/images/new/trade_on_any_device.jpg" alt="Trade anywhere" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(0,0,0,0.96) 0%, rgba(0,0,0,0.8) 35%, rgba(0,0,0,0.4) 65%, rgba(0,0,0,0.4) 100%)" }} />
+                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, zIndex: 1, padding: "0 24px 28px" }}>
+                  <h3 style={{ color: WHITE, fontSize: 20, fontWeight: 700, lineHeight: 1.25, marginBottom: 8 }}>Trade anywhere</h3>
+                  <p style={{ color: "rgba(255,255,255,0.7)", fontSize: 14, lineHeight: 1.55, marginBottom: 16 }}>Access your portfolio on desktop, tablet, or mobile — anytime, anywhere.</p>
+                  <Link href="/register" style={{ color: OC, fontSize: 14, fontWeight: 700, textDecoration: "none" }}>Get Started</Link>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          ASSETS GRID  —  BLACK + GLOBE BG
+      ══════════════════════════════════════════ */}
+      <section style={{ background: BLACK, padding: "80px 24px", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <motion.img {...reveal} src="/landing/images/earth-75efc463.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
+        </div>
+        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.35)", zIndex: 0 }} />
+        <div style={{ maxWidth: 1280, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, color: WHITE, textAlign: "center", marginBottom: 8, letterSpacing: "-0.5px" }}>
+            One Account. Every Market.
+          </motion.h2>
+          <p style={{ color: "rgba(255,255,255,0.5)", textAlign: "center", fontSize: 16, marginBottom: 48 }}>
+            Stocks, options, ETFs, and more — build a full portfolio without switching platforms.
+          </p>
+          <div className="grid grid-cols-1 lg:grid-cols-[55%_1fr] gap-4">
+            <div className="lg:row-span-2" style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: 32, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <h3 style={{ color: WHITE, fontSize: "clamp(22px, 2.5vw, 32px)", fontWeight: 700, letterSpacing: "-0.4px", marginBottom: 16, display: "flex", alignItems: "center", gap: 6 }}>
+                Global Stocks <ChevronRight className="w-6 h-6" style={{ color: "rgba(255,255,255,0.5)" }} />
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 15, lineHeight: 1.75 }}>
+                Invest in domestic and international stocks with real-time Level 2 market data and fractional share support. Build a diversified equity portfolio across every major exchange, all from a single Orchard Capitals account — no need to juggle multiple platforms or brokers.
+              </p>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "28px 24px", minHeight: 180, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <h3 style={{ color: WHITE, fontSize: "clamp(20px, 2vw, 28px)", fontWeight: 700, letterSpacing: "-0.3px", marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+                Options <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.5)" }} />
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7 }}>
+                Trade options with $0 contract fees and real-time, intuitive analysis tools. Choose from 13 built-in strategies — from simple covered calls to multi-leg spreads — designed to help you manage risk with precision.
+              </p>
+            </div>
+            <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, border: "1px solid rgba(255,255,255,0.09)", padding: "28px 24px", minHeight: 180, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <h3 style={{ color: WHITE, fontSize: "clamp(20px, 2vw, 28px)", fontWeight: 700, letterSpacing: "-0.3px", marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+                ETFs &amp; Funds <ChevronRight className="w-5 h-5" style={{ color: "rgba(255,255,255,0.5)" }} />
+              </h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 14, lineHeight: 1.7 }}>
+                Access hundreds of commission-free ETFs, index funds, and curated thematic baskets. Build instant diversification across sectors and asset classes without the friction of picking individual stocks one by one.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          TRADE YOUR STYLE  —  ORANGE
+      ══════════════════════════════════════════ */}
+      <section style={{ background: OC, padding: "88px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.15)", border: "1px solid rgba(255,255,255,0.3)", borderRadius: 100, padding: "5px 12px", marginBottom: 20 }}>
+              <span style={{ color: WHITE, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>Trade Your Style</span>
+            </div>
+            <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, marginBottom: 12, letterSpacing: "-0.5px", color: WHITE }}>
+              Every strategy.<br /><em style={{ fontStyle: "italic" }}>One platform.</em>
+            </motion.h2>
+            <p style={{ color: "rgba(255,255,255,0.8)", fontSize: 16, maxWidth: 540, margin: "0 auto" }}>
+              Whether you hold for minutes or weeks, Orchard Capitals has the tools built for how you trade.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {TRADING_STYLES.map(s => (
+              <Link key={s.title} href={s.href} style={{ background: WHITE, borderRadius: 16, padding: "28px 24px", border: "1px solid rgba(0,0,0,0.05)", textDecoration: "none", display: "block", transition: "transform 0.2s, box-shadow 0.2s" }}
+                onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-3px)"; e.currentTarget.style.boxShadow = "0 12px 32px rgba(0,0,0,0.18)"; }}
+                onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
+                <div style={{ width: 48, height: 48, borderRadius: 12, background: `${OC}12`, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18, color: OC }}>{s.icon}</div>
+                <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 10, color: BLACK }}>{s.title}</h3>
+                <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.65, marginBottom: 16 }}>{s.desc}</p>
+                <span style={{ color: OC, fontSize: 13, fontWeight: 700, display: "inline-flex", alignItems: "center", gap: 4 }}>Learn more <ArrowRight className="w-3.5 h-3.5" /></span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          PRO ANALYTICS  —  WHITE
+      ══════════════════════════════════════════ */}
+      <section style={{ background: WHITE, padding: "64px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ display: "grid", gap: 40, alignItems: "center" }} className="lg:grid-cols-2 lg:gap-16">
+            <div>
+              <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, lineHeight: 1.1, marginBottom: 20, letterSpacing: "-0.5px" }}>
+                Trade with an<br />Institutional Edge
+              </motion.h2>
+              <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+                {[
+                  { title: "13 pre-set risk strategies", desc: "Choose from conservative, balanced, or aggressive copy parameters." },
+                  { title: "Unusual options activity", desc: "Detect market shifts with live insights on high-volume trades and institutional block buys." },
+                  { title: "Audited trade history", desc: "Full P&L breakdown, Sharpe ratio, drawdown, and win-rate — before you copy a single trade." },
+                ].map((item, i) => (
+                  <motion.div key={item.title} {...reveal} style={{ display: "flex", gap: 16, padding: "24px 0", borderBottom: "1px solid #f3f4f6" }}>
+                    <div style={{ width: 3, background: i === 1 ? OC : "#e5e7eb", borderRadius: 3, flexShrink: 0 }} />
+                    <div>
+                      <h3 style={{ fontSize: 17, fontWeight: 700, marginBottom: 6, letterSpacing: "-0.2px" }}>{item.title}</h3>
+                      <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+            <div style={{ borderRadius: 20, overflow: "hidden", boxShadow: "0 20px 60px rgba(0,0,0,0.18)", border: "1px solid rgba(0,0,0,0.08)" }}>
+              <motion.img {...reveal} src="/images/new/trade_eith_edge.jpg" alt="Orchard Capitals Desktop Platform" style={{ width: "100%", display: "block" }} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          COMMUNITY  —  DARK with photo texture
+      ══════════════════════════════════════════ */}
+      <section style={{ background: "#111", padding: "0 0 0", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+          <motion.img {...reveal} src="/images/new/learn_faster.jpg" alt="" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center" }} />
+        </div>
+        <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.85) 100%)", pointerEvents: "none", zIndex: 1 }} />
+        <div style={{ position: "absolute", inset: 0, backgroundImage: `radial-gradient(ellipse at 20% 50%, ${OC}22 0%, transparent 55%)`, pointerEvents: "none", zIndex: 1 }} />
+        <div style={{ maxWidth: 1280, margin: "0 auto", padding: "80px 24px 0", position: "relative", zIndex: 2 }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 300, color: WHITE, marginBottom: 8, letterSpacing: "-0.5px" }}>
+            Learn faster.<br /><em style={{ fontStyle: "italic", color: OC }}>Trade smarter.</em>
+          </motion.h2>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 16, marginBottom: 56 }}>Resources, community, and support — every step of your journey.</p>
+          <div style={{ display: "grid", gap: 0 }} className="sm:grid-cols-2 lg:grid-cols-3">
+            {COMMUNITY.map((c, i) => (
+              <motion.div key={c.title} {...reveal} style={{ padding: "32px 28px 40px", borderTop: "1px solid rgba(255,255,255,0.08)", borderRight: i < COMMUNITY.length - 1 ? "1px solid rgba(255,255,255,0.08)" : "none" }}>
+                <div style={{ color: OC, marginBottom: 16 }}>{c.icon}</div>
+                <h3 style={{ color: WHITE, fontSize: 20, fontWeight: 700, marginBottom: 10, letterSpacing: "-0.2px" }}>{c.title}</h3>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 1.7, marginBottom: 16 }}>{c.desc}</p>
+                <Link href="#" style={{ color: OC, fontSize: 14, fontWeight: 600, textDecoration: "none", display: "flex", alignItems: "center", gap: 4 }}>
+                  {c.link} <ArrowRight className="w-4 h-4" />
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          SECURITY  —  BLACK
+      ══════════════════════════════════════════ */}
+      <section style={{ background: "#0a0a0a", padding: "64px 24px" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, color: WHITE, marginBottom: 48, letterSpacing: "-0.5px" }}>
+            Security you don&apos;t have to think about
+          </motion.h2>
+          <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            {[
+              { title: "Account protection", desc: "Orchard Capitals is a SIPC member, protecting securities customers up to $500,000 (including $250,000 for cash claims)." },
+              { title: "Multi-factor authentication", desc: "We provide industry-standard MFA on all accounts, with biometric login support on mobile." },
+              { title: "256-bit encryption", desc: "All data transmissions are protected with bank-grade TLS 1.3 encryption, end to end." },
+              { title: "Segregated client funds", desc: "Your funds are held in segregated accounts and never used for company operations." },
+            ].map(item => (
+              <motion.div key={item.title} {...reveal} style={{ display: "grid", gap: 24, padding: "28px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }} className="lg:grid-cols-[280px_1fr]">
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <Lock className="w-4 h-4" style={{ color: OC, flexShrink: 0 }} />
+                  <span style={{ color: WHITE, fontWeight: 700, fontSize: 15 }}>{item.title}</span>
+                </div>
+                <p style={{ color: "rgba(255,255,255,0.5)", fontSize: 14, lineHeight: 1.7 }}>{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          FAQ  —  GRAY
+      ══════════════════════════════════════════ */}
+      <section style={{ background: GRAY, padding: "80px 24px" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 400, textAlign: "center", marginBottom: 48, letterSpacing: "-0.5px" }}>
+            Get answers to your questions
+          </motion.h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {FAQS.map((f, i) => {
+              const open = faqOpen === i;
+              return (
+                <motion.div key={f.q} {...reveal} style={{ background: WHITE, borderRadius: 12, border: "1px solid #e5e7eb", overflow: "hidden" }}>
+                  <button onClick={() => setFaqOpen(open ? null : i)}
+                    style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "20px 24px", background: "none", border: "none", cursor: "pointer", textAlign: "left" }}>
+                    <span style={{ color: BLACK, fontSize: 16, fontWeight: 700 }}>{f.q}</span>
+                    <ChevronDown className="w-5 h-5" style={{ color: OC, flexShrink: 0, transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)" }} />
+                  </button>
+                  {open && (
+                    <div style={{ padding: "0 24px 22px" }}>
+                      <p style={{ color: "#6b7280", fontSize: 14, lineHeight: 1.7 }}>{f.a}</p>
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════
+          IT'S FREE  —  BLACK, wave video
+      ══════════════════════════════════════════ */}
+      <section style={{ background: BLACK, position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "100px 24px 130px" }}>
+          <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: "clamp(44px, 7vw, 92px)", fontWeight: 800, color: WHITE, letterSpacing: "-1.5px", lineHeight: 1, marginBottom: 24 }}>
+            It&apos;s free
+          </motion.h2>
+          <p style={{ color: "rgba(255,255,255,0.6)", fontSize: 17, lineHeight: 1.7, maxWidth: 480, margin: "0 auto 32px" }}>
+            Available to anyone with an Orchard account. Sign up today.
+          </p>
+          <Link href="/register" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "15px 36px", borderRadius: 100, textDecoration: "none", display: "inline-block", boxShadow: `0 8px 32px ${OC}40`, transition: "opacity 0.2s" }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.88")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}>
+            Sign Up
+          </Link>
+        </div>
+        <div style={{ position: "relative", width: "100%", height: "clamp(220px, 32vw, 380px)", overflow: "hidden" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 80, background: "linear-gradient(to bottom, #0a0a0a 0%, transparent 100%)", zIndex: 1, pointerEvents: "none" }} />
+          <video autoPlay muted loop playsInline style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}>
+            <source src="/videos/wave_footer.webm" type="video/webm" />
+          </video>
+        </div>
+      </section>
+
+    </PageWrapper>
+    </>
   );
 }

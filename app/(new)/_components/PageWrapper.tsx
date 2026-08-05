@@ -98,7 +98,7 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
 
           {/* Desktop nav — dropdown groups */}
           <nav className="hidden lg:flex" style={{ gap: 4, alignItems: "center" }}>
-            <Link href="/new-landing"
+            <Link href="/"
               style={{ color: "rgba(255,255,255,0.65)", fontSize: 14, fontWeight: 500, textDecoration: "none", padding: "8px 12px", borderRadius: 8, transition: "color 0.2s" }}
               onMouseEnter={e => (e.currentTarget.style.color = WHITE)}
               onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}>
@@ -159,7 +159,7 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
         {/* Mobile menu */}
         {menuOpen && (
           <div style={{ background: "#111", borderTop: "1px solid rgba(255,255,255,0.08)", padding: "12px 24px 24px", maxHeight: "80vh", overflowY: "auto" }}>
-            <Link href="/new-landing" onClick={() => setMenuOpen(false)}
+            <Link href="/" onClick={() => setMenuOpen(false)}
               style={{ display: "block", color: "rgba(255,255,255,0.75)", fontSize: 15, fontWeight: 500, textDecoration: "none", padding: "13px 0", borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
               Overview
             </Link>
@@ -244,7 +244,7 @@ export default function PageWrapper({ children, ctaTitle, ctaSubtitle }: PageWra
 
             {/* Link columns */}
             {[
-              { title: "Platform", links: [["Top Traders", "/lead-traders"], ["Pricing", "/new-landing#fees"], ["Copy Trading", "/option-copy-trading"], ["Software", "/software"]] },
+              { title: "Platform", links: [["Top Traders", "/lead-traders"], ["Pricing", "/#fees"], ["Copy Trading", "/option-copy-trading"], ["Software", "/software"]] },
               { title: "Company", links: [["About Us", "/about"], ["Lead Traders", "/lead-traders"], ["FAQs", "/faq"], ["Regulations", "/regulations"], ["Security", "/security"], ["Insurance", "/insurance"]] },
               { title: "Legal", links: [["Terms of Service", "/terms-of-service"], ["Privacy Policy", "/privacy-policy"], ["Risk Disclaimer", "/risk-disclaimer"], ["SIPC Disclosure", "/sipc-disclosure"], ["Form CRS", "/form-crs"]] },
             ].map(col => (
