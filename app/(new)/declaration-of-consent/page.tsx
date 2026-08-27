@@ -73,9 +73,9 @@ const SECTIONS = [
   {
     title: "9. Withdrawal of Consent",
     body: [
-      "You have the right to withdraw your consent at any time, subject to legal and contractual restrictions. Please note that withdrawing certain consents may affect our ability to provide services to you and may result in the closure of your account. To withdraw your consent, please contact our support team at support@orchardcapitals.com. We will process your request in accordance with applicable laws and inform you of any consequences of the withdrawal.",
+      "You have the right to withdraw your consent at any time, subject to legal and contractual restrictions. Please note that withdrawing certain consents may affect our ability to provide services to you and may result in the closure of your account. To withdraw your consent, please contact our support team at support@orchardscapital.com. We will process your request in accordance with applicable laws and inform you of any consequences of the withdrawal.",
     ],
-    email: "support@orchardcapitals.com",
+    email: "support@orchardscapital.com",
   },
   {
     title: "10. Consent for Minors",

@@ -124,7 +124,7 @@ export default function FormCRSPage() {
               </motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginBottom: 14 }}>
                 For more detailed information about our brokerage services, fees, and conflicts of interest, please visit our website or contact our compliance team directly at{" "}
-                <span style={{ color: OC }}>compliance@orchardcapitals.com</span>.
+                <span style={{ color: OC }}>compliance@orchardscapital.com</span>.
               </p>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85 }}>
                 Up-to-date information about Orchard Capitals is available from the SEC's EDGAR system at{" "}

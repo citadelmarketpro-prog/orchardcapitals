@@ -50,9 +50,9 @@ const SECTIONS = [
     title: "9. Opt Out",
     body: [
       "If you wish to opt out of non-essential cookies and tracking technologies, you can adjust your preferences through your browser settings or contact us directly. Please note that disabling certain cookies may affect the functionality of our platform.",
-      "To opt out or manage your cookie preferences, please email us at support@orchardcapitals.com. Our team will assist you with updating your preferences promptly.",
+      "To opt out or manage your cookie preferences, please email us at support@orchardscapital.com. Our team will assist you with updating your preferences promptly.",
     ],
-    email: "support@orchardcapitals.com",
+    email: "support@orchardscapital.com",
   },
 ];
 

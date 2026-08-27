@@ -20,7 +20,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://orchardcapitals.com"),
+  metadataBase: new URL("https://orchardscapital.com"),
   title: {
     default: "Orchard Capitals - Copy Futures, Options & Contracts with Precision",
     template: "%s | Orchard Capitals",
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     type: "website",
-    url: "https://orchardcapitals.com",
+    url: "https://orchardscapital.com",
     siteName: "Orchard Capitals",
     title: "Orchard Capitals - Copy Futures, Options & Contracts with Precision",
     description:

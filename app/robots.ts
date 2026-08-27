@@ -27,6 +27,6 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://orchardcapitals.com/sitemap.xml",
+    sitemap: "https://orchardscapital.com/sitemap.xml",
   };
 }

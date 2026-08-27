@@ -164,7 +164,7 @@ export default function EULAPage() {
               <motion.h2 {...reveal} style={{ fontFamily: "var(--oc-poppins)", fontSize: 22, fontWeight: 700, color: BLACK, marginBottom: 12 }}>Questions?</motion.h2>
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.8, marginBottom: 24 }}>
                 If you have any questions about this End User License Agreement, please contact us at{" "}
-                <span style={{ color: OC }}>support@orchardcapitals.com</span>. Our team is available to assist you with any inquiries regarding your rights and obligations under this agreement.
+                <span style={{ color: OC }}>support@orchardscapital.com</span>. Our team is available to assist you with any inquiries regarding your rights and obligations under this agreement.
               </p>
               <Link href="/" style={{ background: OC, color: WHITE, fontWeight: 700, fontSize: 15, padding: "13px 28px", borderRadius: 100, textDecoration: "none", display: "inline-block" }}
                 onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}

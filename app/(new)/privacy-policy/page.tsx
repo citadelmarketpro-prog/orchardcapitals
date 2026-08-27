@@ -150,7 +150,7 @@ export default function PrivacyPolicyPage() {
               ))}
               <p style={{ color: "#4b5563", fontSize: 16, lineHeight: 1.85, marginTop: 14 }}>
                 Please note that opting out of certain data processing activities may limit your ability to use some features of our platform. To exercise any of these rights, please contact us at{" "}
-                <span style={{ color: OC }}>support@orchardcapitals.com</span>.
+                <span style={{ color: OC }}>support@orchardscapital.com</span>.
               </p>
             </div>
 
